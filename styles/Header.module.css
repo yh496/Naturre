@@ -1,0 +1,22 @@
+.title {
+  color: blue;
+  padding-left: 30px;
+  padding-top: 10px;
+  font-size: 40px;
+  font-weight: bold;
+  float: left;
+}
+.login {
+  color: blue;
+  padding-top: 15px;
+  padding-right: 30px;
+  font-size: 30px;
+  float: right;
+}
+.about {
+  float: right;
+  color: lightblue;
+  padding-top: 15px;
+  padding-right: 10px;
+  font-size: 30px;
+}
