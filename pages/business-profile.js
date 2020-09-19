@@ -1,22 +1,27 @@
 import styles from '../styles/Home.module.css'
+import ImageStepper from '../components/BusinessProfile/stepper'
 
+import {Grid} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 
-// const useStyles = makeStyles({
-//   title: {
-//     color: 'blue',
-//     paddingLeft: '30px',
-//     paddingTop: '10px',
-//     fontSize: '40px',
-//     fontWeight: 'bold',
-//     float: 'left',
-//   },
+const useStyles = makeStyles((theme) => ({
+  imageStepper: {
+    marginLeft: '100px'
+  },
 
-// });
+}));
 
 export default function BusinessProfile() {
-  // const classes = useStyles();
+  const classes = useStyles();
   return (
-    <div><h1></h1></div>
+  <React.Fragment>
+    <Grid container> 
+      <Grid item xs={8} className={classes.imageStepper}> 
+        <ImageStepper/>
+
+      </Grid> 
+
+    </Grid> 
+  </React.Fragment> 
   )
 }
