@@ -72,9 +72,7 @@ export default function ImageStepper() {
 
   return (
     <div className={classes.root}>
-      <Paper square elevation={0} className={classes.header}>
-        <Typography>{tutorialSteps[activeStep].label}</Typography>
-      </Paper>
+  
       <img
         className={classes.img}
         src={tutorialSteps[activeStep].imgPath}

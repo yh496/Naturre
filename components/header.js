@@ -5,7 +5,10 @@ import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import Paper from '@material-ui/core/Paper';
 
-import { Grid } from '@material-ui/core'
+import { 
+  Grid,
+  Button } 
+from '@material-ui/core'
 const useStyles = makeStyles((theme) => ({
   header: {
     display: 'inline'
@@ -20,18 +23,13 @@ const useStyles = makeStyles((theme) => ({
   login: {
     color: 'blue',
     // paddingTop: '15px',
-    fontSize: '30px',
+    fontSize: '20px',
+    marginTop: '15px',
     margin: 'auto',
-    transform: 'translate(30%, 0%)'
+    transform: 'translate(60%, 0%)'
 
   },
-  // about: {
-  //   float: 'right',
-  //   color: 'lightblue',
-  //   paddingTop: '15px',
-  //   paddingRight: '10px',
-  //   fontSize: '30px',
-  // },
+
   input: {
     marginLeft: theme.spacing(1),
     flex: 1,
@@ -69,7 +67,9 @@ export default function Header() {
             </IconButton>
           </Paper>
         </Grid>
-        <Grid item xs={3} className={classes.login}>Login/Register</Grid>
+        <Grid item xs={3}>
+          <Button className={classes.login}> Login/Register </Button>
+         </Grid>
 
 
       </Grid>
