@@ -74,7 +74,7 @@ export default function BusinessReview (props) {
         return countList
     }
 
-    const averageRating = findAverage();
+    const averageRating = parseFloat(findAverage()).toFixed(1);
 
     const nums = countNumStars();
     const maxNum = nums.reduce(function (a,b) { 
@@ -90,7 +90,7 @@ export default function BusinessReview (props) {
 
             <Grid container> 
                 <Grid item xs={1}>
-                    <Typography variant="h1" style={{transform:'translate(25%,0%)', marginTop: '20px', height:'25px'}}> {averageRating} </Typography>
+                    <Typography variant="h1" style={{transform:'translate(12%,0%)', marginTop: '20px', height:'25px'}}> {averageRating} </Typography>
                     <div style={{marginBottom: '20px'}}> 
                         <Rating size='small' classes={{iconFilled: classes.ratingIcon}} precision={0.2} value={averageRating} readOnly /> 
                     </div>
@@ -113,6 +113,14 @@ export default function BusinessReview (props) {
                 </Grid>
 
             </Grid>
+            <div style={{width: '500px'}}>
+                {reviews.map( (val, i) => (
+                    <div style={{marginBottom: '20px'}}> 
+                        <Typography variant="h4" style={{fontWeight:700, fontSize:'15px'}}> {val.title} </Typography>
+                        <Typography variant="p"> {val.content} </Typography>
+                    </div>
+                ))}
+             </div>
         </div>
     )
 
