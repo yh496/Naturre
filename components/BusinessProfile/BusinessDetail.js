@@ -22,7 +22,6 @@ const useStyles=makeStyles( (theme) => ({
 export default function BusinessDetail (props) {
     const classes=useStyles();
     const {detail, ...rest} = props
-    console.log('BusinessDetail.detail', detail)
     return (
         <React.Fragment> 
 

@@ -36,17 +36,16 @@ export default function BusinessProfile() {
   const [values, setValues] = useState({
     name: "",
     description: "",
-    reviews: []
   })
   
   useEffect( () => {
-   fetch('/api/business-profile/get-business-detail', {
+   fetch('/api/business-profile/business-detail', {
       method: 'POST',
       headers: { "Content-Type": "application/json; charset=utf-8" },
       body: JSON.stringify({id: '5f66f686f6dddb007ba26307'})
   
     }).then(e => e.json()).then(e =>
-      setValues({...values, name: e.data.name, description: e.data.description, reviews: e.reviews})
+      setValues({...values, name: e.data.name, description: e.data.description})
     )
     
   }, [])
@@ -78,7 +77,7 @@ export default function BusinessProfile() {
 
     <Divider  classes={{root: classes.divider}}/>
 
-    <BusinessReview reviews={values.reviews}/>
+    <BusinessReview  />
 
 
 
