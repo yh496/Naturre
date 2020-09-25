@@ -12,7 +12,7 @@ handler.post(async (req, res) => {
     //total count, average rating, number of rating for each stars
     let countAndAverage = await req.db.collection('Reviews').aggregate([
         {$match: {
-            'businessId' : '5f66f686f6dddb007ba26307'}},
+            'businessId' : businessId}},
         {
           $group:
             {
@@ -26,7 +26,7 @@ handler.post(async (req, res) => {
 
     let countPerRating = await req.db.collection('Reviews').aggregate([
         {$match: {
-            'businessId' : '5f66f686f6dddb007ba26307'}},
+            'businessId' : businessId}},
         {
           $group:
             {
