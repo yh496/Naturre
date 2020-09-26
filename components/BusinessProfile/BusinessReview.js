@@ -1,12 +1,15 @@
+import React, { useEffect, useState } from 'react'
 import {
     Typography,
     Grid,
     Box,
-    Slider
+    Slider,
+    Button
 } from '@material-ui/core'
 import Rating from '@material-ui/lab/Rating';
 
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import ReviewStats from './ReviewStats'
 
 const PrettoSlider = withStyles({
     root: {
@@ -39,89 +42,62 @@ const useStyles = makeStyles((theme) => ({
     reviewContainer: {
         marginTop: theme.spacing(3),
         marginLeft: '115px',
-        marginBottom: '100px'
+        marginBottom: '100px',
+        width: '500px'
     },
-    ratingIcon: {
-        color: 'blue',
-        width: '14px'
-    },
-    graphContainer: {
-        marginLeft: theme.spacing(10)
-
-    }
 }))
 
+
 export default function BusinessReview(props) {
-    const { reviews, ...rest } = props
 
-    const numReview = reviews.length;
-    console.log('numReview', numReview)
+    const [reviews, setReviews] = useState([])
+    const [limit, setLimit] = useState(2)
 
-    const findAverage = () => {
-        let sum = 0
-        reviews.map((val) => {
-            sum += val.rating
-        })
+    const callApi = (limit) => {
+        fetch('/api/business-profile/business-review', {
+            method: 'POST',
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify({ id: '5f66f686f6dddb007ba26307', limit: limit })
 
-        return sum / numReview
+        }).then(e => e.json()).then(e =>
+            setReviews(e.reviews)
+        )
     }
 
-    const countNumStars = () => {
-        let countList = []
-        for (let i = 5; i > 0; i--) {
-            countList.push(reviews.filter(e => e.rating == i).length)
-        }
-        return countList
+    useEffect(() => {
+        callApi(limit)
+    }, [])
+
+    const loadComments = () => {
+        const nextLimit = limit + 2
+        callApi(nextLimit)
+        setLimit(nextLimit)
     }
-
-    const averageRating = parseFloat(findAverage()).toFixed(1);
-
-    const nums = countNumStars();
-    const maxNum = nums.reduce(function (a, b) {
-        return a + b
-    }, 0);
-    // const numFives = reviews.filter(e => e.rating == 5).length
 
     const classes = useStyles();
     return (
-        <div className={classes.reviewContainer}>
-            <Typography style={{ fontWeight: 560, fontSize: '20px' }}> Reviews </Typography>
+        <React.Fragment>
+            <ReviewStats />
+            <div className={classes.reviewContainer}>
+                <div style={{ width: '500px' }}>
+                    {reviews.map((val, i) => (
+                        <div style={{ marginBottom: '20px' }}>
+                            <Typography variant="h4" style={{ fontWeight: 700, fontSize: '15px' }}> {val.title} </Typography>
+                            <Typography variant="p"> {val.content} </Typography>
+                        </div>
+                    ))}
+                </div>
+                <div>
+                    <Button style={{ float: 'right' }} onClick={() => loadComments()} >
+                        <Typography
+                            style={{ color: '#3d8ef2', fontSize: '12px' }}>
+                            {limit >= 6 ? 'See all reviews' : 'Load more ...'}
+                        </Typography>
+                    </Button>
 
-
-            <Grid container>
-                <Grid item xs={1}>
-                    <Typography variant="h1" style={{ transform: 'translate(12%,0%)', marginTop: '20px', height: '25px' }}> {averageRating} </Typography>
-                    <div style={{ marginBottom: '20px' }}>
-                        <Rating size='small' classes={{ iconFilled: classes.ratingIcon }} precision={0.2} value={averageRating} readOnly />
-                    </div>
-                    <Typography variant="p" style={{ marginLeft: '4px', height: '25px' }} > {numReview}+ rating </Typography>
-                </Grid>
-                <Grid item xs={4} className={classes.graphContainer}>
-                    <Grid container>
-                        {nums.map((val, i) => (
-                            <React.Fragment>
-                                <Grid item xs={1} style={{ transform: 'translate(0%, 15%)' }}>
-                                    <Typography style={{ display: 'inline' }}>{5 - i} </Typography>
-                                </Grid>
-                                <Grid item xs={11}>
-                                    <PrettoSlider max={maxNum} valueLabelDisplay="auto" aria-label="pretto slider" value={val} />
-                                </Grid>
-                            </React.Fragment>
-                        ))}
-                    </Grid>
-
-                </Grid>
-
-            </Grid>
-            <div style={{ width: '500px' }}>
-                {reviews.map((val, i) => (
-                    <div style={{ marginBottom: '20px' }}>
-                        <Typography variant="h4" style={{ fontWeight: 700, fontSize: '15px' }}> {val.title} </Typography>
-                        <Typography variant="p"> {val.content} </Typography>
-                    </div>
-                ))}
+                </div>
             </div>
-        </div>
+        </React.Fragment>
     )
 
 }

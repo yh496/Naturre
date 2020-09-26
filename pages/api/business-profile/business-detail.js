@@ -15,14 +15,9 @@ handler.post(async (req, res) => {
         return res.json({succeed: false, data: null, message: err.stack || err});
     })
 
-    let reviews = await req.db.collection('Reviews').find({'businessId': businessId}).toArray().catch(err => {
-      console.log("Err", err);
-      return res.json({succeed: false, data: null, message: err.stack || err});
-  })
 
-    console.log('reviews', reviews)
 
-  return res.json({ success: true, data: business, reviews: reviews})
+  return res.json({ success: true, data: business})
 });
 
 export default handler;
