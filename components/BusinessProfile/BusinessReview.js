@@ -4,7 +4,8 @@ import {
     Grid,
     Box,
     Slider,
-    Button
+    Button,
+    Paper
 } from '@material-ui/core'
 import Rating from '@material-ui/lab/Rating';
 
@@ -41,10 +42,16 @@ const PrettoSlider = withStyles({
 const useStyles = makeStyles((theme) => ({
     reviewContainer: {
         marginTop: theme.spacing(3),
-        marginLeft: '115px',
+        marginLeft: '180px',
         marginBottom: '100px',
-        width: '500px'
     },
+    reviewContent: {
+        padding:'20px',
+        marginBottom: '1rem',
+        height: '130px',
+        maxHeight: '130px',
+        overflow:'hidden',
+    }
 }))
 
 
@@ -77,24 +84,26 @@ export default function BusinessReview(props) {
     const classes = useStyles();
     return (
         <React.Fragment>
-            <ReviewStats />
+            {/* <ReviewStats /> */}
+            <Typography variant="h2" style={{textAlign:'center', fontWeight:'650'}}> Customer Reviews</Typography>
+
             <div className={classes.reviewContainer}>
-                <div style={{ width: '500px' }}>
+                <div style={{ width: '50%' }}>
                     {reviews.map((val, i) => (
-                        <div style={{ marginBottom: '20px' }}>
-                            <Typography variant="h4" style={{ fontWeight: 700, fontSize: '15px' }}> {val.title} </Typography>
-                            <Typography variant="p"> {val.content} </Typography>
-                        </div>
+                        <Paper>  
+                            <div className={classes.reviewContent}>
+                                <Typography variant="h4" style={{ fontWeight: 700, fontSize: '15px' }}> {val.title} </Typography>
+                                <Typography variant="p"> {val.content} </Typography>
+                            </div>
+                        </Paper>
+
                     ))}
-                </div>
-                <div>
                     <Button style={{ float: 'right' }} onClick={() => loadComments()} >
                         <Typography
                             style={{ color: '#3d8ef2', fontSize: '12px' }}>
                             {limit >= 6 ? 'See all reviews' : 'Load more ...'}
                         </Typography>
                     </Button>
-
                 </div>
             </div>
         </React.Fragment>

@@ -19,17 +19,23 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: '20px',
     fontSize: '40px',
     fontWeight: 'bold',
+    transform: 'translate(0%,10%)',
   },
   login: {
-    color: 'blue',
+    color: 'grey',
     // paddingTop: '15px',
-    fontSize: '20px',
+    fontSize: '16px',
     marginTop: '15px',
-    margin: 'auto',
-    transform: 'translate(60%, 0%)'
+    marginLeft: '20px',
+    fontWeight: '550'
 
   },
-
+  buttonText: {
+    fontSize: '16px',
+    marginTop: '15px',
+    marginLeft: '20px',
+    fontWeight: '550'
+  },
   input: {
     marginLeft: theme.spacing(1),
     flex: 1,
@@ -45,37 +51,36 @@ const useStyles = makeStyles((theme) => ({
     width: 400,
   },
   searchBox: {
-    transform: 'translate(0%,-10%)'
+    transform: 'translate(0%,-10%)',
   }
 }));
 export default function Header() {
   const classes = useStyles();
   return (
+    <Paper elevation={1} style={{background:'#e6e9ed'}}>  
     <div className={classes.header}>
       <Grid container>
-
-        <Grid item xs={4} className={classes.title}>Naturre</Grid>
-        <Grid item xs={5} className={classes.searchBox}>
+        <Grid item xs={2} className={classes.title}>Naturre</Grid>
+        <Grid item xs={6} className={classes.searchBox}>
           <Paper component="form" className={classes.root}>
             <InputBase
               className={classes.input}
-              placeholder="Search Google Maps"
-              inputProps={{ 'aria-label': 'search google maps' }}
+              placeholder="Search"
             />
             <IconButton type="submit" className={classes.iconButton} aria-label="search">
               <SearchIcon />
             </IconButton>
           </Paper>
         </Grid>
-        <Grid item xs={3}>
-          <Button className={classes.login}> Login/Register </Button>
+        <Grid item xs={4}>
+          <Button className={classes.buttonText}> About </Button>
+          <Button className={classes.buttonText}> Blog </Button>
+          <Button className={classes.buttonText}> Contact </Button>
+          <Button className={classes.login}> Login </Button>
+          <Button className={classes.login}> Signup </Button>
          </Grid>
-
-
       </Grid>
-
-      {/* <div className={classes.about}>About</div> */}
-
     </div>
+    </Paper> 
   )
 }

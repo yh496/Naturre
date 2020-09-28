@@ -24,11 +24,9 @@ export default function BusinessDetail (props) {
     const {detail, ...rest} = props
     return (
         <React.Fragment> 
-
             <Grid container className={classes.header}> 
                 <Grid item xs={8}> 
                     <Typography variant="h2"> {detail.name} </Typography>
-                    Rating stuff todo
                 </Grid>
             </Grid> 
 

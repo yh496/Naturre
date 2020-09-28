@@ -41,7 +41,7 @@ const useStyles=makeStyles( (theme) => ({
     reviewContainer: {
         marginTop: theme.spacing(3),
         marginLeft: '115px',
-        marginBottom: '100px'
+        marginBottom: '20px'
     },
     ratingIcon: {
         color: 'blue',
@@ -53,25 +53,9 @@ const useStyles=makeStyles( (theme) => ({
 }))
 
 
-export default function ReviewStat () {
-    const [reviewStat, setReviewStat] = useState({
-        totalCount: 0 ,
-        average: 0, 
-        countPerRating:[]
-    })
-   
+export default function ReviewStat (props) {
+    const {reviewStat, ...rest} = props
 
-    useEffect( () => {
-        fetch('/api/business-profile/review-stats', {
-           method: 'POST',
-           headers: { "Content-Type": "application/json; charset=utf-8" },
-           body: JSON.stringify({id: '5f66f686f6dddb007ba26307'})
-       
-         }).then(e => e.json()).then(e =>
-           setReviewStat({...reviewStat, totalCount: e.totalCount, average: parseFloat(e.average).toFixed(1), countPerRating: e.countPerRating})
-         )
-         
-    }, [])
 
     const classes=useStyles();
     return (

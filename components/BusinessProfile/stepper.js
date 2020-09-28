@@ -51,12 +51,14 @@ const useStyles = makeStyles((theme) => ({
     height: 255,
     overflow: 'hidden',
     display: 'block',
-    width: '800px',
+    width: '650px',
     height: '400px'
   },
 }));
 
-export default function ImageStepper() {
+export default function ImageStepper(props) {
+
+  const {images, ...rest} = props
   const classes = useStyles();
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
@@ -75,8 +77,7 @@ export default function ImageStepper() {
   
       <img
         className={classes.img}
-        src={tutorialSteps[activeStep].imgPath}
-        alt={tutorialSteps[activeStep].label}
+        src={images[activeStep]}
       />
       <MobileStepper
         steps={maxSteps}
