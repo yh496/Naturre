@@ -40,7 +40,7 @@ const PrettoSlider = withStyles({
 const useStyles=makeStyles( (theme) => ({
     reviewContainer: {
         marginTop: theme.spacing(3),
-        marginLeft: '115px',
+        marginLeft: theme.spacing(7),
         marginBottom: '20px'
     },
     ratingIcon: {

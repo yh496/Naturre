@@ -8,6 +8,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import Link from 'next/link';
 
 const useStyles = makeStyles({
   root: {
@@ -35,12 +36,20 @@ export default function BusinessList(props) {
     console.log(businessList)
   }, [])
 
+ 
+
   const classes = useStyles();
   return (
     <div>
       {businessList.map((biz, i) => (
 
         <Card className={classes.root}>
+          <Link 
+          href={{
+              pathname:'/business-profile',
+              query: { id: biz._id }
+            }}
+              > 
           <CardActionArea>
             <Grid container>
               <Grid item xs={4}>
@@ -65,6 +74,7 @@ export default function BusinessList(props) {
               </Grid>
             </Grid>
           </CardActionArea>
+          </Link>
         </Card>
       ))}
 

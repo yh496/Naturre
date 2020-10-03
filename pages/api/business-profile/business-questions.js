@@ -12,12 +12,13 @@ handler.post(async (req, res) => {
     const limit = req.body.limit
     console.log('limit', limit)
 
-    let reviews = await req.db.collection('Reviews').find({'businessId': businessId}).limit(limit).toArray().catch(err => {
+    let data = await req.db.collection('Questions').find({'businessId': businessId}).limit(limit).toArray().catch(err => {
       console.log("Err", err);
       return res.json({succeed: false, data: null, message: err.stack || err});
   })
 
-  return res.json({ success: true, data: reviews})
+
+  return res.json({ success: true, data: data})
 });
 
 export default handler;
