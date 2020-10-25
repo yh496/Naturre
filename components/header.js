@@ -4,6 +4,8 @@ import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import Paper from '@material-ui/core/Paper';
+import Link from 'next/link'
+
 
 import { 
   Grid,
@@ -74,7 +76,11 @@ export default function Header() {
         </Grid>
         <Grid item xs={4}>
           <Button className={classes.buttonText}> About </Button>
-          <Button className={classes.buttonText}> Blog </Button>
+          <Button className={classes.buttonText}> 
+            <Link href='/blog/posts'>
+              <a> Blog </a>
+            </Link>
+          </Button>
           <Button className={classes.buttonText}> Contact </Button>
           <Button className={classes.login}> Login </Button>
           <Button className={classes.login}> Signup </Button>
