@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: '800px',
     flexGrow: 1,
     backgroundColor: 'black',
+    marginTop: '25px'
 
   },
   header: {
@@ -23,10 +24,8 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
     display: 'block',
     margin: 'auto',
-    maxWidth: '680px',
-    maxHeight: '480px',
-    width: 'auto',
-    height: 'auto',
+    width: '100%',
+    height: '520px',
   },
 }));
 

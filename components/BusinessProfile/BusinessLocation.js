@@ -6,8 +6,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
     mapContainer: {
-        marginLeft: '80px',
-        width: '370px',
+        margin:'auto',
+        width: '80%',
         height: '250px'
     }
 }));

@@ -13,7 +13,6 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
   serviceContainer: {
     marginTop: theme.spacing(3),
-    marginLeft: '110px',
     marginBottom: '100px',
   },
   serviceContent: {
@@ -24,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
   },
   serviceTitle: {
-    marginLeft: '110px'
+    fontWeight: 'bold'
   }
 }))
 
