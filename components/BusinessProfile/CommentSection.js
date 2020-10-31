@@ -13,24 +13,24 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
     reviewContainer: {
         marginTop: theme.spacing(3),
-        marginLeft: '180px',
+        marginLeft: '110px',
         marginBottom: '100px',
     },
     reviewContent: {
-        padding:'20px',
+        padding: '20px',
         marginBottom: '1rem',
         height: '130px',
         maxHeight: '130px',
-        overflow:'hidden',
+        overflow: 'hidden',
     }
 }))
 
 
 export default function CommentSection(props) {
-    const {type, ...rest} = props
+    const { type, ...rest } = props
 
-    const title =  (type=='questions') ? 'FAQs' : 'Customer Reviews'
-   
+    const title = (type == 'questions') ? 'FAQs' : 'Customer Reviews'
+
     const [comments, setComments] = useState([])
     const [limit, setLimit] = useState(2)
 
@@ -41,7 +41,7 @@ export default function CommentSection(props) {
             body: JSON.stringify({ id: '5f66f686f6dddb007ba26307', limit: limit })
 
         }).then(e => e.json()).then(e =>
-           setComments(e.data)    
+            setComments(e.data)
         )
     }
 
@@ -63,12 +63,12 @@ export default function CommentSection(props) {
     return (
         <React.Fragment>
             {/* <ReviewStats /> */}
-            <Typography variant="h2" style={{textAlign:'center', fontWeight:'650'}}> {title} </Typography>
+            <Typography variant="h2" style={{ textAlign: 'center', fontWeight: '650' }}> {title} </Typography>
 
             <div className={classes.reviewContainer}>
                 <div style={{ width: '50%' }}>
                     {comments.map((val, i) => (
-                        <Paper>  
+                        <Paper>
                             <div className={classes.reviewContent}>
                                 <Typography variant="h4" style={{ fontWeight: 700, fontSize: '15px' }}> {val.title} </Typography>
                                 <Typography variant="p"> {val.content} </Typography>

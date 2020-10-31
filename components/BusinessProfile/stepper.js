@@ -1,8 +1,6 @@
 import React from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import MobileStepper from '@material-ui/core/MobileStepper';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
@@ -11,7 +9,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: '800px',
     flexGrow: 1,
-    backgroundColor:'#2e2a2a',
+    backgroundColor: 'black',
+
   },
   header: {
     display: 'flex',
@@ -23,9 +22,9 @@ const useStyles = makeStyles((theme) => ({
   img: {
     overflow: 'hidden',
     display: 'block',
-    margin:'auto',  
-    maxWidth: '650px',
-    maxHeight: '400px',
+    margin: 'auto',
+    maxWidth: '680px',
+    maxHeight: '480px',
     width: 'auto',
     height: 'auto',
   },
@@ -33,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ImageStepper(props) {
 
-  const {images, ...rest} = props
+  const { images, ...rest } = props
   const classes = useStyles();
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
@@ -49,7 +48,7 @@ export default function ImageStepper(props) {
 
   return (
     <div className={classes.root}>
-  
+
       <img
         className={classes.img}
         src={images[activeStep]}

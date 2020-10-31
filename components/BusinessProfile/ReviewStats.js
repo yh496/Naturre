@@ -1,97 +1,98 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
-import { 
+import {
     Typography,
     Grid,
     Box,
-    Slider 
+    Slider
 } from '@material-ui/core'
 import Rating from '@material-ui/lab/Rating';
 
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-
+import StarBorderIcon from '@material-ui/icons/StarBorder';
 const PrettoSlider = withStyles({
     root: {
-      color: 'blue',
-      height: 1,
-      width: '300px',
+        color: '#49AD82',
+        height: 1,
+        width: '300px',
     },
     thumb: {
         width: 0,
         height: 0,
         "&:focus, &:hover, &$active": {
-          boxShadow: "0 0px 0px 0px"
+            boxShadow: "0 0px 0px 0px"
         }
-      },
+    },
     active: {},
     valueLabel: {
-      left: 'calc(-50% - 13px)',
+        left: 'calc(-50% - 13px)',
     },
     track: {
-      height: 8,
-      borderRadius: 4,
+        height: 8,
+        borderRadius: 4,
     },
     rail: {
-      height: 8,
-      borderRadius: 4,
+        height: 8,
+        borderRadius: 4,
     },
-  })(Slider);
+})(Slider);
 
-const useStyles=makeStyles( (theme) => ({
+const useStyles = makeStyles((theme) => ({
     reviewContainer: {
         marginTop: theme.spacing(3),
-        marginLeft: theme.spacing(7),
         marginBottom: '20px'
     },
     ratingIcon: {
-        color: 'blue',
+        color: '#49AD82',
         width: '14px'
     },
     graphContainer: {
-        marginLeft: theme.spacing(10)
+        // marginLeft: theme.spacing(10)
     }
 }))
 
 
-export default function ReviewStat (props) {
-    const {reviewStat, ...rest} = props
+export default function ReviewStat(props) {
+    const { reviewStat, ...rest } = props
 
 
-    const classes=useStyles();
+    const classes = useStyles();
     return (
         <div className={classes.reviewContainer}>
-            <Typography style={{fontWeight: 560, fontSize: '20px'}}> Reviews </Typography>
-            <Grid container> 
-                <Grid item xs={1}>
-                    <Typography variant="h1" style={{transform:'translate(12%,0%)', marginTop: '20px', height:'25px'}}> {reviewStat.average} </Typography>
-                    <div style={{marginBottom: '20px'}}> 
-                        <Rating size='small' classes={{iconFilled: classes.ratingIcon}} precision={0.2} value={reviewStat.average} readOnly /> 
-                    </div>
-                    <Typography variant="p" style={{marginLeft: '4px', height:'25px'}} > {reviewStat.totalCount}+ rating </Typography>
-                </Grid> 
-                <Grid item xs={4} className={classes.graphContainer}>
-                    {console.log(reviewStat.countPerRating)}
-                    <Grid container>
-                        {reviewStat.countPerRating.map( (val,i) => (
-                            <React.Fragment>
-                                <Grid item xs={1} style={{transform:'translate(0%, 15%)'}}>
-                                    <Typography style={{display:'inline'}}>{val._id} </Typography>
+            <div>
+                <div style={{ marginBottom: '0px', float: 'left' }}>
+                    <Typography variant="h1" style={{ transform: 'translate(12%,0%)', height: '25px', marginLeft: '70px', marginBottom: '10px' }}> {reviewStat.average} </Typography>
+                    <Rating style={{ marginLeft: '80px' }} size='small' classes={{ iconFilled: classes.ratingIcon }} precision={0.2} value={reviewStat.average} readOnly />
+                </div>
+                <div >
+                    <Typography variant="h5" style={{ fontWeight: 'bold', float: 'right', transform: 'translate(12%,0%)', height: '15px', marginRight: '40px', marginTop: '10px' }}> 6 reviews </Typography>
+                </div>
+            </div>
+            <br />
+            <div style={{ marginTop: '40px' }}>
+                {console.log(reviewStat.countPerRating)}
+                <div style={{ marginLeft: '80px' }}>
+                    {reviewStat.countPerRating.map((val, i) => (
+                        <React.Fragment>
+                            <Grid style={{ display: 'flex' }}>
+                                <Grid item xs={2} style={{ transform: 'translate(0%, 15%)' }}>
+                                    <Typography style={{ display: 'flex', fontSize: '18px' }}>{val._id}
+                                        <StarBorderIcon />
+                                    </Typography>
                                 </Grid>
-                                <Grid item xs={11}>
-                                    <PrettoSlider 
-                                    max={reviewStat.totalCount} 
-                                    valueLabelDisplay="auto" 
-                                    aria-label="pretto slider" 
-                                    value={val.count}/>
+                                <Grid item xs={1}>
+                                    <PrettoSlider
+                                        max={reviewStat.totalCount}
+                                        valueLabelDisplay="auto"
+                                        aria-label="pretto slider"
+                                        value={val.count} />
                                 </Grid>
-                            </React.Fragment> 
-                        ))
-                        }
-                    </Grid>             
-                   
-                </Grid>
-
-            </Grid>
-        </div>
+                            </Grid>
+                        </React.Fragment>
+                    ))
+                    }
+                </div>
+            </div>
+        </div >
     )
 }

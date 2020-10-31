@@ -5,36 +5,41 @@ import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import Paper from '@material-ui/core/Paper';
 
-import { 
+import {
   Grid,
-  Button } 
-from '@material-ui/core'
+  Button
+}
+  from '@material-ui/core'
 const useStyles = makeStyles((theme) => ({
   header: {
-    display: 'inline'
+    display: 'inline',
   },
   title: {
-    color: 'blue',
-    paddingLeft: '30px',
-    paddingTop: '20px',
-    fontSize: '40px',
+    color: '#49AD82',
+    marginLeft: '40px',
+    paddingTop: '10px',
+    fontSize: '34px',
     fontWeight: 'bold',
     transform: 'translate(0%,10%)',
+    float: 'left',
+    marginTop: '5px',
+    marginBottom: '5px',
   },
   login: {
     color: 'grey',
-    // paddingTop: '15px',
     fontSize: '16px',
-    marginTop: '15px',
+    marginTop: '5px',
+    marginBottom: '5px',
     marginLeft: '20px',
-    fontWeight: '550'
-
+    fontWeight: '550',
   },
   buttonText: {
     fontSize: '16px',
-    marginTop: '15px',
     marginLeft: '20px',
-    fontWeight: '550'
+    fontWeight: '550',
+    marginTop: '5px',
+    marginBottom: '5px',
+    color: '#5A5A5A'
   },
   input: {
     marginLeft: theme.spacing(1),
@@ -52,35 +57,24 @@ const useStyles = makeStyles((theme) => ({
   },
   searchBox: {
     transform: 'translate(0%,-10%)',
+  },
+  headerRight: {
+    float: 'right',
+    marginRight: '60px'
   }
 }));
 export default function Header() {
   const classes = useStyles();
   return (
-    <Paper elevation={1} style={{background:'#e6e9ed'}}>  
-    <div className={classes.header}>
-      <Grid container>
-        <Grid item xs={2} className={classes.title}>Naturre</Grid>
-        <Grid item xs={6} className={classes.searchBox}>
-          <Paper component="form" className={classes.root}>
-            <InputBase
-              className={classes.input}
-              placeholder="Search"
-            />
-            <IconButton type="submit" className={classes.iconButton} aria-label="search">
-              <SearchIcon />
-            </IconButton>
-          </Paper>
-        </Grid>
-        <Grid item xs={4}>
-          <Button className={classes.buttonText}> About </Button>
-          <Button className={classes.buttonText}> Blog </Button>
-          <Button className={classes.buttonText}> Contact </Button>
-          <Button className={classes.login}> Login </Button>
-          <Button className={classes.login}> Signup </Button>
-         </Grid>
-      </Grid>
+    <div style={{ backgroundColor: '#FAFFFF', overflow: 'hidden' }}>
+      <div className={classes.title}>NATURRE</div>
+      <div className={classes.headerRight}>
+        <Button className={classes.buttonText}> About </Button>
+        <Button className={classes.buttonText}> Blog </Button>
+        <Button className={classes.buttonText}> Contact </Button>
+        <Button className={classes.login}> Login </Button>
+        <Button className={classes.login}> Signup </Button>
+      </div>
     </div>
-    </Paper> 
   )
 }

@@ -1,26 +1,62 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
+import SearchBar from "material-ui-search-bar";
+import {
+  Typography, Card, CardActionArea, CardContent, CardMedia, Button, Menu, MenuItem
+} from '@material-ui/core'
 import Grid from '@material-ui/core/Grid';
 import Link from 'next/link';
+import Filters from "./Filters"
 
-const useStyles = makeStyles({
+
+const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: '80%',
+    margin: theme.spacing(3),
+  },
+  card: {
+    maxWidth: '100%',
     marginBottom: 10,
-    marginLeft: 100,
-    height: '200px'
+    height: '180px',
+    borderRadius: '20px',
+    marginTop: '20px',
+    boxShadow: '1px 1px 4px 1px rgba(0, 0, 0, 0.1)',
+
   },
   media: {
     height: 200,
   },
-});
+  searchBox: {
+    height: '40px',
+    width: '600px',
+    marginTop: '10px',
+    marginBottom: '10px',
+    borderRadius: '18px',
+    marginLeft: '60px'
+  },
+  searchButton: {
+    height: '36px',
+    marginTop: '12px',
+    marginBottom: '10px',
+    marginLeft: '10px',
+    backgroundColor: '#94F4D9',
+    borderStyle: 'none',
+    borderRadius: '10px',
+    color: 'white'
+  },
+  locationButton: {
+    backgroundColor: 'lightgrey',
+    height: '36px',
+    marginTop: '12px',
+    marginBottom: '10px',
+    marginLeft: '10px',
+    borderRadius: '10px',
+    width: '150px'
+  },
+  locationMenu: {
+    width: '150px'
+  }
+}));
 export default function BusinessList(props) {
 
   const [businessList, setBusinessList] = useState([])
@@ -36,49 +72,95 @@ export default function BusinessList(props) {
     console.log(businessList)
   }, [])
 
- 
 
   const classes = useStyles();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
-    <div>
-      {businessList.map((biz, i) => (
+    <div className={classes.root}>
+      <div style={{ display: 'flex' }}>
+        <SearchBar className={classes.searchBox} placeholder="Start your search today"
+        />
 
-        <Card className={classes.root}>
-          <Link 
-          href={{
-              pathname:'/business-profile',
-              query: { id: biz._id }
-            }}
-              > 
-          <CardActionArea>
-            <Grid container>
-              <Grid item xs={4}>
-                <CardMedia
-                  className={classes.media}
-                  image={biz.mainImage}
-                  title="Contemplative Reptile"
-                />
-              </Grid>
-              <Grid item xs={8}>
-                <CardContent>
-                  <Typography gutterBottom variant="h3" component="h2">
-                    {biz.name}
-                  </Typography>
-                  <Typography variant="h5" style={{ color: "blue" }} component="p">
-                    {biz.location}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary" component="p">
-                    {biz.description}
-                  </Typography>
-                </CardContent>
-              </Grid>
-            </Grid>
-          </CardActionArea>
-          </Link>
-        </Card>
-      ))}
+        <button className={classes.searchButton}>Search</button>
+        <Button className={classes.locationButton} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+          Location
+          <ArrowDropDown />
+        </Button>
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+          className={classes.locationMenu}
+        >
+          <MenuItem onClick={handleClose}>Seoul</MenuItem>
+          <MenuItem onClick={handleClose}>Daegu</MenuItem>
+          <MenuItem onClick={handleClose}>Busan</MenuItem>
+          <MenuItem onClick={handleClose}>Jeju</MenuItem>
+          <MenuItem onClick={handleClose}>Incheon</MenuItem>
 
-    </div>
+        </Menu>
+
+      </div>
+      <br />
+      <Grid container style={{ marginLeft: '60px' }}>
+        <Grid item xs={3}>
+          <Filters />
+        </Grid>
+        <Grid item xs>
+          <h1 style={{ color: '#1F2725', marginBottom: '35px', fontSize: '26px' }}>1,200 locations found for 'spa' in Seoul</h1>
+          {businessList.map((biz, i) => (
+
+            <Card className={classes.card}>
+              <Link
+                href={{
+                  pathname: '/business-profile',
+                  query: { id: biz._id }
+                }}
+              >
+                <CardActionArea>
+                  <Grid container>
+                    <Grid item xs={4}>
+                      <CardMedia
+                        className={classes.media}
+                        image={biz.mainImage}
+                        title="Contemplative Reptile"
+                      />
+                    </Grid>
+                    <Grid item xs={8}>
+                      <CardContent>
+                        <Typography gutterBottom variant="h3" component="h2">
+                          {biz.name}
+                        </Typography>
+                        <Typography variant="h5" style={{ color: "#49AD82" }} component="p">
+                          {biz.location}
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary" component="p">
+                          {biz.description}
+                        </Typography>
+                      </CardContent>
+                    </Grid>
+                  </Grid>
+                </CardActionArea>
+              </Link>
+            </Card>
+          ))
+          }
+        </Grid>
+      </Grid>
+
+
+
+    </div >
 
   )
 }

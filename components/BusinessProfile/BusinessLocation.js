@@ -4,30 +4,26 @@ import React, { useEffect } from 'react'
 
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles=makeStyles( (theme) => ({
+const useStyles = makeStyles((theme) => ({
     mapContainer: {
-        marginLeft: theme.spacing(7),
-        width: '450px',
-        height: '380px'
+        marginLeft: '80px',
+        width: '370px',
+        height: '250px'
     }
 }));
 
-export default function BusinessLocation (props) {
+export default function BusinessLocation(props) {
     const classes = useStyles();
-    const {location, ...rest} = props
+    const { location, ...rest } = props
 
     useEffect(() => {
         const container = document.getElementById('map')
-        // const options = { 
-        //     center: new kakao.maps.LatLng(33.450701, 126.570667), 
-        //     level: 5 
-        // }; 
         const geocoder = new kakao.maps.services.Geocoder();
-        geocoder.addressSearch(location, function(result, status) {
-             if (status === kakao.maps.services.Status.OK) {
-        
+        geocoder.addressSearch(location, function (result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+
                 var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-                
+
                 const options = {
                     center: coords,
                     level: 5
@@ -38,23 +34,23 @@ export default function BusinessLocation (props) {
                     map: map,
                     position: coords
                 });
-        
+
                 // var infowindow = new kakao.maps.InfoWindow({
                 //     content: '<div style="width:150px;text-align:center;padding:6px 0;"></div>'
                 // });
                 // infowindow.open(map, marker);
-        
+
                 // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
                 map.setCenter(coords);
-            } 
-        });    
-    },[location])
+            }
+        });
+    }, [location])
 
 
-       
-    
+
+
     return (
-        <div id="map" className={classes.mapContainer}> </div> 
+        <div id="map" className={classes.mapContainer}> </div>
 
     )
 
