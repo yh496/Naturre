@@ -8,7 +8,7 @@ import Header from '../components/header'
 
 
 export default function MyApp(props) {
-    const { Component, pagePropse } = props;
+    const { Component, pageProps } = props;
     // , serverCooki
     //let cookie = serverCookie === '' ? cookies : serverCookie;
 
