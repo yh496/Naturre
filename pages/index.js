@@ -1,208 +1,220 @@
 import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
-import { fade, makeStyles } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
+import { fade, makeStyles,withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
-import RateReviewIcon from '@material-ui/icons/RateReview';
-import BuildIcon from '@material-ui/icons/Build';
+import NativeSelect from '@material-ui/core/NativeSelect';
+import { server } from '../config';
+
+
+const BootstrapInput = withStyles((theme) => ({
+  root: {
+    background: '#DCDCDC', 
+    height: '60px', 
+    width:'150px', 
+    right:'10%', 
+    position: 'absolute', 
+    outline:'none',
+    'label + &': {
+      marginTop: theme.spacing(3),
+      
+    },
+  },
+  input: {
+    paddingLeft: theme.spacing(2),
+    '&:focus': {
+      paddingLeft: theme.spacing(2),
+      height: '100%',
+      padding: '0 0 0 0'
+    },
+    // Use the system font instead of the default Roboto font.
+  },
+}))(InputBase);
 
 const useStyles = makeStyles((theme) => ({
-  intro: {
-    height: '560px',
-    margin: 'auto',
-    textAlign: 'center',
+  header: {
+    width: '100%',
+    height: '589px',
     position: 'relative',
-    backgroundColor: '#f0f0f5'
+    background: 'linear-gradient(180deg, rgba(247, 247, 247, 0) 0%, #E9E9E9 100%)'
   },
-  introFont: {
-    msTransform: 'translate(-50%, -50%)',
-    transform: 'translate(-50%, -50%)',
-    position: 'absolute',
-    top: '40%',
-    left: '50%',
-    fontFamily:' Mulish',
-    fontStyle: 'normal',
-    fontWeight: 'bold',
-    fontSize: '44px',
-    lineHeight: '56px',
-    maxWidth: '730px'
-  },
-  subIntroFont: {
-    maxWidth: '650px',
-    fontFamily: 'Mulish',
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    fontSize: '16px',
-    lineHeight: '22px',
-    textAlign: 'center',
-    letterSpacing: '0.3px',
-    msTransform: 'translate(-50%, -50%)',
-    transform: 'translate(-50%, -50%)',
-    position: 'absolute',
-    top: '60%',
-    left: '50%',
-    color: '#737B7D'
-  },
-  search: {
-    sTransform: 'translate(-50%, -50%)',
-    transform: 'translate(-50%, -50%)',
-    position: 'absolute',
-    left: '50%',
-    top: '85%'
-  },
-  searchButton :{
-    fontFamily: 'Mulish',
-    fontStyle: 'normal',
-    fontWeight: 'bold',
-    fontSize: '14px',
-    lineHeight: '18px',
-    color: '#FFFFFF',
-    background: '#3C64B1',
-    height: '38px'
-  },
-  body1: {
-    height: '108px',
-    margin: 'auto',
-    textAlign: 'center',
-    position: 'relative',
-  },
-  body1Font: {
-    msTransform: 'translate(-50%, -50%)',
-    transform: 'translate(-50%, -50%)',
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    fontFamily:' Mulish',
-    fontStyle: 'normal',
-    fontWeight: '700',
-    fontSize: '32px',
-    lineHeight: '40px',
-    maxWidth: '920px'
-  },
-  subbody1Font: {
-    maxWidth: '650px',
-    fontFamily: 'Mulish',
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    fontSize: '16px',
-    lineHeight: '22px',
-    textAlign: 'center',
-    letterSpacing: '0.3px',
-    msTransform: 'translate(-50%, -50%)',
-    transform: 'translate(-50%, -50%)',
-    position: 'absolute',
-    top: '90%',
-    left: '50%',
-    color: '#737B7D'
-  },
-  body2Header: {
-    fontFamily:' Mulish',
-    fontWeight: '700',
-    fontSize: '18px',
-    lineHeight: '24px',
-    textAlign: 'center',
-  },
-  body2Description: {
-    fontFamily:' Mulish',
-    fontWeight: '400',
-    fontSize: '14px',
-    lineHeight: '20px',
-    textAlign: 'center',
-    maxWidth: '350px',
-    margin:'auto'
-  },
-  body2Button: {
-    marginTop: '30px',
-    fontFamily:' Mulish',
-    fontWeight: '700',
-    fontSize: '14px',
-    lineHeight: '18px',
-    textAlign: 'center',
-    maxWidth: '350px',
-    margin:'auto',
-    color: '#3C64B1'
-  },
-  body2Icon: {
-    width: '5%',
-    height: '200px',
-    marginTop: '60px',
-    marginBottom:'30px',
-    margin:'auto',
-    color: '#3C64B1',
-    height: '30px',
-    transform: 'scale(1.8)',
 
+  subHeader: {
+    position: 'absolute',
+    top: '20%',
+    left: '26.5%',
+    width: '50%',
+    maxWidth: '770px',
+    textAlign: 'center',
+  },
+  headerText: { 
+    lineHeight: '58.09px',
+    font: 'inter',
+    fontWeight: 700,
+    fontSize: '48px',
+  },
+  searchBox: {
+    top: '55%',
+    left: '26.5%',
+    margin: 'auto',
+    width: '52%',
+    maxWidth: '800px',
+    position: 'absolute',
+    height: '60px',
+  },
+  inputBox: {
+    width: '100%', 
+    height: '100%', 
+    borderRadius: '24px',
+    outline:'none', 
+    border:'none', 
+    position:'absolute',
+    top: 0,
+    left: 0,
+  },
+  searchIcon: {
+    zIndex: 1, 
+    position: 
+    'absolute',
+    right: '0',
+    background: '#7FD4BB',
+    width: '13%',
+    height:'100%', 
+    color: '#FFFFFF', 
+    borderRadius:'24px'
+  },
+  bodyText: {
+    fontStyle: 'normal',
+    fontWeight: '500',
+    fontSize: '36px',
+    lineHeight: '44px',
+    textAlign: 'center',
   }
+ 
 }));
 
 
-const GridItems = [
-  {
-    icon: 'BusinessCenterIcon',
-    header: 'Local Contents',
-    description: 'Our users can discover unique, local experiences that were difficult to locate before'
-  },
-  {
-    icon: 'RateReviewIcon',
-    header: 'Review',
-    description: 'Our unique review system empowers actual reviews by real customers'
-  },
-  {
-    icon: 'BuildIcon',
-    header: 'Communication',
-    description: 'Our user can book directly with Korean shops and enjoy English-friendly communication'
-  }
-]
 
-export default function SearchAppBar() {
+export function Home({data}) {
   const classes = useStyles();
+  // const [values, setValues] = React.useState({
+  //   categories: []
+  // })
+
+  // React.useEffect( () => {
+  //   fetch('/api/home-page/category-list').then(e=>e.json()).then(e => {
+  //     setValues({...values, categories: e})
+  //   });
+  // })
+
+  console.log(data)
 
   return (
-    <React.Fragment>  
-      <div className={classes.intro}>
-        <Typography className={classes.introFont}> Your Wellness Journey to Korea at Your Fingertip </Typography>
-        <Typography className={classes.subIntroFont}> 
-            We help travelers find unique, 
-            local businesses for their trips to Korea. 
-            You can find a range of shops from beauty to food to nature. 
-        </Typography>
-        <div className={classes.search}>
-          <TextField style={{width: '280px', marginRight: '20px'}} id="outlined-basic" size='small' placeholder="What is your interest?" variant="outlined" />
-          <Button variant='outlined' className={classes.searchButton}> Search </Button>
+    <React.Fragment> 
+      <div className={classes.header}>  
+        <div className={classes.subHeader}> 
+          <Typography className={classes.headerText}> Start your wellness journey in Korea with a single click </Typography>
+        </div> 
+
+        <div className={classes.searchBox}>
+          <input className={classes.inputBox} type="text" placeholder="Start your search today"/>
+          <NativeSelect
+                style={{zIndex:2}}
+                placeholder="Location"
+                id="demo-customized-select-native"
+                input={<BootstrapInput />
+              }
+          >
+            <option value={10}>Seoul</option>
+            <option value={20}>Daegu</option>
+            <option value={30}>Busan</option>
+          </NativeSelect>
+          <div className={classes.searchIcon}>
+            <SearchIcon style={{transform:'scale(1.5)', position:'absolute', left: '50%', top: '30%'}}/>
+          </div>
         </div>
       </div>
-      <div className={classes.body1}>
-        <Typography className={classes.body1Font}> This is your chance to explore local Korea </Typography>
-        <Typography className={classes.subbody1Font}> We help small local businesses across Korea </Typography>
-      </div>
+      <div style={{marginTop: '69px', marginBottom: '69px'}}> 
+        <Typography className={classes.bodyText}> 
+          Categories
+        </Typography>
+      </div> 
+      <Grid container spacing={2} style={{width:'80%', margin:'auto'}}> 
+          {data.categories.map( (item, i) => (
+            <Grid item lg={3} >
+              <Card  style={{height: '100%', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
+                <img src={item.image} style={{with: 'auto', height: '250px'}}/>
 
-      <Grid container>
-        {GridItems.map( (val, i) => (
-          <Grid item lg={4}> 
-            <div className={classes.body2Icon}> 
-             {val.icon === 'BusinessCenterIcon' ?  
-             <BusinessCenterIcon/> 
-             : 
-             val.icon ==='RateReviewIcon' 
-             ? <RateReviewIcon/> 
-             : <BuildIcon/>
-             }
+                <CardContent>
+                  <Typography style={{fontWeight: '600', fontSize: '24px', marginBottom: '20px'}}> {item.category} </Typography>
+                  <Typography style={{fontWeight: '400', fontSize: '18px'}}> {item.description} </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
 
-            </div>
-            <Typography className={classes.body2Header}> {val.header} </Typography> 
-            <Typography className={classes.body2Description}> {val.description} </Typography> 
-            <Typography className={classes.body2Button}> Discover </Typography>
-        </Grid> 
-        ))}
+          ))} 
       </Grid>
+      <div style={{marginTop: '69px', marginBottom: '69px'}}> 
+        <Typography className={classes.bodyText}> 
+          Popular Picks / Top Places
+        </Typography>
+      </div> 
+      <Grid container spacing={2} style={{width:'80%', margin:'auto'}}> 
+          {data.categories.map( (item, i) => (
+            <Grid item lg={3} >
+              <Card style={{height: '100%', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
+                <img src={item.image} style={{with: 'auto', height: '250px'}}/>
+
+                <CardContent>
+                  <Typography style={{fontWeight: '600', fontSize: '24px', marginBottom: '20px'}}> {item.category} </Typography>
+                  <Typography style={{fontWeight: '400', fontSize: '18px'}}> {item.description} </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+
+          ))} 
+      </Grid>
+      <div style={{marginTop: '69px', marginBottom: '69px'}}> 
+        <Typography className={classes.bodyText}> 
+          Latest Blog Articles
+        </Typography>
+      </div> 
+      <Grid container spacing={2} style={{width:'80%', margin:'auto'}}> 
+          {data.categories.map( (item, i) => (
+            <Grid item lg={3} >
+              <Card  style={{height: '100%', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
+                <img src={item.image} style={{with: 'auto', height: '250px'}}/>
+
+                <CardContent>
+                  <Typography style={{fontWeight: '600', fontSize: '24px', marginBottom: '20px'}}> {item.category} </Typography>
+                  <Typography style={{fontWeight: '400', fontSize: '18px'}}> {item.description} </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+
+          ))} 
+      </Grid>
+
+
+
+
     </React.Fragment>
+    
   );
 }
+
+export async function getServerSideProps() {
+  const res = await fetch(`${server}/api/home-page/category-list`)
+  const data = await res.json()
+  return { props: { data } }
+
+
+}
+
+export default Home

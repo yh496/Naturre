@@ -4,7 +4,6 @@ import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 
 import {
   Grid,
@@ -16,39 +15,31 @@ const useStyles = makeStyles((theme) => ({
     display: 'inline',
   },
   title: {
-    marginTop: '28px',
-    marginBottom: '28px',
-    marginLeft: '65px'
-
-  },
-  logoSection: {
-    lineHeight: '32px',
-    color: '#3CB148',
-    fontStyle: 'normal',
-    fontWeight: '700',
-    fontSize: '24px',
-    fontFamily: 'Lato',
-
+    color: '#49AD82',
+    marginLeft: '40px',
+    paddingTop: '10px',
+    fontSize: '34px',
+    fontWeight: 'bold',
+    transform: 'translate(0%,10%)',
+    float: 'left',
+    marginTop: '5px',
+    marginBottom: '5px',
   },
   login: {
-    display: 'inline',
-    color: '#3C64B1',
-    fontSize: '14px',
-    lineHeight: '18px',
-    fontWeight: '700',
-    fontFammily: 'Mulish',
-    marginRight: '14px'
-    
+    color: 'grey',
+    fontSize: '16px',
+    marginTop: '5px',
+    marginBottom: '5px',
+    marginLeft: '20px',
+    fontWeight: '550',
   },
   buttonText: {
-    display:'inline',
-    alignItems: 'center',
-    fontFamily: 'Mulish',
-    fontStyle: 'normal',
-    fontSize: '14px',
-    fontWeight: '600',
-    color: '#373F41',
-    marginRight: '30px'
+    fontSize: '16px',
+    marginLeft: '20px',
+    fontWeight: '550',
+    marginTop: '5px',
+    marginBottom: '5px',
+    color: '#5A5A5A'
   },
   input: {
     marginLeft: theme.spacing(1),
@@ -68,40 +59,22 @@ const useStyles = makeStyles((theme) => ({
     transform: 'translate(0%,-10%)',
   },
   headerRight: {
-    marginLeft: '2%',
-    marginTop: '32px',
-    marginBottom: '32px'
-  },
-  signUp: {
-    fontFamily: 'Mulish',
-    fontStyle: 'normal',
-    fontWeight: 'bold',
-    fontSize: '14px',
-    lineHeight: '18px',
-    color: '#FFFFFF',
-    background: '#3C64B1',
-    height: '35px'
+    float: 'right',
+    marginRight: '60px'
   }
 }));
 export default function Header() {
   const classes = useStyles();
   return (
-      <Grid container style={{backgroundColor: '#e7e6f5'}}> 
-        <Grid item xs={1} lg={4} className={classes.title}>
-          <Typography className={classes.logoSection}> 
-            NATURRE 
-          </Typography> 
-        </Grid>
-        <Grid item xs={6} lg={5} className={classes.headerRight}>    
-          <Typography className={classes.buttonText}>  Services </Typography> 
-          <Typography className={classes.buttonText}>  About </Typography> 
-          <Typography className={classes.buttonText}>  Blog </Typography> 
-          <Typography className={classes.buttonText}>  Contact </Typography>       
-        </Grid>
-        <Grid item  xs={3} lg={2} className={classes.headerRight}>      
-          <Typography className={classes.login}> Log in </Typography>
-          <Button variant='outlined' className={classes.signUp}> Sign up </Button>
-        </Grid> 
-      </Grid>
+    <div style={{ backgroundColor: '#FAFFFF', overflow: 'hidden' }}>
+      <div className={classes.title}>NATURRE</div>
+      <div className={classes.headerRight}>
+        <Button className={classes.buttonText}> About </Button>
+        <Button className={classes.buttonText}> Blog </Button>
+        <Button className={classes.buttonText}> Contact </Button>
+        <Button className={classes.login}> Login </Button>
+        <Button className={classes.login}> Signup </Button>
+      </div>
+    </div>
   )
 }
