@@ -10,6 +10,7 @@ handler.use(middleware);
 
 handler.post(async (req, res) => {
     const {email, password} = req.body
+    const KEY = process.env.JWT_KEY;
 
     if (!email || !password) {
         return res.json({
@@ -28,7 +29,21 @@ handler.post(async (req, res) => {
         res.json({status: 'error', error: 'database error'})
     })
 
-    res.json({status:'success'})
+    dbUser = dbUser.ops
+    if (!dbUser) { 
+        res.json({status: 'error', error: 'sign in fail'})
+    } else {
+        const payload = {
+            email: dbUser[0].email,
+            permission: dbUser[0].permission,
+            createdAt: dbUser[0].createdAt,
+        };
+    
+        let token = jwt.sign(payload, KEY, {expiresIn: 86400})
+    
+        res.json({status: 'success', token, email:dbUser[0].email, permission: dbUser[0].permission})
+    }
+   
 });
 
 function pwEncode(pw) {

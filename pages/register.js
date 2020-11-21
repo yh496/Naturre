@@ -47,6 +47,7 @@ export default function SignUp() {
   const handleLogin = async () => {
     
     await AuthService.set.credentials({email: values.email, password: values.password}, 'register')
+    AuthService.redirect()
 
   }
 
