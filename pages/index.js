@@ -1,101 +1,220 @@
 import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
-import { fade, makeStyles } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
+import { fade, makeStyles,withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
+import Grid from '@material-ui/core/Grid';
+import NativeSelect from '@material-ui/core/NativeSelect';
+import { server } from '../config';
+
+
+const BootstrapInput = withStyles((theme) => ({
+  root: {
+    background: '#DCDCDC', 
+    height: '60px', 
+    width:'150px', 
+    right:'10%', 
+    position: 'absolute', 
+    outline:'none',
+    'label + &': {
+      marginTop: theme.spacing(3),
+      
+    },
+  },
+  input: {
+    paddingLeft: theme.spacing(2),
+    '&:focus': {
+      paddingLeft: theme.spacing(2),
+      height: '100%',
+      padding: '0 0 0 0'
+    },
+    // Use the system font instead of the default Roboto font.
+  },
+}))(InputBase);
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
-    },
-  },
-  search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
+  header: {
     width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(1),
-      width: 'auto',
-    },
+    height: '589px',
+    position: 'relative',
+    background: 'linear-gradient(180deg, rgba(247, 247, 247, 0) 0%, #E9E9E9 100%)'
+  },
+
+  subHeader: {
+    position: 'absolute',
+    top: '20%',
+    left: '26.5%',
+    width: '50%',
+    maxWidth: '770px',
+    textAlign: 'center',
+  },
+  headerText: { 
+    lineHeight: '58.09px',
+    font: 'inter',
+    fontWeight: 700,
+    fontSize: '48px',
+  },
+  searchBox: {
+    top: '55%',
+    left: '26.5%',
+    margin: 'auto',
+    width: '52%',
+    maxWidth: '800px',
+    position: 'absolute',
+    height: '60px',
+  },
+  inputBox: {
+    width: '100%', 
+    height: '100%', 
+    borderRadius: '24px',
+    outline:'none', 
+    border:'none', 
+    position:'absolute',
+    top: 0,
+    left: 0,
   },
   searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    zIndex: 1, 
+    position: 
+    'absolute',
+    right: '0',
+    background: '#7FD4BB',
+    width: '13%',
+    height:'100%', 
+    color: '#FFFFFF', 
+    borderRadius:'24px'
   },
-  inputRoot: {
-    color: 'inherit',
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      width: '12ch',
-      '&:focus': {
-        width: '20ch',
-      },
-    },
-  },
+  bodyText: {
+    fontStyle: 'normal',
+    fontWeight: '500',
+    fontSize: '36px',
+    lineHeight: '44px',
+    textAlign: 'center',
+  }
+ 
 }));
 
-export default function SearchAppBar() {
+
+
+export function Home({data}) {
   const classes = useStyles();
+  // const [values, setValues] = React.useState({
+  //   categories: []
+  // })
+
+  // React.useEffect( () => {
+  //   fetch('/api/home-page/category-list').then(e=>e.json()).then(e => {
+  //     setValues({...values, categories: e})
+  //   });
+  // })
+
+  console.log(data)
 
   return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
+    <React.Fragment> 
+      <div className={classes.header}>  
+        <div className={classes.subHeader}> 
+          <Typography className={classes.headerText}> Start your wellness journey in Korea with a single click </Typography>
+        </div> 
+
+        <div className={classes.searchBox}>
+          <input className={classes.inputBox} type="text" placeholder="Start your search today"/>
+          <NativeSelect
+                style={{zIndex:2}}
+                placeholder="Location"
+                id="demo-customized-select-native"
+                input={<BootstrapInput />
+              }
           >
-            <MenuIcon />
-          </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
-            Material-UI
-          </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
+            <option value={10}>Seoul</option>
+            <option value={20}>Daegu</option>
+            <option value={30}>Busan</option>
+          </NativeSelect>
+          <div className={classes.searchIcon}>
+            <SearchIcon style={{transform:'scale(1.5)', position:'absolute', left: '50%', top: '30%'}}/>
           </div>
-        </Toolbar>
-      </AppBar>
-    </div>
+        </div>
+      </div>
+      <div style={{marginTop: '69px', marginBottom: '69px'}}> 
+        <Typography className={classes.bodyText}> 
+          Categories
+        </Typography>
+      </div> 
+      <Grid container spacing={2} style={{width:'80%', margin:'auto'}}> 
+          {data.categories.map( (item, i) => (
+            <Grid item lg={3} >
+              <Card  style={{height: '100%', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
+                <img src={item.image} style={{with: 'auto', height: '250px'}}/>
+
+                <CardContent>
+                  <Typography style={{fontWeight: '600', fontSize: '24px', marginBottom: '20px'}}> {item.category} </Typography>
+                  <Typography style={{fontWeight: '400', fontSize: '18px'}}> {item.description} </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+
+          ))} 
+      </Grid>
+      <div style={{marginTop: '69px', marginBottom: '69px'}}> 
+        <Typography className={classes.bodyText}> 
+          Popular Picks / Top Places
+        </Typography>
+      </div> 
+      <Grid container spacing={2} style={{width:'80%', margin:'auto'}}> 
+          {data.categories.map( (item, i) => (
+            <Grid item lg={3} >
+              <Card style={{height: '100%', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
+                <img src={item.image} style={{with: 'auto', height: '250px'}}/>
+
+                <CardContent>
+                  <Typography style={{fontWeight: '600', fontSize: '24px', marginBottom: '20px'}}> {item.category} </Typography>
+                  <Typography style={{fontWeight: '400', fontSize: '18px'}}> {item.description} </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+
+          ))} 
+      </Grid>
+      <div style={{marginTop: '69px', marginBottom: '69px'}}> 
+        <Typography className={classes.bodyText}> 
+          Latest Blog Articles
+        </Typography>
+      </div> 
+      <Grid container spacing={2} style={{width:'80%', margin:'auto'}}> 
+          {data.categories.map( (item, i) => (
+            <Grid item lg={3} >
+              <Card  style={{height: '100%', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
+                <img src={item.image} style={{with: 'auto', height: '250px'}}/>
+
+                <CardContent>
+                  <Typography style={{fontWeight: '600', fontSize: '24px', marginBottom: '20px'}}> {item.category} </Typography>
+                  <Typography style={{fontWeight: '400', fontSize: '18px'}}> {item.description} </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+
+          ))} 
+      </Grid>
+
+
+
+
+    </React.Fragment>
+    
   );
 }
+
+export async function getServerSideProps() {
+  const res = await fetch(`${server}/api/home-page/category-list`)
+  const data = await res.json()
+  return { props: { data } }
+
+
+}
+
+export default Home

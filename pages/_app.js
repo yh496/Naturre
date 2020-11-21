@@ -8,8 +8,8 @@ import Header from '../components/header'
 
 
 export default function MyApp(props) {
-    const { Component, pageProps, serverCookie } = props;
-
+    const { Component, pageProps } = props;
+    // , serverCooki
     //let cookie = serverCookie === '' ? cookies : serverCookie;
 
     React.useEffect(() => {
@@ -43,7 +43,7 @@ MyApp.propTypes = {
 
 
 MyApp.getInitialProps = async ({ Component, ctx }) => {
-    let serverCookie = (ctx.req && ctx.req.headers && ctx.req.headers.cookie) ? parseCookie(ctx.req.headers.cookie) : '';
+    // let serverCookie = (ctx.req && ctx.req.headers && ctx.req.headers.cookie) ? parseCookie(ctx.req.headers.cookie) : '';
 
     if(ctx.res){
         console.log('server !');
@@ -58,6 +58,7 @@ MyApp.getInitialProps = async ({ Component, ctx }) => {
     if (!pageProps.namespacesRequired) {
         pageProps.namespacesRequired = ['common']
     }
-    return { pageProps, serverCookie : serverCookie}
+    return { pageProps }
+    //  serverCookie : serverCookie}
 
 }
