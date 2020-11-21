@@ -8,7 +8,8 @@ handler.use(middleware);
 handler.post(async (req, res) => {
 
 
-  const businessType = req.body.type;
+  // const businessType = req.body.type;
+  const category = req.body.category;
   const name = req.body.name;
   const mainImage = req.body.img;
   const contactInfo = req.body.contactInfo;
@@ -17,7 +18,7 @@ handler.post(async (req, res) => {
   const services = req.body.services;
 
   const insertObject = {
-    businessType, name, mainImage, contactInfo, description, location, services
+    category, name, mainImage, contactInfo, description, location, services
   }
   let business = await req.db.collection('Business').insertOne({ ...insertObject }).catch(err => {
     console.log("Err", err);
