@@ -4,13 +4,14 @@ import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../theme';
-import Header from '../components/header'
-
+import Header from '../components/header';
+import AuthService from '../lib/AuthService';
 
 export default function MyApp(props) {
-    const { Component, pageProps } = props;
+    const { Component, pageProps,cookies } = props;
     // , serverCooki
     //let cookie = serverCookie === '' ? cookies : serverCookie;
+    if (cookies) AuthService.initialize(cookies);
 
     React.useEffect(() => {
         // Remove the server-side injected CSS.
@@ -29,7 +30,7 @@ export default function MyApp(props) {
             <ThemeProvider theme={theme}>
                    {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
                     <CssBaseline />
-                    <Header/> 
+                    <Header /> 
                       <Component {...pageProps} />
             </ThemeProvider>
         </React.Fragment>
@@ -44,12 +45,7 @@ MyApp.propTypes = {
 
 MyApp.getInitialProps = async ({ Component, ctx }) => {
     // let serverCookie = (ctx.req && ctx.req.headers && ctx.req.headers.cookie) ? parseCookie(ctx.req.headers.cookie) : '';
-
-    if(ctx.res){
-        console.log('server !');
-    }else{
-        console.log('client !');
-    }
+    let jwt_token = AuthService.get.cookies(ctx)
 
     let pageProps = {} // This is how pages will get their own getinitialprops
     if (Component.getInitialProps) {
@@ -58,7 +54,7 @@ MyApp.getInitialProps = async ({ Component, ctx }) => {
     if (!pageProps.namespacesRequired) {
         pageProps.namespacesRequired = ['common']
     }
-    return { pageProps }
+    return { pageProps, cookies : jwt_token }
     //  serverCookie : serverCookie}
 
 }

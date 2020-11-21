@@ -1,15 +1,16 @@
 // import styles from '../styles/Header.module.css'
 import { makeStyles } from '@material-ui/core/styles';
-import InputBase from '@material-ui/core/InputBase';
-import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
-import Paper from '@material-ui/core/Paper';
+import Link from 'next/link'
+
+
+import AuthService from '../lib/AuthService'
 
 import {
   Grid,
   Button
 }
   from '@material-ui/core'
+import { HeadsetRounded } from '@material-ui/icons';
 const useStyles = makeStyles((theme) => ({
   header: {
     display: 'inline',
@@ -63,8 +64,12 @@ const useStyles = makeStyles((theme) => ({
     marginRight: '60px'
   }
 }));
-export default function Header() {
+function Header() {
   const classes = useStyles();
+
+  const user = AuthService.get.user_ctx();
+
+
   return (
     <div style={{ backgroundColor: '#FAFFFF', overflow: 'hidden' }}>
       <div className={classes.title}>NATURRE</div>
@@ -72,9 +77,23 @@ export default function Header() {
         <Button className={classes.buttonText}> About </Button>
         <Button className={classes.buttonText}> Blog </Button>
         <Button className={classes.buttonText}> Contact </Button>
-        <Button className={classes.login}> Login </Button>
-        <Button className={classes.login}> Signup </Button>
+        {!user.isAuthenticated ? 
+          <React.Fragment> 
+            <Link href='/login'> 
+              <Button className={classes.login}> Login </Button>
+            </Link> 
+            <Link href='/register'>  
+              <Button className={classes.login}> Signup </Button>
+            </Link>
+          </React.Fragment>
+         :
+          <Button className={classes.login} onClick={()=> AuthService.set.reset_credentials()}> Logout </Button>
+        }   
+      
       </div>
     </div>
   )
 }
+
+
+export default Header;
