@@ -74,7 +74,9 @@ function Header() {
     <div style={{ backgroundColor: '#FAFFFF', overflow: 'hidden' }}>
       <div className={classes.title}>NATURRE</div>
       <div className={classes.headerRight}>
-        <Button className={classes.buttonText}> About </Button>
+        <Link href='/'> 
+          <Button className={classes.buttonText}> About </Button>
+        </Link>
         <Button className={classes.buttonText}> Blog </Button>
         <Button className={classes.buttonText}> Contact </Button>
         {!user.isAuthenticated ? 

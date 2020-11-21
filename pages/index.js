@@ -113,8 +113,6 @@ export function Home({data}) {
   //   });
   // })
 
-  console.log(data)
-
   return (
     <React.Fragment> 
       <div className={classes.header}>  
