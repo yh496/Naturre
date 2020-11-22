@@ -7,7 +7,7 @@ const handler = nextConnect();
 handler.use(middleware);
 
 handler.post(async (req, res) => {
-  
+    //TODO
     const businessId = req.body.id
     //total count, average rating, number of rating for each stars
     let countAndAverage = await req.db.collection('Reviews').aggregate([
