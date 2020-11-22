@@ -72,11 +72,14 @@ export default function Admin(props) {
     })
     const returnData = res.data.data.returnData;
     const signedRequest = returnData.signedRequest;
-    const imageURL = returnData.url;
+    // const imageURL = returnData.url;
+    // const imageURL = `https://naturre.s3.ap-northeast-2.amazonaws.com/business/${fileName}`
     await fetch(signedRequest, { method: "PUT", body: file })
 
-    const data = { name: name, description: description, location: location, category: category, img: imageURL };
-    fetch('http://localhost:3000/api/business-profile/create-business', {
+    const data = { name: name, description: description, location: location, category: category };
+
+    let imgData = { id: '', img: '' }
+    await fetch('http://localhost:3000/api/business-profile/create-business', {
       method: 'POST', // or 'PUT'
       headers: {
         'Content-Type': 'application/json',
@@ -86,12 +89,27 @@ export default function Admin(props) {
       .then(response => response.json())
       .then(data => {
         console.log('Success:', data);
+        imgData.id = data.data
+        imgData.img = `https://naturre.s3.ap-northeast-2.amazonaws.com/business/${fileName}`
+        console.log(imgData)
       })
       .catch((error) => {
         console.error('Error:', error);
       });
-    // browserHistory.push('/business-profile-list');
-    // history.push('/business-profile-list');
+    await fetch('http://localhost:3000/api/business-profile/update-business', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(imgData),
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
     window.location.href = "/business-profile-list";
   }
   return (

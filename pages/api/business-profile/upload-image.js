@@ -16,7 +16,7 @@ handler.post(async (req, res) => {
   const fileType = req.body.fileType;
   const s3Params = {
     Bucket: 'naturre',
-    Key: fileName,
+    Key: `business/${fileName}`,
     ContentType: fileType,
     ACL: 'public-read'
   }

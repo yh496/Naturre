@@ -25,7 +25,7 @@ handler.post(async (req, res) => {
     return res.json({ succeed: false, data: null, message: err.stack || err });
   })
 
-  return res.json({ success: true, data: insertObject })
+  return res.json({ success: true, data: business.insertedId })
 });
 
 export default handler;
