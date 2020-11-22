@@ -5,12 +5,16 @@ import CardHeader from '@material-ui/core/CardHeader';
 
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import ButtonBase from '@material-ui/core/ButtonBase';
+
 import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles,withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import Grid from '@material-ui/core/Grid';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import { server } from '../config';
+import Link from 'next/link'
+
 
 
 const BootstrapInput = withStyles((theme) => ({
@@ -48,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
   subHeader: {
     position: 'absolute',
     top: '20%',
-    left: '26.5%',
+    left: '24%',
     width: '50%',
     maxWidth: '770px',
     textAlign: 'center',
@@ -61,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
   },
   searchBox: {
     top: '55%',
-    left: '26.5%',
+    left: '24%',
     margin: 'auto',
     width: '52%',
     maxWidth: '800px',
@@ -145,15 +149,26 @@ export function Home({data}) {
       </div> 
       <Grid container spacing={2} style={{width:'80%', margin:'auto'}}> 
           {data.categories.map( (item, i) => (
-            <Grid item lg={3} >
-              <Card  style={{height: '100%', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
-                <img src={item.image} style={{with: 'auto', height: '250px'}}/>
+            <Grid item lg={3} style={{maxWidth: '250px',  marginRight: '1.5rem' }}>
+              <Link
+               href= {{
+                 pathname: '/business-profile-list',
+                 query: {type : item.category}
+                 }}> 
+                <ButtonBase 
+                focusRipple 
+                style={{textAlign:'left'}}
+                >  
+                  <Card  style={{height: '100%', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
+                    <img src={item.image} style={{width: 'auto', maxWidth: '250px', height: '220px'}}/>
 
-                <CardContent>
-                  <Typography style={{fontWeight: '600', fontSize: '24px', marginBottom: '20px'}}> {item.category} </Typography>
-                  <Typography style={{fontWeight: '400', fontSize: '18px'}}> {item.description} </Typography>
-                </CardContent>
-              </Card>
+                    <CardContent style={{height: '120px'}}>
+                      <Typography style={{fontWeight: '600', fontSize: '24px', marginBottom: '20px'}}> {item.category} </Typography>
+                      <Typography style={{fontWeight: '400', fontSize: '18px'}}> {item.description} </Typography>
+                    </CardContent>
+                  </Card>
+                </ButtonBase> 
+              </Link>
             </Grid>
 
           ))} 
@@ -165,16 +180,17 @@ export function Home({data}) {
       </div> 
       <Grid container spacing={2} style={{width:'80%', margin:'auto'}}> 
           {data.categories.map( (item, i) => (
-            <Grid item lg={3} >
-              <Card style={{height: '100%', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
-                <img src={item.image} style={{with: 'auto', height: '250px'}}/>
-
-                <CardContent>
-                  <Typography style={{fontWeight: '600', fontSize: '24px', marginBottom: '20px'}}> {item.category} </Typography>
-                  <Typography style={{fontWeight: '400', fontSize: '18px'}}> {item.description} </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
+          <Grid item lg={3} style={{maxWidth: '250px',  marginRight: '1.5rem' }}>
+          <ButtonBase focusRipple style={{textAlign:'left'}}>  
+            <Card  style={{height: '100%', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
+              <img src={item.image} style={{width: 'auto', maxWidth: '250px', height: '220px'}}/>
+              <CardContent style={{height: '120px'}}>
+                <Typography style={{fontWeight: '600', fontSize: '24px', marginBottom: '20px'}}> {item.category} </Typography>
+                <Typography style={{fontWeight: '400', fontSize: '18px'}}> {item.description} </Typography>
+              </CardContent>
+            </Card>
+          </ButtonBase> 
+        </Grid>
 
           ))} 
       </Grid>
@@ -185,17 +201,18 @@ export function Home({data}) {
       </div> 
       <Grid container spacing={2} style={{width:'80%', margin:'auto'}}> 
           {data.categories.map( (item, i) => (
-            <Grid item lg={3} >
+            <Grid item lg={3} style={{maxWidth: '250px',  marginRight: '1.5rem' }}>
+            <ButtonBase focusRipple style={{textAlign:'left'}}>  
               <Card  style={{height: '100%', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
-                <img src={item.image} style={{with: 'auto', height: '250px'}}/>
+                <img src={item.image} style={{width: 'auto', maxWidth: '250px', height: '220px'}}/>
 
-                <CardContent>
+                <CardContent style={{height: '120px'}}>
                   <Typography style={{fontWeight: '600', fontSize: '24px', marginBottom: '20px'}}> {item.category} </Typography>
                   <Typography style={{fontWeight: '400', fontSize: '18px'}}> {item.description} </Typography>
                 </CardContent>
               </Card>
-            </Grid>
-
+            </ButtonBase> 
+          </Grid>
           ))} 
       </Grid>
 

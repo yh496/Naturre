@@ -8,6 +8,7 @@ import {
 import Grid from '@material-ui/core/Grid';
 import Link from 'next/link';
 import Filters from "./Filters"
+import {useRouter} from 'next/router'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -60,10 +61,26 @@ const useStyles = makeStyles((theme) => ({
 export default function BusinessList(props) {
 
   const [businessList, setBusinessList] = useState([])
+  const [businessCount, setBusinessCount] = useState(0)
+
+  const router = useRouter();
+  const query = router.query
+
+
   const getBusinessProfiles = () => {
-    fetch('/api/business-profile/business-list')
-      .then(res => res.json()).then(res =>
+    var params = {
+      type: router.query.type,
+    };
+  
+  var esc = encodeURIComponent;
+  var query = Object.keys(params)
+      .map(k => esc(k) + '=' + esc(params[k]))
+      .join('&');
+    fetch('/api/business-profile/business-list?' + query)
+      .then(res => res.json()).then(res => {
         setBusinessList(res.data)
+        setBusinessCount(res.count)
+      }
       )
   }
 
@@ -117,7 +134,7 @@ export default function BusinessList(props) {
           <Filters />
         </Grid>
         <Grid item xs>
-          <h1 style={{ color: '#1F2725', marginBottom: '35px', fontSize: '26px' }}>1,200 locations found for 'spa' in Seoul</h1>
+          <h1 style={{ color: '#1F2725', marginBottom: '35px', fontSize: '26px' }}> {businessCount} locations found for '{query.type}' in Seoul</h1>
           {businessList.map((biz, i) => (
 
             <Card className={classes.card}>
