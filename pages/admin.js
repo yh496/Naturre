@@ -11,6 +11,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { useHistory } from "react-router-dom";
+import axios from "axios";
 // import { browserHistory } from 'react-router';
 const useStyles = makeStyles({
   root: {
@@ -26,6 +27,9 @@ export default function Admin(props) {
   const [description, setDescription] = useState('')
   const [location, setLocation] = useState('')
   const [category, setCategory] = useState('')
+  const [file, setFile] = useState('')
+  const [fileName, setFileName] = useState('')
+  const [fileType, setFileType] = useState('')
 
   const handleNameChange = (val) => {
     setName(val)
@@ -41,11 +45,37 @@ export default function Admin(props) {
   }
   let history = useHistory();
 
+  async function handleImageChange(e) {
+    let file = (e.target.files[0])
+    let fileParts = file.name.split('.');
+    // let fileName = fileParts[0];
+    setFile(file)
+    setFileName(fileParts[0]);
+    setFileType(fileParts[1]);
+    // let fileType = fileParts[1];
+    // const res = await axios.post("http://localhost:3000/api/business-profile/upload-image", {
+    //   fileName: fileName,
+    //   fileType: fileType
+    // })
+    // const returnData = res.data.data.returnData;
+    // const signedRequest = returnData.signedRequest;
+    // const imageURL = returnData.url;
+    // await fetch(signedRequest, { method: "PUT", body: file })
+  }
 
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    const data = { name: name, description: description, location: location, category: category };
+    const res = await axios.post("http://localhost:3000/api/business-profile/upload-image", {
+      fileName: fileName,
+      fileType: fileType
+    })
+    const returnData = res.data.data.returnData;
+    const signedRequest = returnData.signedRequest;
+    const imageURL = returnData.url;
+    await fetch(signedRequest, { method: "PUT", body: file })
+
+    const data = { name: name, description: description, location: location, category: category, img: imageURL };
     fetch('http://localhost:3000/api/business-profile/create-business', {
       method: 'POST', // or 'PUT'
       headers: {
@@ -91,6 +121,9 @@ export default function Admin(props) {
                 style={{ width: "300px" }} size="small" id="location" label="Enter business location" variant="outlined" />
             </div>
             <br />
+            <div>
+              <input type="file" onChange={handleImageChange} />
+            </div>
             <div>
               <FormControl style={{ width: "100px" }} className={classes.formControl}>
                 <InputLabel style={{ fontSize: "14px", fontWeight: "bold" }} shrink id="demo-simple-select-placeholder-label-label">
