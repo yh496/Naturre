@@ -8,8 +8,8 @@ handler.use(middleware);
 handler.post(async (req, res) => {
   const AWS = require('aws-sdk')
   const s3 = new AWS.S3({
-    accessKeyId: 'AKIAJ44RARV4WDMHFULA',
-    secretAccessKey: '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',
+    accessKeyId: process.env.accessKeyId,
+    secretAccessKey: process.env.secretAccessKey,
     region: 'ap-northeast-2'
   })
   const fileName = req.body.fileName;
