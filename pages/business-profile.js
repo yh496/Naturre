@@ -42,9 +42,6 @@ const useStyles = makeStyles((theme) => ({
 }
 }));
 
-
-
-
 export default function BusinessProfile() {
   const router = useRouter();
 
@@ -88,8 +85,23 @@ export default function BusinessProfile() {
       headers: { "Content-Type": "application/json; charset=utf-8" },
       body: JSON.stringify({id: router.query.id})
   
-    }).then(e => e.json()).then(e =>
-      setReviewStat({...reviewStat, totalCount: e.totalCount, average: parseFloat(e.average).toFixed(1), countPerRating: e.countPerRating})
+    }).then(e => e.json()).then(e => {
+
+      const tempList = []
+      for(let i = 1; i < 6; i ++) {
+        let tempObj = {}
+        tempObj[i] = e.ratings && e.ratings[i] || 0
+        tempList.push(tempObj)
+      }
+
+      console.log(tempList)
+      setReviewStat(
+        {...reviewStat, 
+          totalCount: e.ratings && e.ratings.count || 0,
+          average: e.ratings && parseFloat(e.ratings.average).toFixed(1) || 0, 
+          countPerRating: tempList 
+        })
+    }
     )
    }, [])
  

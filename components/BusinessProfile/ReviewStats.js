@@ -74,14 +74,14 @@ export default function ReviewStat(props) {
                         <Rating style={{ }} size='small' classes={{ iconFilled: classes.ratingIcon }} precision={0.2} value={reviewStat.average} readOnly />
                     </Grid>
                     <Grid item xs={6} lg={8} md={6} sm={5} style={{float: 'right'}}> 
-                        <Typography variant="h5" style={{ fontWeight: 'bold', height: '15px', marginTop: '10px', textAlign:'right' }}> 6 reviews </Typography>
+                        <Typography variant="h5" style={{ fontWeight: 'bold', height: '15px', marginTop: '10px', textAlign:'right' }}> {reviewStat.totalCount} reviews </Typography>
                     </Grid>
                 </Grid> 
                 <Grid container style={{margin: 'auto', width: '90%'}}> 
                     {reviewStat.countPerRating.map((val, i) => (
                         <React.Fragment>   
                                 <Grid item xs={6} lg={2} md={1} sm={5} style={{marginBottom:'15px'}}>
-                                    <Typography style={{ display: 'inline', fontSize: '18px' }}>{val._id}</Typography>
+                                    <Typography style={{ display: 'inline', fontSize: '18px' }}>{i+1}</Typography>
                                     <StarBorderIcon style={{display:'inline', transform:'translate(10%, 14%)'}}/>
 
                                 </Grid>
@@ -90,7 +90,7 @@ export default function ReviewStat(props) {
                                         max={reviewStat.totalCount}
                                         valueLabelDisplay="auto"
                                         aria-label="pretto slider"
-                                        value={val.count} />
+                                        value={val[i+1]} />
                                 </Grid>
                          </React.Fragment>                   
                         ))
