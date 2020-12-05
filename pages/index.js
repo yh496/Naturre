@@ -52,9 +52,8 @@ const useStyles = makeStyles((theme) => ({
   subHeader: {
     position: 'absolute',
     top: '20%',
-    left: '24%',
-    width: '50%',
-    maxWidth: '770px',
+    width: '100%',
+    // maxWidth: '770px',
     textAlign: 'center',
   },
   headerText: { 
@@ -65,12 +64,8 @@ const useStyles = makeStyles((theme) => ({
   },
   searchBox: {
     top: '55%',
-    left: '24%',
-    margin: 'auto',
-    width: '52%',
-    maxWidth: '800px',
+    width: '100%',
     position: 'absolute',
-    height: '60px',
   },
   inputBox: {
     width: '100%', 
@@ -78,9 +73,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: '24px',
     outline:'none', 
     border:'none', 
-    position:'absolute',
-    top: 0,
-    left: 0,
+    position: 'absolute'
   },
   searchIcon: {
     zIndex: 1, 
@@ -121,27 +114,34 @@ export function Home({data}) {
     <React.Fragment> 
       <div className={classes.header}>  
         <div className={classes.subHeader}> 
-          <Typography className={classes.headerText}> Start your wellness journey in Korea with a single click </Typography>
+          <div style={{width:'100%', margin: 'auto', position: 'relative', maxWidth: '770px'}}> 
+            <Typography className={classes.headerText}> Start your wellness journey in Korea with a single click </Typography>
+          </div> 
         </div> 
 
         <div className={classes.searchBox}>
-          <input className={classes.inputBox} type="text" placeholder="Start your search today"/>
-          <NativeSelect
-                style={{zIndex:2}}
-                placeholder="Location"
-                id="demo-customized-select-native"
-                input={<BootstrapInput />
-              }
-          >
-            <option value={10}>Seoul</option>
-            <option value={20}>Daegu</option>
-            <option value={30}>Busan</option>
-          </NativeSelect>
-          <div className={classes.searchIcon}>
-            <SearchIcon style={{transform:'scale(1.5)', position:'absolute', left: '50%', top: '30%'}}/>
+          <div  style={{width:'100%', margin: 'auto', position: 'relative', maxWidth: '800px', height: '60px'}}> 
+            <input className={classes.inputBox} type="text" placeholder="Start your search today"/>
+            <NativeSelect
+                  style={{zIndex:2}}
+                  placeholder="Location"
+                  id="demo-customized-select-native"
+                  input={<BootstrapInput />
+                }
+            >
+              <option value={10}>Seoul</option>
+              <option value={20}>Daegu</option>
+              <option value={30}>Busan</option>
+            </NativeSelect>
+            <div className={classes.searchIcon}>
+              <SearchIcon style={{transform:'scale(1.5)', position:'absolute', left: '50%', top: '30%'}}/>
+            </div>
           </div>
         </div>
       </div>
+
+
+
       <div style={{marginTop: '69px', marginBottom: '69px'}}> 
         <Typography className={classes.bodyText}> 
           Categories
@@ -149,7 +149,7 @@ export function Home({data}) {
       </div> 
       <Grid container spacing={2} style={{width:'80%', margin:'auto'}}> 
           {data.categories.map( (item, i) => (
-            <Grid item lg={3} style={{maxWidth: '250px',  marginRight: '1.5rem' }}>
+            <Grid item xl={3} lg={3} xs={12} md={6} style={{width:'250px', margin:'auto' }}>
               <Link
                href= {{
                  pathname: '/business-profile-list',
@@ -160,7 +160,7 @@ export function Home({data}) {
                 style={{textAlign:'left'}}
                 >  
                   <Card  style={{height: '100%', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
-                    <img src={item.image} style={{width: 'auto', maxWidth: '250px', height: '220px'}}/>
+                    <img src={item.image} style={{width: '100%', height: '220px'}}/>
 
                     <CardContent style={{height: '120px'}}>
                       <Typography style={{fontWeight: '600', fontSize: '24px', marginBottom: '20px'}}> {item.category} </Typography>
@@ -180,10 +180,10 @@ export function Home({data}) {
       </div> 
       <Grid container spacing={2} style={{width:'80%', margin:'auto'}}> 
           {data.categories.map( (item, i) => (
-          <Grid item lg={3} style={{maxWidth: '250px',  marginRight: '1.5rem' }}>
+          <Grid item xl={3} lg={3} xs={12} md={6} style={{width: '250px', margin: 'auto' }}>
           <ButtonBase focusRipple style={{textAlign:'left'}}>  
             <Card  style={{height: '100%', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
-              <img src={item.image} style={{width: 'auto', maxWidth: '250px', height: '220px'}}/>
+              <img src={item.image} style={{width: '100%', height: '220px'}}/>
               <CardContent style={{height: '120px'}}>
                 <Typography style={{fontWeight: '600', fontSize: '24px', marginBottom: '20px'}}> {item.category} </Typography>
                 <Typography style={{fontWeight: '400', fontSize: '18px'}}> {item.description} </Typography>
@@ -201,10 +201,10 @@ export function Home({data}) {
       </div> 
       <Grid container spacing={2} style={{width:'80%', margin:'auto'}}> 
           {data.categories.map( (item, i) => (
-            <Grid item lg={3} style={{maxWidth: '250px',  marginRight: '1.5rem' }}>
+            <Grid item xl={3} lg={3} xs={12} md={6} style={{width: '250px', margin: 'auto' }}>
             <ButtonBase focusRipple style={{textAlign:'left'}}>  
               <Card  style={{height: '100%', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
-                <img src={item.image} style={{width: 'auto', maxWidth: '250px', height: '220px'}}/>
+                <img src={item.image} style={{width: '100%', height: '220px'}}/>
 
                 <CardContent style={{height: '120px'}}>
                   <Typography style={{fontWeight: '600', fontSize: '24px', marginBottom: '20px'}}> {item.category} </Typography>
