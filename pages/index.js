@@ -1,14 +1,12 @@
-import React from 'react';
+import React , {useState} from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
 
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
 
 import InputBase from '@material-ui/core/InputBase';
-import { fade, makeStyles,withStyles } from '@material-ui/core/styles';
+import { makeStyles,withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import Grid from '@material-ui/core/Grid';
 import NativeSelect from '@material-ui/core/NativeSelect';
@@ -73,7 +71,8 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: '24px',
     outline:'none', 
     border:'none', 
-    position: 'absolute'
+    position: 'absolute',
+    padding:'1rem'
   },
   searchIcon: {
     zIndex: 1, 
@@ -100,16 +99,8 @@ const useStyles = makeStyles((theme) => ({
 
 export function Home({data}) {
   const classes = useStyles();
-  // const [values, setValues] = React.useState({
-  //   categories: []
-  // })
 
-  // React.useEffect( () => {
-  //   fetch('/api/home-page/category-list').then(e=>e.json()).then(e => {
-  //     setValues({...values, categories: e})
-  //   });
-  // })
-
+  const [searchText, setSearchText] = useState("")
   return (
     <React.Fragment> 
       <div className={classes.header}>  
@@ -121,7 +112,18 @@ export function Home({data}) {
 
         <div className={classes.searchBox}>
           <div  style={{width:'100%', margin: 'auto', position: 'relative', maxWidth: '800px', height: '60px'}}> 
-            <input className={classes.inputBox} type="text" placeholder="Start your search today"/>
+            <input 
+              className={classes.inputBox} 
+              type="text" 
+              placeholder="Start your search today" 
+              value={searchText} 
+              onChange={(e) => setSearchText(e.target.value)}
+              onKeyPress={(e) => { 
+                if (e.key === 'Enter') {
+                  location.href=`/business-profile-list?find_by=${searchText}`
+                }
+              }}
+            />
             <NativeSelect
                   style={{zIndex:2}}
                   placeholder="Location"
@@ -153,7 +155,7 @@ export function Home({data}) {
               <Link
                href= {{
                  pathname: '/business-profile-list',
-                 query: {type : item.category}
+                 query: {find_by : item.category}
                  }}> 
                 <ButtonBase 
                 focusRipple 
