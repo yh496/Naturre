@@ -6,8 +6,9 @@ import ReviewStats from '../components/BusinessProfile/ReviewStats';
 import BusinessLocation from '../components/BusinessProfile/BusinessLocation';
 import ServiceList from '../components/BusinessProfile/ServiceList'
 import ManagerInfo from '../components/BusinessProfile/ManagerInfo'
+import Button from '@material-ui/core/Button';
 
-import {useRouter} from 'next/router';
+import { useRouter } from 'next/router';
 import {
   Grid,
   Typography,
@@ -16,7 +17,7 @@ import {
 
 import { makeStyles } from '@material-ui/core/styles';
 
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 
 const useStyles = makeStyles((theme) => ({
   imageStepper: {
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   divider: {
     maxWidth: '730px',
     height: '2px',
-    transform:'translate(15%, 0%)',
+    transform: 'translate(15%, 0%)',
     background: '#e6e8eb'
   },
   header: {
@@ -36,10 +37,10 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
   },
   description: {
-    marginTop: theme.spacing(4), 
+    marginTop: theme.spacing(4),
     marginBottom: '30px',
     maxWidth: '650px'
-}
+  }
 }));
 
 export default function BusinessProfile() {
@@ -56,22 +57,29 @@ export default function BusinessProfile() {
   })
 
   const [reviewStat, setReviewStat] = useState({
-    totalCount: 0 ,
-    average: 0, 
-    countPerRating:[]
-})
-  
-  useEffect( () => {
-   fetch('/api/business-profile/business-detail', {
+    totalCount: 0,
+    average: 0,
+    countPerRating: []
+  })
+
+  // const [open, setOpen] = React.useState(false)
+
+  // const handlePopupOpen = () => {
+  //   setOpen(true)
+  // }
+
+  useEffect(() => {
+    fetch('/api/business-profile/business-detail', {
       method: 'POST',
       headers: { "Content-Type": "application/json; charset=utf-8" },
-      body: JSON.stringify({id: router.query.id})
-  
+      body: JSON.stringify({ id: router.query.id })
+
     }).then(e => e.json()).then(e =>
-      setValues({...values, 
-        name: e.data.name, 
-        description: e.data.description, 
-        location: e.data.location, 
+      setValues({
+        ...values,
+        name: e.data.name,
+        description: e.data.description,
+        location: e.data.location,
         images: e.data.images,
         services: e.data.services,
         manager: e.data.manager
@@ -79,16 +87,16 @@ export default function BusinessProfile() {
     )
   }, [])
 
-  useEffect( () => {
+  useEffect(() => {
     fetch('/api/business-profile/review-stats', {
       method: 'POST',
       headers: { "Content-Type": "application/json; charset=utf-8" },
-      body: JSON.stringify({id: router.query.id})
-  
+      body: JSON.stringify({ id: router.query.id })
+
     }).then(e => e.json()).then(e => {
 
       const tempList = []
-      for(let i = 1; i < 6; i ++) {
+      for (let i = 1; i < 6; i++) {
         let tempObj = {}
         tempObj[i] = e.ratings && e.ratings[i] || 0
         tempList.push(tempObj)
@@ -96,54 +104,54 @@ export default function BusinessProfile() {
 
       console.log(tempList)
       setReviewStat(
-        {...reviewStat, 
+        {
+          ...reviewStat,
           totalCount: e.ratings && e.ratings.count || 0,
-          average: e.ratings && parseFloat(e.ratings.average).toFixed(1) || 0, 
-          countPerRating: tempList 
+          average: e.ratings && parseFloat(e.ratings.average).toFixed(1) || 0,
+          countPerRating: tempList
         })
     }
     )
-   }, [])
- 
- 
+  }, [])
+
+
   return (
-  <React.Fragment>
-{/* 
+    <React.Fragment>
+      {/* 
     <div className={classes.header}> 
       <Typography variant="h2" style={{fontWeight:'650'}}>  {values.name} </Typography>
       <Typography variant="p" style={{fontSize:'14px'}}> {reviewStat.average}* | {values.location}</Typography>
     </div> */}
-    <Grid container spacing={2} style={{ width: '80%', margin:'auto', marginTop:'20px'}}> 
-      <Grid item xs={6} lg={7} md={6} sm={5} > 
-        <Typography variant="h2" style={{fontWeight:'650'}}>  {values.name} </Typography>
-        <Typography variant="p" style={{fontSize:'14px'}}> {reviewStat.average}* | {values.location}</Typography>
-        <ImageStepper images={values.images}/>
-        <Typography className={classes.description}> {values.description} </Typography> 
-      </Grid> 
+      <Grid container spacing={2} style={{ width: '80%', margin: 'auto', marginTop: '20px' }}>
+        <Grid item xs={6} lg={7} md={6} sm={5} >
+          <Typography variant="h2" style={{ fontWeight: '650' }}>  {values.name} </Typography>
+          <Typography variant="p" style={{ fontSize: '14px' }}> {reviewStat.average}* | {values.location}</Typography>
+          <ImageStepper images={values.images} />
+          <Typography className={classes.description}> {values.description} </Typography>
+        </Grid>
 
-      <Grid item xs={6} lg={5} md={6} sm={5}>
-         <ReviewStats reviewStat={reviewStat}/>
-         <BusinessLocation location={values.location}/>
+        <Grid item xs={6} lg={5} md={6} sm={5}>
+          <ReviewStats reviewStat={reviewStat} />
+          <BusinessLocation location={values.location} />
+        </Grid>
       </Grid>
-    </Grid> 
 
-    <Grid container spacing={2} style={{ width: '80%', margin:'auto'}}>
-      <Grid item lg={7}> 
-        <ServiceList services={values.services}/>
+      <Grid container spacing={2} style={{ width: '80%', margin: 'auto' }}>
+        <Grid item lg={7}>
+          <ServiceList services={values.services} />
+        </Grid>
+        <Grid item lg={5}>
+          <ManagerInfo manager={values.manager} />
+        </Grid>
       </Grid>
-      <Grid item lg={5}> 
-        <ManagerInfo manager={values.manager}/>
-      </Grid>
-    </Grid>
 
-    <div  style={{ width: '95%', margin:'auto'}}> 
-      <CommentSection type='questions'/> 
-
-      <CommentSection type='review'/> 
-    </div>
+      <div style={{ width: '95%', margin: 'auto' }}>
+        <CommentSection type='questions' businessId={router.query.id} />
+        <CommentSection type='review' businessId={router.query.id} />
+      </div>
 
 
-  </React.Fragment> 
+    </React.Fragment>
   )
 }
 
