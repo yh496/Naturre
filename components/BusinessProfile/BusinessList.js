@@ -62,6 +62,7 @@ export default function BusinessList(props) {
 
   const [businessList, setBusinessList] = useState([])
   const [businessCount, setBusinessCount] = useState(0)
+  const [searchText, setSearchText] = useState("")
 
   const router = useRouter();
   const query = router.query
@@ -69,9 +70,9 @@ export default function BusinessList(props) {
 
   const getBusinessProfiles = () => {
     var params = {
-      type: router.query.type,
+      find_by: router.query.find_by,
     };
-  
+
   var esc = encodeURIComponent;
   var query = Object.keys(params)
       .map(k => esc(k) + '=' + esc(params[k]))
@@ -86,7 +87,6 @@ export default function BusinessList(props) {
 
   useEffect(() => {
     getBusinessProfiles()
-    console.log(businessList)
   }, [])
 
 
@@ -104,9 +104,14 @@ export default function BusinessList(props) {
     <div className={classes.root}>
       <div style={{ display: 'flex' }}>
         <SearchBar className={classes.searchBox} placeholder="Start your search today"
+          value={searchText}
+          onChange={(val) => setSearchText(val)}
+          onCancelSearch = {() => setSearchText("")}
+          onRequestSearch = {() => location.href=`/business-profile-list?find_by=${searchText}`}
+         
         />
 
-        <button className={classes.searchButton}>Search</button>
+        {/* <Button className={classes.searchButton}>Search</Button> */}
         <Button className={classes.locationButton} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
           Location
           <ArrowDropDown />
@@ -134,7 +139,8 @@ export default function BusinessList(props) {
           <Filters />
         </Grid>
         <Grid item xs>
-          <h1 style={{ color: '#1F2725', marginBottom: '35px', fontSize: '26px' }}> {businessCount} locations found for '{query.type}' in Seoul</h1>
+          <h1 style={{ color: '#1F2725', marginBottom: '35px', fontSize: '26px' }}> 
+          {businessCount} locations found for '{query.find_by}' in Seoul</h1>
           {businessList.map((biz, i) => (
 
             <Card className={classes.card}>
@@ -159,7 +165,7 @@ export default function BusinessList(props) {
                           {biz.name}
                         </Typography>
                         <Typography variant="h5" style={{ color: "#49AD82" }} component="p">
-                          {biz.location}
+                          {biz.location.address}
                         </Typography>
                         <Typography variant="body2" color="textSecondary" component="p">
                           {biz.description}
