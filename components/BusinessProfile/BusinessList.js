@@ -165,7 +165,7 @@ export default function BusinessList(props) {
                           {biz.name}
                         </Typography>
                         <Typography variant="h5" style={{ color: "#49AD82" }} component="p">
-                          {biz.location}
+                          {biz.location.address}
                         </Typography>
                         <Typography variant="body2" color="textSecondary" component="p">
                           {biz.description}
