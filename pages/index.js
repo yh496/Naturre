@@ -101,6 +101,7 @@ export function Home({data}) {
   const classes = useStyles();
 
   const [searchText, setSearchText] = useState("")
+  const [locationOption, setLocationOption] = useState("Seoul")
   return (
     <React.Fragment> 
       <div className={classes.header}>  
@@ -111,7 +112,7 @@ export function Home({data}) {
         </div> 
 
         <div className={classes.searchBox}>
-          <div  style={{width:'100%', margin: 'auto', position: 'relative', maxWidth: '800px', height: '60px'}}> 
+          <div style={{width:'100%', margin: 'auto', position: 'relative', maxWidth: '800px', height: '60px'}}> 
             <input 
               className={classes.inputBox} 
               type="text" 
@@ -120,20 +121,21 @@ export function Home({data}) {
               onChange={(e) => setSearchText(e.target.value)}
               onKeyPress={(e) => { 
                 if (e.key === 'Enter') {
-                  location.href=`/business-profile-list?find_by=${searchText}`
+                  location.href=`/business-profile-list?find_by=${searchText}&find_loc=${locationOption}`
                 }
               }}
             />
             <NativeSelect
-                  style={{zIndex:2}}
-                  placeholder="Location"
-                  id="demo-customized-select-native"
-                  input={<BootstrapInput />
-                }
+              value={locationOption}
+              style={{zIndex:2}}
+              placeholder="Location"
+              id="demo-customized-select-native"
+              input={<BootstrapInput />}
+              onChange={(e) => setLocationOption(e.target.value)}
             >
-              <option value={10}>Seoul</option>
-              <option value={20}>Daegu</option>
-              <option value={30}>Busan</option>
+              <option value={'Seoul'}>Seoul</option>
+              <option value={'Daegu'}>Daegu</option>
+              <option value={'Busan'}>Busan</option>
             </NativeSelect>
             <div className={classes.searchIcon}>
               <SearchIcon style={{transform:'scale(1.5)', position:'absolute', left: '50%', top: '30%'}}/>
