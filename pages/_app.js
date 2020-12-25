@@ -4,11 +4,12 @@ import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../theme';
-import Header from '../components/header'
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import Header from '../components/header';
+// import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 // import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Login from "./login";
-import "../styles/login.css"
+import Register from "./register";
+import "../styles/login.css";
 
 
 export default function MyApp(props) {

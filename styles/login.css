@@ -1,26 +1,70 @@
-@import url('https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600,700,800');
+@import url('https://fonts.googleapis.com/css?family=Inter:400,500,600,700,800');
 
 
 body {
   background: #1C8EF9;
   display: flex;
-  font-weight: 400;
-  font-family: 'Fira Sans', sans-serif;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  color: #696F79;
+}
+
+div#__next {
+  width: 100%;
 }
 
 form {
-  width: 450px;
-  margin: 18% 80%;
+  width: 400px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+form#login-request {
+  margin: 60px auto 20px auto;
+}
+
+.buttons {
+  width: 400px;
+  margin: 20px auto;
+}
+
+.form-group {
+  width: 100%;
+}
+
+input.form-control {
+  width: 100%;
+  margin-bottom: 20px;
+  margin-top: 3px;
+  padding-left: 20px;
+}
+
+input:focus, button:focus {
+  outline: none;
+}
+
+label {
+  display: inline;
+  flex-grow: 1;
 }
 
 abbr.form-required-input {
   text-decoration: none;
+  display: inline-block;
 }
 
 p.form-api-seperator {
   font-size: 10pt;
-  margin: 30px auto;
+  margin: 0 auto;
   text-align: center;
+}
+
+input {
+  border-style: solid;
+  border-color: #cccccc;
+  padding: 3px 7px;
 }
 
 .btn-block, .form-control {
@@ -31,13 +75,39 @@ p.form-api-seperator {
 button.btn-block {
   background-color: #64B6AC;
   border-color: #64B6AC;
-  margin-top: 40px;
+  margin-top: 30px;
   font-weight: 500;
+  border-style: none;
+  color: white;
+  width: 100%;
+}
+
+button.btn-primary {
+  margin-top: 17px;
 }
 
 button.btn-block:hover {
   background-color: #2c988b;
   border-color: #2c988b;
+}
+
+button.f-signin, button.g-signin {
+  margin-top: 0;
+  margin-bottom: 25px;
+  width: 100%;
+  background-color: white;
+  border-color: white;
+  box-shadow: 3px 5px 5px #d7d7c7;
+  color: black;
+  display: block;
+  height: 48px;
+  border-radius: 9px;
+}
+
+button.f-signin:hover, button.g-signin:hover {
+  background-color: #64B6AC;
+  border-color: #64B6AC;
+  color: white;
 }
 
 label.custom-control-label {
@@ -49,9 +119,9 @@ h1,h2,h3,h4,h5,h6,label,span {
   font-family: 'Fira Sans', sans-serif;
 }
 
-h2.login-label {
+h2.login-label, h2.signup-label {
   color: black;
-  font-weight: 500;
+  font-weight: 800;
   font-size: 30pt;
 }
 
@@ -69,13 +139,152 @@ h2.login-label {
   font-weight: 400;
 }
 
-.forgot-password,
-.forgot-password a {
+.forgot-password, .forgot-password a {
   display: inline-block;
-  padding-left: 155px;
+  padding-left: 130px;
   padding-top: 2px;
   font-size: 10px;
   text-align: right;
   color: #158577;
   margin: 0;
+}
+
+/* sign-up page config */
+form#signup-request {
+  margin: 45px auto 20px auto;
+}
+
+h2.signup-label {
+  margin-bottom: 18px;
+}
+
+p.account-create {
+  margin-bottom: 20px;
+  font-size: 11pt;
+  color: #8692A6;
+}
+
+p.terms {
+  font-size: 11pt;
+  text-align: center;
+}
+
+p.terms a {
+  display: inline-block;
+  color: #158577;
+}
+
+button.signup-last-btn {
+  margin-bottom: 100px;
+}
+
+
+@media (max-width: 900px) {
+  h2.login-label {
+    font-size: 26pt;
+  }
+
+  form, .buttons {
+    width: 300px;
+    margin-bottom: 14px;
+  }
+
+  form {
+    margin-top: 40px;
+  }
+
+  .buttons {
+    margin-top: 14px;
+  }
+
+  button.btn-primary {
+    margin-top: 20px;
+  }
+
+  .forgot-password, .forgot-password a {
+    padding-left: 80px;
+  }
+
+  .btn-block, .form-control {
+    height: 40px;
+    border-radius: 14px;
+  }
+
+  button.f-signin, button.g-signin {
+  height: 40px;
+  }
+}
+
+@media (max-width: 716px) {
+  form {
+    margin-top: 25px;
+  }
+}
+
+@media (max-width: 512px) {
+
+  button.btn-primary {
+    margin-top: 13px;
+  }
+
+  form {
+    margin-top: 8px;
+  }
+
+  h2.login-label {
+    font-size: 20pt;
+  }
+
+  form, .buttons {
+    width: 250px;
+  }
+
+  .forgot-password, .forgot-password a {
+    padding-left: 54px;
+  }
+
+  .btn-block, .form-control {
+    height: 35px;
+    border-radius: 13px;
+  }
+
+  button.f-signin, button.g-signin {
+    height: 35px;
+  }
+
+  input.form-control {
+    margin-bottom: 12px;
+  }
+}
+
+
+@media (max-width: 370px) {
+  form, .buttons {
+    width: 210px;
+  }
+
+  .forgot-password, .forgot-password a {
+    padding-left: 36px;
+  }
+
+  h2.login-label {
+    font-size: 18pt;
+  }
+
+  label, .btn-block {
+    font-size: 9pt;
+  }
+
+  p.form-api-seperator {
+    font-size: 8pt;
+  }
+
+  .btn-block, .form-control, button.f-signin, button.g-signin  {
+    height: 30px;
+  }
+
+  .btn-block, .form-control {
+    border-radius: 11px;
+  }
+
 }
