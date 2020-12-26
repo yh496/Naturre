@@ -8,11 +8,9 @@ const handler = nextConnect();
 handler.use(middleware);
 
 handler.get(async (req, res) => {
-
-    console.log(req.query.loc)
     let response = await axios.post(`https://maps.googleapis.com/maps/api/geocode/json?address=${req.query.loc}&key=${process.env.GOOGLE_API_KEY}`)
     let geocode = response.data.results[0].geometry.location
-    res.json({ msg: 'success!!!', geocode})
+    res.json({geocode})
 });
 
 export default handler;

@@ -5,6 +5,7 @@ import {
 } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid';
 import Link from 'next/link';
+import MapContext from '../Contexts/MapContext';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -25,13 +26,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 export default function BusinessList(props) {
 
-  const {businessList, ...rest} = props
   const classes=useStyles();
 
   return (
-    <div className={classes.root}>
-          {businessList.map((biz, i) => (
-            <Card className={classes.card}>
+    <div className={classes.root} key={MapContext.getMapContext().businessList}>
+          {MapContext.getMapContext().businessList && MapContext.getMapContext().businessList.map((biz, i) => (
+            <Card className={classes.card} key={i}>
               <Link
                 href={{
                   pathname: '/business-profile',

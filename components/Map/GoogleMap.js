@@ -2,6 +2,9 @@ import React, {useState,useEffect} from 'react'
 import GoogleMapReact from 'google-map-react';
 import RoomIcon from '@material-ui/icons/Room';
 import { makeStyles } from '@material-ui/core/styles';
+import {Button} from '@material-ui/core'
+
+import MapContext from '../Contexts/MapContext'
 
 const useStyles = makeStyles((theme) => ({
     mapContainer: {
@@ -10,84 +13,55 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-
-const GoogleMap = (props) => {
-    const { locationSearch, ...rest } = props
-
-
-    const [searchGeo, setSearchGeo] = useState({
-        lat: "",
-        lng: ""
-    })
-
-    const [geoBounds, setGeoBounds] = useState({
-        bottomLeft: [],
-        upperRight: []
-    })
-
-    const [businessList, setBusinessList] = useState([])
-
-    useEffect(() => {
-        if (geoBounds.bottomLeft && geoBounds.upperRight) {
-            fetch('/api/map/find_business', {
-                method:'post',
-                headers: { "Content-Type": "application/json; charset=utf-8" },
-                body: JSON.stringify(geoBounds)
-            }).then(e=>e.json()).then(e=>{
-                setBusinessList(e.list)
-            })
-        }
-    },[geoBounds])
-
-    useEffect(() => {
-        var params = {
-            loc: locationSearch,
-          };
-        var esc = encodeURIComponent;
-        var query = Object.keys(params)
-            .map(k => esc(k) + '=' + esc(params[k]))
-            .join('&');
-      fetch('/api/map/geocode?'+query, {
-          method:'get',
-          headers: { "Content-Type": "application/json; charset=utf-8" },
-      }).then(e=>e.json()).then(e => {
-        setSearchGeo(e.geocode)
-      })
-    },[])
-
-    const handleApiLoaded = (map, maps) => {
-        let upperRightLat = map.getBounds().getNorthEast().lat()
-        let upperRightLng = map.getBounds().getNorthEast().lng()
-        let lowerLeftLat = map.getBounds().getSouthWest().lat()
-        let lowerLeftLng = map.getBounds().getSouthWest().lng()
-
-        const upperRight = [upperRightLng,upperRightLat]
-        const bottomLeft = [lowerLeftLng,lowerLeftLat]
-
-        console.log('bounds', upperRight, bottomLeft)
-
-        setGeoBounds({...geoBounds, bottomLeft, upperRight})
-    }
+const Marker = props => {
 
     return (
+        <RoomIcon
+        style={{color: 'red'}}
+        lat={props.lat}
+        lng={props.lng}
+    />
+    )
+ 
+}
+
+
+const GoogleMap = (props) => {
+
+    const [geoBounds, setGeoBounds] = useState()
+    
+    const redoSearchInMap = async () => {
+        await MapContext.setBounds(geoBounds)
+        
+        MapContext.render();
+    }
+    return (
+        <div style={{width:'100%',height:'100%', position:'relative'}}> 
+        <Button 
+            variant="contained" 
+            style={{position: 'absolute', top:0, left:0, zIndex:1, background:'#ff0f03', color:'white'}}
+            onClick={() => redoSearchInMap()}
+            > 
+            Redo Search in Map 
+        </Button>
+
         <GoogleMapReact
+            onChange={(e) => setGeoBounds({upperRight: e.bounds.ne, bottomLeft: e.bounds.sw})}
             bootstrapURLKeys={{ key: process.env.GOOGLE_API_KEY, language:'en'}}
             center={
-                {lat: searchGeo.lat,lng: searchGeo.lng}
+                {lat: MapContext.getMapContext().geoCode.lat,lng: MapContext.getMapContext().geoCode.lng}
             }
             defaultZoom={10}
-            yesIWantToUseGoogleMapApiInternals
-            onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
         >
-            {businessList && businessList.map((val, i) => (
-                <RoomIcon
-                    fontSize="large"
-                    style={{color: 'red'}}
+            {MapContext.getMapContext().businessList && MapContext.getMapContext().businessList.map((val, i) => (
+                <Marker 
+                    key={i}
                     lat={val.location.lat}
-                    lng={val.location.lng}
+                    lng={val.location.lng} 
                 />
             ))}
         </GoogleMapReact>
+        </div>
     )
 }
 

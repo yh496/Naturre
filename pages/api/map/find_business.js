@@ -9,20 +9,28 @@ handler.use(middleware);
 
 handler.post(async (req, res) => {
 
-    console.log(req.body)
     const bottomLeft = req.body.bottomLeft
     const upperRight = req.body.upperRight
 
-    console.log(bottomLeft,upperRight)
+    const find_by = req.body.find_by
+    let count = req.body.count
 
-    let business_in_range = await req.db.collection('Business').find( { location: { $geoWithin: { $box: [bottomLeft, upperRight] } } } ).toArray().catch(e => {
+    let query = {
+        "$text": {"$search" : find_by}
+    } 
+    if (bottomLeft.length > 0 && upperRight.length > 0) {
+        query.location = { "$geoWithin": { "$box": [bottomLeft, upperRight] } }
+        
+    }
+  
+    let business_in_range = await req.db.collection('Business').find(query).toArray().catch(e => {
         console.log(e)
     })
 
-    console.log('businessed', business_in_range)
+    if (!count) count = await req.db.collection('Business').find(query).count()
 
 
-    res.json({list: business_in_range})
+    res.json({list: business_in_range, count: count})
 
 
 });

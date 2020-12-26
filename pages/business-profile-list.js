@@ -7,6 +7,7 @@ import SearchBar from "material-ui-search-bar";
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 import {useRouter} from 'next/router'
 import GoogleMap from '../components/Map/GoogleMap'
+import MapContext from '../components/Contexts/MapContext'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -51,31 +52,44 @@ export default function BusinessProfileList() {
   const classes=useStyles();
   const [searchText, setSearchText] = useState("")
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [businessCount, setBusinessCount] = useState(0)
-  const [businessList, setBusinessList] = useState([])
+  // const [businessCount, setBusinessCount] = useState(0)
+  // const [businessList, setBusinessList] = useState([])
 
   const router = useRouter();
   const query = router.query
 
-  const getBusinessProfiles = () => {
-    var params = {
-      find_by: router.query.find_by,
-    };
+  // const getBusinessProfiles = () => {
+  //   var params = {
+  //     find_by: router.query.find_by,
+  //   };
 
-  var esc = encodeURIComponent;
-  var query = Object.keys(params)
-      .map(k => esc(k) + '=' + esc(params[k]))
-      .join('&');
-    fetch('/api/business-profile/business-list?' + query)
-      .then(res => res.json()).then(res => {
-        setBusinessList(res.data)
-        setBusinessCount(res.count)
-      }
-      )
+  // var esc = encodeURIComponent;
+  // var query = Object.keys(params)
+  //     .map(k => esc(k) + '=' + esc(params[k]))
+  //     .join('&');
+  //   fetch('/api/business-profile/business-list?' + query)
+  //     .then(res => res.json()).then(res => {
+  //       setBusinessList(res.data)
+  //       setBusinessCount(res.count)
+  //     }
+  //     )
+  // }
+
+  const [context, setContext] = useState({
+    ...MapContext.getMapContext()
+  })
+
+
+  MapContext.render = () => {
+    setContext({...context, ...MapContext.getMapContext()})
   }
 
+
   useEffect(() => {
-    getBusinessProfiles()
+    (async function initializeMap() {
+      let context = await MapContext.initialize({find_by: router.query.find_by, find_loc: router.query.find_loc})
+      setContext(context)
+    })() ;
   }, [])
 
   const handleClick = (event) => {
@@ -85,6 +99,8 @@ export default function BusinessProfileList() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+
   return (
     <React.Fragment> 
       <div style={{ display: 'flex' }}>
@@ -119,20 +135,21 @@ export default function BusinessProfileList() {
 
     </div>
 
+
     <Grid container spacing={2} className={classes.root}>
 
       <Grid item xs={2}>
         <Filters />
       </Grid>
 
-      <Grid item xs={7}>
+      <Grid item xs={7} key={context.count}>
         <h1 style={{ color: '#1F2725', marginBottom: '35px', fontSize: '26px' }}> 
-        {businessCount} locations found for '{query.find_by}' in {query.find_loc}</h1>
-        <BusinessList businessList={businessList}/>
+        {context.count} locations found for '{context.find_by}' in {context.find_loc || 'Seoul'}</h1>
+        <BusinessList key={context}/>
       </Grid>
 
-      <Grid xs={3}> 
-          <GoogleMap locationSearch={query.find_loc}/>
+      <Grid item xs={3}> 
+          <GoogleMap key={context.geoCode}/>
       </Grid>
 
     </Grid>
