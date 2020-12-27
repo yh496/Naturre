@@ -7,10 +7,14 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
     mapContainer: {
+        borderRadius: '24px',
+        zIndex: 0,
         margin:'auto',
-        width: '80%',
-        height: '250px'
-    }
+        width: '90%',
+        height: '100%',
+        overflow: 'hidden'
+    },
+  
 }));
 
 
@@ -20,12 +24,10 @@ export default function BusinessLocation(props) {
     
     console.log('my location', location)
 
-
-
     return (
-
         <div className={classes.mapContainer}> 
             <GoogleMapReact
+            className={classes.map}
             bootstrapURLKeys={{ key: process.env.GOOGLE_API_KEY, language:'en'}}
             center={
                 {lat: location.lat,

@@ -31,13 +31,13 @@ const useStyles = makeStyles((theme) => ({
 export default function ServiceList(props) {
 
   const { services, ...rest } = props
-  const title = 'Services'
+  const title = 'Menu'
   const classes = useStyles();
   return (
     <React.Fragment>
-      <Typography className={classes.serviceTitle} variant="h2" style={{}}> {title} </Typography>
+      <Typography className={classes.serviceTitle} style={{fontSize:'36px', fontWeight:500}}> {title} </Typography>
       <div className={classes.serviceContainer}>
-        <div style={{ width: '90%' }}>
+        <div style={{ width: '85%' }}>
           {services.map((val, i) => (
             <Paper style={{
               borderRadius: '14px',
