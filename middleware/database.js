@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb';
 import nextConnect from 'next-connect';
 
-const client = new MongoClient('mongodb+srv://bbonggu:pc06191122@cluster0.o5tqp.mongodb.net/naturre?retryWrites=true&w=majority', {
+const client = new MongoClient(process.env.MONGO_DB_SRV, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
