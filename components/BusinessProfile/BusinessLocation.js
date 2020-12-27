@@ -26,7 +26,7 @@ export default function BusinessLocation(props) {
 
         <div className={classes.mapContainer}> 
             <GoogleMapReact
-            bootstrapURLKeys={{ key: 'AIzaSyDcNBZMgMiNoZeaIxEFr6k-RJcDsFN8t6Q', language:'en'}}
+            bootstrapURLKeys={{ key: process.env.GOOGLE_API_KEY, language:'en'}}
             center={
                 {lat: location.lat,
                 lng: location.lng}

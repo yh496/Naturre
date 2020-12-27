@@ -74,19 +74,14 @@ function Header() {
     <div style={{ backgroundColor: '#FAFFFF', overflow: 'hidden' }}>
       <div className={classes.title}>NATURRE</div>
       <div className={classes.headerRight}>
-        <Link href='/'> 
-          <Button className={classes.buttonText}> About </Button>
-        </Link>
+        
+        <Button className={classes.buttonText} onClick={() => location.href='/'}> About </Button>
         <Button className={classes.buttonText}> Blog </Button>
         <Button className={classes.buttonText}> Contact </Button>
         {!user.isAuthenticated ? 
           <React.Fragment> 
-            <Link href='/login'> 
-              <Button className={classes.login}> Login </Button>
-            </Link> 
-            <Link href='/register'>  
-              <Button className={classes.login}> Signup </Button>
-            </Link>
+            <Button className={classes.login} onClick={() => location.href='/login'}> Login </Button>
+            <Button className={classes.login}  onClick={() => location.href='/register'}> Signup </Button>
           </React.Fragment>
          :
           <Button className={classes.login} onClick={()=> AuthService.set.reset_credentials()}> Logout </Button>
