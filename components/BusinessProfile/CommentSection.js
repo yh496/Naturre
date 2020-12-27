@@ -12,7 +12,8 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
-
+import StarBorderIcon from '@material-ui/icons/StarBorder';
+import Rating from '@material-ui/lab/Rating';
 
 
 import {
@@ -41,9 +42,18 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
+const StyledRating = withStyles({
+    iconFilled: {
+        color: '#49AD82',
+    },
+    iconHover: {
+        color: '#49AD82',
+    },
+})(Rating);
+
 
 export default function CommentSection(props) {
-    const { businessId, type, ...rest } = props
+    const { businessId, businessName, type, ...rest } = props
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const title = (type == 'questions') ? 'FAQs' : 'Customer Reviews'
@@ -67,7 +77,7 @@ export default function CommentSection(props) {
         console.log(rating)
         const data = { businessId: businessId, title: reviewTitle, content: reviewText, rating: parseInt(rating, 10) };
         fetch('http://localhost:3000/api/business-profile/create-review', {
-            method: 'POST', // or 'PUT'
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -85,15 +95,16 @@ export default function CommentSection(props) {
         //   window.location.href = "/business-profile-list";
         window.location.reload()
     }
-    const handleRatingChange = (event) => {
-        setRating(event.target.value)
-    }
-    const handleReviewTextChange = (val) => {
-        setReviewText(val)
-    }
-    const handleReviewTitleChange = (val) => {
-        setReviewTitle(val)
-    }
+    // const handleRatingChange = (val) => {
+    //     setRating(val)
+    //     console.log(val)
+    // }
+    // const handleReviewTextChange = (val) => {
+    //     setReviewText(val)
+    // }
+    // const handleReviewTitleChange = (val) => {
+    //     setReviewTitle(val)
+    // }
 
     const callApi = (limit, businessId) => {
         fetch(`/api/business-profile/business-${type}`, {
@@ -116,14 +127,9 @@ export default function CommentSection(props) {
         setLimit(nextLimit)
     }
 
-
-
-
-
     const classes = useStyles();
     return (
         <React.Fragment>
-            {/* <ReviewStats /> */}
             <Typography variant="h2" style={{ textAlign: 'center', fontWeight: '650' }}> {title} </Typography>
 
             <div className={classes.reviewContainer}>
@@ -156,15 +162,15 @@ export default function CommentSection(props) {
                                 onClose={handlePopupClose}
                                 aria-labelledby="responsive-dialog-title"
                             >
-                                <DialogTitle id="responsive-dialog-title">{"Write a Review for this Business"}</DialogTitle>
-                                <DialogContent>
-                                    {/* <DialogContentText>
-                                        Write a Review for this Business
-                                    </DialogContentText> */}
-                                    <TextField onChange={e => handleReviewTitleChange(e.target.value)} multiline rows={1} style={{ marginBottom: "20px", width: "200px" }} label="Write a title for your review" variant="outlined" />
-                                    <TextField onChange={e => handleReviewTextChange(e.target.value)} multiline rows={3} style={{ width: "450px" }} label="Write your review content here..." variant="outlined" />
+                                <DialogTitle style={{ padding: "46px 46px 0px 46px" }} id="responsive - dialog - title">
+                                    <Typography style={{ color: "black", fontSize: "26px", fontWeight: "bold" }}>Your review of {businessName}</Typography>
+                                </DialogTitle>
+                                {/* <h2>Your review of + {businessName}</h2> */}
+                                <DialogContent style={{ padding: "36px 46px 36px 46px" }}>
+                                    <TextField onChange={e => setReviewTitle(e.target.value)} multiline rows={1} style={{ marginBottom: "20px", width: "200px" }} label="Write a title for your review" variant="outlined" />
+                                    <TextField onChange={e => setReviewText(e.target.value)} multiline rows={3} style={{ width: "450px" }} label="Write your review content here..." variant="outlined" />
                                     <br />
-                                    <FormControl component="fieldset">
+                                    {/* <FormControl component="fieldset">
                                         <FormLabel component="legend">Rating</FormLabel>
                                         <RadioGroup row name="gender1" value={rating} onChange={handleRatingChange}>
                                             <FormControlLabel value="1" control={<Radio />} label="1" />
@@ -173,7 +179,26 @@ export default function CommentSection(props) {
                                             <FormControlLabel value="4" control={<Radio />} label="4" />
                                             <FormControlLabel value="5" control={<Radio />} label="5" />
                                         </RadioGroup>
-                                    </FormControl>
+                                    </FormControl> */}
+                                    {/* <Rating
+                                        size="large"
+                                        color="green"
+                                        name="customized-empty"
+                                        defaultValue={3}
+                                        precision={0.5}
+                                        emptyIcon={<StarBorderIcon color="green" fontSize="inherit" />}
+                                    /> */}
+                                    <StyledRating
+                                        name="customized-color"
+                                        size="large"
+                                        defaultValue={2}
+                                        onChange={(event, val) => {
+                                            setRating(val)
+                                        }}
+                                        //   getLabelText={(value) => `${value} Heart${value !== 1 ? 's' : ''}`}
+                                        precision={0.5}
+                                        emptyIcon={<StarBorderIcon fontSize="inherit" />}
+                                    />
                                 </DialogContent>
                                 <DialogActions>
                                     <Button onClick={handleSubmitReview} color="primary" autoFocus>
@@ -187,7 +212,7 @@ export default function CommentSection(props) {
 
                 </div>
             </div>
-        </React.Fragment>
+        </React.Fragment >
     )
 
 }

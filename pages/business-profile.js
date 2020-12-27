@@ -146,8 +146,8 @@ export default function BusinessProfile() {
       </Grid>
 
       <div style={{ width: '95%', margin: 'auto' }}>
-        <CommentSection type='questions' businessId={router.query.id} />
-        <CommentSection type='review' businessId={router.query.id} />
+        <CommentSection type='questions' businessId={router.query.id} businessName={values.name} />
+        <CommentSection type='review' businessId={router.query.id} businessName={values.name} />
       </div>
 
 
