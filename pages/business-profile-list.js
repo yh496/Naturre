@@ -52,28 +52,10 @@ export default function BusinessProfileList() {
   const classes=useStyles();
   const [searchText, setSearchText] = useState("")
   const [anchorEl, setAnchorEl] = React.useState(null);
-  // const [businessCount, setBusinessCount] = useState(0)
-  // const [businessList, setBusinessList] = useState([])
+
 
   const router = useRouter();
   const query = router.query
-
-  // const getBusinessProfiles = () => {
-  //   var params = {
-  //     find_by: router.query.find_by,
-  //   };
-
-  // var esc = encodeURIComponent;
-  // var query = Object.keys(params)
-  //     .map(k => esc(k) + '=' + esc(params[k]))
-  //     .join('&');
-  //   fetch('/api/business-profile/business-list?' + query)
-  //     .then(res => res.json()).then(res => {
-  //       setBusinessList(res.data)
-  //       setBusinessCount(res.count)
-  //     }
-  //     )
-  // }
 
   const [context, setContext] = useState({
     ...MapContext.getMapContext()

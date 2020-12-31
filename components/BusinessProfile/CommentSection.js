@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback, useMemo } from 'react'
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -14,7 +14,8 @@ import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import Rating from '@material-ui/lab/Rating';
-
+import { useDropzone } from 'react-dropzone';
+import axios from "axios";
 
 import {
     Typography,
@@ -39,6 +40,10 @@ const useStyles = makeStyles((theme) => ({
         height: '130px',
         maxHeight: '130px',
         overflow: 'hidden',
+    },
+    dialogPaper: {
+        height: "1310px",
+        width: "970px"
     }
 }))
 
@@ -51,6 +56,15 @@ const StyledRating = withStyles({
     },
 })(Rating);
 
+const CustomTextField = withStyles({
+    root: {
+        '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+                borderRadius: "18px"
+            },
+        },
+    }
+})(TextField);
 
 export default function CommentSection(props) {
     const { businessId, businessName, type, ...rest } = props
@@ -62,6 +76,8 @@ export default function CommentSection(props) {
     const [limit, setLimit] = useState(2)
     const [reviewText, setReviewText] = useState('')
     const [reviewTitle, setReviewTitle] = useState('')
+    const [imageFiles, setImageFiles] = useState('')
+    const [imageURLs, setImageURLs] = useState('')
 
     const [open, setOpen] = React.useState(false)
 
@@ -71,11 +87,32 @@ export default function CommentSection(props) {
     const handlePopupClose = () => {
         setOpen(false);
     }
+
+    async function uploadImage(file) {
+        let fileParts = file.name.split('.');
+        const fileName = fileParts[0];
+        const fileType = fileParts[1];
+        const res = await axios.post("http://localhost:3000/api/business-profile/upload-image", {
+            fileName: fileName,
+            fileType: fileType
+        })
+        const returnData = res.data.data.returnData;
+        const signedRequest = returnData.signedRequest;
+        await fetch(signedRequest, { method: "PUT", body: file })
+    }
+
     async function handleSubmitReview() {
-        console.log(reviewText)
-        console.log(reviewTitle)
-        console.log(rating)
-        const data = { businessId: businessId, title: reviewTitle, content: reviewText, rating: parseInt(rating, 10) };
+        // console.log(reviewText)
+        // console.log(reviewTitle)
+        // console.log(rating)
+        const imageURLs = []
+        await imageFiles.forEach((imageFile) => {
+            uploadImage(imageFile)
+            const fileName = imageFile.name.split('.')[0];
+            const imageURL = `https://naturre.s3.ap-northeast-2.amazonaws.com/business/${fileName}`
+            imageURLs.push(imageURL)
+        })
+        const data = { businessId: businessId, title: reviewTitle, content: reviewText, rating: parseInt(rating, 10), images: imageURLs };
         fetch('http://localhost:3000/api/business-profile/create-review', {
             method: 'POST',
             headers: {
@@ -90,21 +127,8 @@ export default function CommentSection(props) {
             .catch((error) => {
                 console.error('Error:', error);
             });
-        // browserHistory.push('/business-profile-list');
-        // history.push('/business-profile-list');
-        //   window.location.href = "/business-profile-list";
-        window.location.reload()
+        // window.location.reload()
     }
-    // const handleRatingChange = (val) => {
-    //     setRating(val)
-    //     console.log(val)
-    // }
-    // const handleReviewTextChange = (val) => {
-    //     setReviewText(val)
-    // }
-    // const handleReviewTitleChange = (val) => {
-    //     setReviewTitle(val)
-    // }
 
     const callApi = (limit, businessId) => {
         fetch(`/api/business-profile/business-${type}`, {
@@ -127,7 +151,33 @@ export default function CommentSection(props) {
         setLimit(nextLimit)
     }
 
+    const onDrop = useCallback(acceptedFiles => {
+        console.log(acceptedFiles)
+        setImageFiles(acceptedFiles)
+        console.log(imageFiles)
+    }, [])
+
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
+
+    const dropzoneStyle = {
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: '20px',
+        borderWidth: 2,
+        borderRadius: 2,
+        borderColor: '#eeeeee',
+        borderStyle: 'dashed',
+        backgroundColor: '#fafafa',
+        color: '#bdbdbd',
+        outline: 'none',
+        transition: 'border .24s ease-in-out'
+    };
+
     const classes = useStyles();
+
+
     return (
         <React.Fragment>
             <Typography variant="h2" style={{ textAlign: 'center', fontWeight: '650' }}> {title} </Typography>
@@ -157,7 +207,7 @@ export default function CommentSection(props) {
                                 Write Review
                             </Button>
                             <Dialog
-                                fullScreen={fullScreen}
+                                classes={{ paper: classes.dialogPaper }}
                                 open={open}
                                 onClose={handlePopupClose}
                                 aria-labelledby="responsive-dialog-title"
@@ -165,40 +215,35 @@ export default function CommentSection(props) {
                                 <DialogTitle style={{ padding: "46px 46px 0px 46px" }} id="responsive - dialog - title">
                                     <Typography style={{ color: "black", fontSize: "26px", fontWeight: "bold" }}>Your review of {businessName}</Typography>
                                 </DialogTitle>
-                                {/* <h2>Your review of + {businessName}</h2> */}
                                 <DialogContent style={{ padding: "36px 46px 36px 46px" }}>
-                                    <TextField onChange={e => setReviewTitle(e.target.value)} multiline rows={1} style={{ marginBottom: "20px", width: "200px" }} label="Write a title for your review" variant="outlined" />
-                                    <TextField onChange={e => setReviewText(e.target.value)} multiline rows={3} style={{ width: "450px" }} label="Write your review content here..." variant="outlined" />
-                                    <br />
-                                    {/* <FormControl component="fieldset">
-                                        <FormLabel component="legend">Rating</FormLabel>
-                                        <RadioGroup row name="gender1" value={rating} onChange={handleRatingChange}>
-                                            <FormControlLabel value="1" control={<Radio />} label="1" />
-                                            <FormControlLabel value="2" control={<Radio />} label="2" />
-                                            <FormControlLabel value="3" control={<Radio />} label="3" />
-                                            <FormControlLabel value="4" control={<Radio />} label="4" />
-                                            <FormControlLabel value="5" control={<Radio />} label="5" />
-                                        </RadioGroup>
-                                    </FormControl> */}
-                                    {/* <Rating
-                                        size="large"
-                                        color="green"
-                                        name="customized-empty"
-                                        defaultValue={3}
-                                        precision={0.5}
-                                        emptyIcon={<StarBorderIcon color="green" fontSize="inherit" />}
-                                    /> */}
+                                    <DialogContentText style={{ color: "black", fontWeight: "500", fontSize: "18px" }}>Overall Rating</DialogContentText>
                                     <StyledRating
                                         name="customized-color"
                                         size="large"
-                                        defaultValue={2}
+                                        defaultValue={3}
                                         onChange={(event, val) => {
                                             setRating(val)
                                         }}
-                                        //   getLabelText={(value) => `${value} Heart${value !== 1 ? 's' : ''}`}
                                         precision={0.5}
                                         emptyIcon={<StarBorderIcon fontSize="inherit" />}
+                                        style={{ marginBottom: "30px" }}
                                     />
+                                    <br />
+                                    <DialogContentText style={{ color: "black", fontWeight: "500", fontSize: "18px" }}>Title of Review</DialogContentText>
+                                    <CustomTextField onChange={e => setReviewTitle(e.target.value)} multiline rows={1} style={{ marginBottom: "20px", width: "500px" }} label="Summary of your visit" variant="outlined" />
+                                    <DialogContentText style={{ color: "black", fontWeight: "500", fontSize: "18px" }}>Review Description</DialogContentText>
+                                    <CustomTextField onChange={e => setReviewText(e.target.value)} multiline rows={5} style={{ marginBottom: "20px", width: "500px" }} label="Describe your experience at the venue" variant="outlined" />
+                                    <DialogContentText style={{ color: "black", fontWeight: "500", fontSize: "18px" }}>Upload Images</DialogContentText>
+                                    <div {...getRootProps()} style={dropzoneStyle}>
+                                        <input {...getInputProps()} />
+                                        {
+                                            isDragActive ?
+                                                <h2>Drop the files here...</h2> :
+                                                <h2>Drop image files here...</h2>
+                                        }
+                                    </div>
+                                    <br />
+
                                 </DialogContent>
                                 <DialogActions>
                                     <Button onClick={handleSubmitReview} color="primary" autoFocus>

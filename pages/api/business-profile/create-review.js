@@ -10,8 +10,9 @@ handler.post(async (req, res) => {
   const content = req.body.content;
   const rating = req.body.rating;
   const businessId = req.body.businessId;
+  const images = req.body.images;
   const insertObject = {
-    title, content, rating, businessId
+    title, content, rating, businessId, images
   }
   let review = await req.db.collection('Reviews').insertOne({ ...insertObject }).catch(err => {
     console.log("Err", err);

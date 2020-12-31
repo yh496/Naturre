@@ -9,6 +9,8 @@ import ManagerInfo from '../components/BusinessProfile/ManagerInfo'
 import Button from '@material-ui/core/Button';
 
 import { useRouter } from 'next/router';
+import SideInfo from '../components/BusinessProfile/SideInfo';
+
 import {
   Grid,
   Typography,
@@ -39,7 +41,8 @@ const useStyles = makeStyles((theme) => ({
   description: {
     marginTop: theme.spacing(4),
     marginBottom: '30px',
-    maxWidth: '650px'
+    maxWidth: '650px',
+    fontSize: '18px'
   }
 }));
 
@@ -117,38 +120,50 @@ export default function BusinessProfile() {
 
   return (
     <React.Fragment>
-      {/* 
-    <div className={classes.header}> 
-      <Typography variant="h2" style={{fontWeight:'650'}}>  {values.name} </Typography>
-      <Typography variant="p" style={{fontSize:'14px'}}> {reviewStat.average}* | {values.location}</Typography>
-    </div> */}
-      <Grid container spacing={2} style={{ width: '80%', margin: 'auto', marginTop: '20px' }}>
-        <Grid item xs={6} lg={7} md={6} sm={5} >
-          <Typography variant="h2" style={{ fontWeight: '650' }}>  {values.name} </Typography>
-          <Typography variant="p" style={{ fontSize: '14px' }}> {reviewStat.average}* | {values.location.address}</Typography>
+      <div style={{ width: '80%', margin: 'auto', marginTop: '20px' }}>
+        <Typography style={{ fontWeight: '650', fontSize: '48px', lineHeight: '52px' }}>  {values.name} </Typography>
+        <Typography style={{ fontSize: '24px', lineHeight: '52px' }}> {reviewStat.average}* | {values.location.address}</Typography>
+      </div>
+      <Grid container style={{ width: '80%', margin: 'auto', marginTop: '20px', height: '550px' }}>
+        <Grid item xs={6} lg={8} md={6} sm={5} >
           <ImageStepper images={values.images} />
-          <Typography className={classes.description}> {values.description} </Typography>
         </Grid>
 
-        <Grid item xs={6} lg={5} md={6} sm={5}>
-          <ReviewStats reviewStat={reviewStat} />
-          <BusinessLocation location={values.location} />
-        </Grid>
-
-        <Grid container spacing={2} style={{ width: '80%', margin: 'auto' }}>
-          <Grid item lg={7}>
-            <ServiceList services={values.services} />
-          </Grid>
-          <Grid item lg={5}>
-            <ManagerInfo manager={values.manager} />
-          </Grid>
+        <Grid item xs={6} lg={4} md={6} sm={5}>
+          <div style={{ height: "50%" }}>
+            <ReviewStats reviewStat={reviewStat} />
+          </div>
+          <div style={{ height: "50%" }}>
+            <BusinessLocation location={values.location} />
+          </div>
         </Grid>
       </Grid>
+      <Grid container style={{ width: '80%', margin: 'auto', marginTop: '3.5rem' }}>
+        <Grid item xs={6} lg={8} md={6} sm={5}>
+          <Typography style={{ fontSize: '18px', fontWeight: 500, marginBottom: '2.5rem' }}> {values.description} </Typography>
+          <ServiceList services={values.services} />
+        </Grid>
+        <Grid item xs={6} lg={4} md={6} sm={5}>
+          <ManagerInfo manager={values.manager} />
+          <Divider style={{ width: "90%", marginLeft: '1rem' }} />
+          <SideInfo address={values.location.address} />
+        </Grid>
+      </Grid>
+      {/* <Grid container spacing={2} style={{ width: '80%', margin:'auto'}}>
+      <Grid item lg={7}> 
+        <ServiceList services={values.services}/>
+      </Grid>
+      
+    </Grid> */}
+
+      {/* <div style={{ width: '95%', margin: 'auto' }}>
+        <CommentSection type='questions' /> */}
 
       <div style={{ width: '95%', margin: 'auto' }}>
         <CommentSection type='questions' businessId={router.query.id} businessName={values.name} />
         <CommentSection type='review' businessId={router.query.id} businessName={values.name} />
       </div>
+      {/* </div> */}
 
 
     </React.Fragment>
