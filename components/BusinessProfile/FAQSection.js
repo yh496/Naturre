@@ -1,27 +1,11 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react'
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import Radio from '@material-ui/core/Radio';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
-import StarBorderIcon from '@material-ui/icons/StarBorder';
 import Rating from '@material-ui/lab/Rating';
 import { useDropzone } from 'react-dropzone';
-import axios from "axios";
 
 import {
   Typography,
-  Grid,
-  Box,
-  Slider,
   Button,
   Paper
 } from '@material-ui/core'
@@ -47,34 +31,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const StyledRating = withStyles({
-  iconFilled: {
-    color: '#49AD82',
-  },
-  iconHover: {
-    color: '#49AD82',
-  },
-})(Rating);
-
-const CustomTextField = withStyles({
-  root: {
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderRadius: "18px"
-      },
-    },
-  }
-})(TextField);
-
 export default function CommentSection(props) {
   const { businessId, businessName, ...rest } = props
-  const theme = useTheme();
   const title = 'FAQs'
-  const [rating, setRating] = React.useState("5");
   const [comments, setComments] = useState([])
   const [limit, setLimit] = useState(2)
 
-  const [open, setOpen] = React.useState(false)
 
   const callApi = (limit, businessId) => {
     fetch(`/api/business-profile/business-questions`, {
@@ -103,26 +65,7 @@ export default function CommentSection(props) {
     console.log(imageFiles)
   }, [])
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
-
-  const dropzoneStyle = {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: '20px',
-    borderWidth: 2,
-    borderRadius: 2,
-    borderColor: '#eeeeee',
-    borderStyle: 'dashed',
-    backgroundColor: '#fafafa',
-    color: '#bdbdbd',
-    outline: 'none',
-    transition: 'border .24s ease-in-out'
-  };
-
   const classes = useStyles();
-
 
   return (
     <React.Fragment>

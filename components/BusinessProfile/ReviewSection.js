@@ -7,21 +7,14 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import Radio from '@material-ui/core/Radio';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import Rating from '@material-ui/lab/Rating';
 import { useDropzone } from 'react-dropzone';
 import axios from "axios";
+import ReactCountryFlag from "react-country-flag";
 
 import {
   Typography,
-  Grid,
-  Box,
-  Slider,
   Button,
   Paper
 } from '@material-ui/core'
@@ -37,9 +30,9 @@ const useStyles = makeStyles((theme) => ({
   reviewContent: {
     padding: '20px',
     marginBottom: '1rem',
-    height: '130px',
-    maxHeight: '130px',
     overflow: 'hidden',
+    display: 'flex',
+    justifyContent: 'start'
   },
   dialogPaper: {
     height: "1310px",
@@ -69,15 +62,13 @@ const CustomTextField = withStyles({
 export default function CommentSection(props) {
   const { businessId, businessName, ...rest } = props
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const title = 'Customer Reviews'
-  const [rating, setRating] = React.useState("5");
+  const [rating, setRating] = React.useState("3.0");
   const [comments, setComments] = useState([])
   const [limit, setLimit] = useState(2)
   const [reviewText, setReviewText] = useState('')
   const [reviewTitle, setReviewTitle] = useState('')
-  const [imageFiles, setImageFiles] = useState('')
-  const [imageURLs, setImageURLs] = useState('')
+  const [imageFiles, setImageFiles] = useState([])
 
   const [open, setOpen] = React.useState(false)
 
@@ -102,9 +93,6 @@ export default function CommentSection(props) {
   }
 
   async function handleSubmitReview() {
-    // console.log(reviewText)
-    // console.log(reviewTitle)
-    // console.log(rating)
     const imageURLs = []
     await imageFiles.forEach((imageFile) => {
       uploadImage(imageFile)
@@ -127,7 +115,7 @@ export default function CommentSection(props) {
       .catch((error) => {
         console.error('Error:', error);
       });
-    // window.location.reload()
+    window.location.reload()
   }
 
   const callApi = (limit, businessId) => {
@@ -136,8 +124,9 @@ export default function CommentSection(props) {
       headers: { "Content-Type": "application/json; charset=utf-8" },
       body: JSON.stringify({ id: businessId, limit: limit })
 
-    }).then(e => e.json()).then(e =>
+    }).then(e => e.json()).then(e => {
       setComments(e.data)
+    }
     )
   }
 
@@ -149,6 +138,12 @@ export default function CommentSection(props) {
     const nextLimit = limit + 2
     callApi(nextLimit, businessId)
     setLimit(nextLimit)
+  }
+
+  const changeRating = (val) => {
+    console.log(val)
+    setRating(val)
+    console.log(rating)
   }
 
   const onDrop = useCallback(acceptedFiles => {
@@ -185,10 +180,31 @@ export default function CommentSection(props) {
       <div className={classes.reviewContainer}>
         <div style={{ width: '50%' }}>
           {comments.map((val, i) => (
-            <Paper>
+            <Paper style={{ width: "670px", borderRadius: "24px" }}>
               <div className={classes.reviewContent}>
-                <Typography variant="h4" style={{ fontWeight: 700, fontSize: '15px' }}> {val.title} </Typography>
-                <Typography variant="p"> {val.content} </Typography>
+                <div style={{ marginRight: "15px" }}>
+                  <img src="https://naturre.s3.ap-northeast-2.amazonaws.com/business/carol.jpeg" width="60px" height="60px" />
+                </div>
+                <div>
+                  <div style={{ display: "flex", justifyContent: "left" }}>
+                    <Typography style={{ fontWeight: "350", fontSize: "15px", marginBottom: "10px" }}>Carol Jung</Typography>
+                    <ReactCountryFlag countryCode="US" style={{ width: "20px", height: "20px", marginTop: "5px", marginLeft: "3px" }} />
+                    <Typography style={{ marginTop: "3px", marginLeft: "auto", fontSize: "24px" }}>{val.rating.toFixed(1)}</Typography>
+                    <StarBorderIcon style={{ color: 'black', marginLeft: "5px" }} />
+                  </div>
+                  <Typography style={{ fontWeight: "400", fontSize: "24px" }}>{val.title}</Typography>
+                  <Typography style={{ fontWeight: "370", fontSize: "18px", width: "550px" }}>{val.content}</Typography>
+                  {/* {val.images !== null ?
+                    <h1>hi1</h1> : <h1>hi2</h1>
+                  } */}
+                  <div style={{ marginTop: "10px", display: "flex", justifyContent: "left" }}>
+                    {val.images.map((image) => (
+                      <img src={image} width="60px" height="60px" style={{ marginRight: "10px" }} />
+                    ))}
+                  </div>
+                </div>
+                {/* <Typography variant="h4" style={{ fontWeight: 700, fontSize: '15px' }}> {val.title} </Typography>
+                <Typography variant="p"> {val.content} </Typography> */}
               </div>
             </Paper>
 
@@ -220,9 +236,9 @@ export default function CommentSection(props) {
                 <StyledRating
                   name="customized-color"
                   size="large"
-                  defaultValue={3}
+                  defaultValue={3.0}
                   onChange={(event, val) => {
-                    setRating(val)
+                    changeRating(val)
                   }}
                   precision={0.5}
                   emptyIcon={<StarBorderIcon fontSize="inherit" />}
@@ -243,18 +259,14 @@ export default function CommentSection(props) {
                   }
                 </div>
                 <br />
-
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleSubmitReview} color="primary" autoFocus>
                   Submit
                                     </Button>
               </DialogActions>
-
             </Dialog>
           </div>
-
-
         </div>
       </div>
     </React.Fragment >
