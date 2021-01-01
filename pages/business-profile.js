@@ -2,6 +2,8 @@ import styles from '../styles/Home.module.css';
 import ImageStepper from '../components/BusinessProfile/stepper';
 import BusinessDetail from '../components/BusinessProfile/BusinessDetail';
 import CommentSection from '../components/BusinessProfile/CommentSection';
+import ReviewSection from '../components/BusinessProfile/ReviewSection';
+import FAQSection from '../components/BusinessProfile/FAQSection';
 import ReviewStats from '../components/BusinessProfile/ReviewStats';
 import BusinessLocation from '../components/BusinessProfile/BusinessLocation';
 import ServiceList from '../components/BusinessProfile/ServiceList'
@@ -160,8 +162,8 @@ export default function BusinessProfile() {
         <CommentSection type='questions' /> */}
 
       <div style={{ width: '95%', margin: 'auto' }}>
-        <CommentSection type='questions' businessId={router.query.id} businessName={values.name} />
-        <CommentSection type='review' businessId={router.query.id} businessName={values.name} />
+        <FAQSection businessId={router.query.id} businessName={values.name} />
+        <ReviewSection businessId={router.query.id} businessName={values.name} />
       </div>
       {/* </div> */}
 
