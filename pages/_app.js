@@ -9,7 +9,7 @@ import Header from '../components/header';
 // import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Login from "./login";
 import Register from "./register";
-import "../styles/login.css";
+// import "../styles/login.css";
 
 
 export default function MyApp(props) {

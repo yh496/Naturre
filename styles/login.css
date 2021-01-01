@@ -3,7 +3,6 @@
 
 body {
   background: #1C8EF9;
-  display: flex;
   font-weight: 500;
   font-family: 'Inter', sans-serif;
   color: #696F79;
@@ -43,6 +42,10 @@ input.form-control {
 
 input:focus, button:focus {
   outline: none;
+}
+
+input.terms-check {
+  margin-right: 10px;
 }
 
 label {
