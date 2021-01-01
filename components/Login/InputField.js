@@ -1,6 +1,6 @@
 // import Radium from 'radium'
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-
+import React, { useState } from 'react';
 
 import {
   FormControl
@@ -75,6 +75,12 @@ export default function InputField (props) {
     forgotPasswordLink = <a href="#" className={classes.forgotPasswordLinkStyle}>Forgot password?</a>;
   }
 
+  const [input, setInput] = useState("");
+
+  const handleInput = (value) => {
+    props.sendDataToForm(props.forName, value);
+  }
+
 
   return (
     <React.Fragment>
@@ -84,7 +90,7 @@ export default function InputField (props) {
           <abbr title="required" className={classes.abbrStyle}>*</abbr>
           {forgotPasswordLink}
         </div>
-          <input type={props.type} className={classes.inputStyle} placeholder={props.placeHolder} name = {props.forName} required/>
+          <input type={props.type} className={classes.inputStyle} placeholder={props.placeHolder} name = {props.forName} onChange={e => handleInput(e.target.value)} required/>
       </FormControl>
     </React.Fragment>
   )

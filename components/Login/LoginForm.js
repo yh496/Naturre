@@ -5,6 +5,8 @@ import {
   Typography
 } from "@material-ui/core"
 import InputField from './InputField'
+import React, { useState } from 'react';
+
 // import { createMuiTheme } from "@material-ui/core/styles";
 //
 // const theme = createMuiTheme({
@@ -119,9 +121,13 @@ export default function LoginForm (props) {
 
   const classes = useStyles();
 
+  // state variable
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
   let accountCreateText;
   let emailDivStyle;
-  let confirmPassword;
   let checkboxText;
   let checkboxName;
   let title;
@@ -129,9 +135,9 @@ export default function LoginForm (props) {
     title = "Sign up"
     accountCreateText = <p class="account-create" style={{marginTop: 25, color:'#8692A6'}}>Create an account to receive tailored recommendations and chat with businesses.</p>
     emailDivStyle = classes.emailDivStyle2
-    confirmPassword = <InputField type="password" forName="confirm-password" label="Confirm password" placeHolder="Confirm password" />
     checkboxName = "terms-check"
     checkboxText = <label htmlFor={checkboxName} className={classes.termsCheckboxLabelStyle}>I have read and agree to the <a href="#" style={{color: '#158577'}}>terms & conditions</a>.</label>
+
   } else {
     title = "LogIn"
     emailDivStyle = classes.emailDivStyle1
@@ -139,20 +145,45 @@ export default function LoginForm (props) {
     checkboxText = <label className={classes.rememberMeCheckboxLabelStyle} htmlFor={checkboxName}>Remember me</label>
   }
 
+  const sendDataToForm = (type, value) => {
+
+    if(type=="email") {
+      setEmail(value)
+    }
+    if(type=="password") {
+      setPassword(value)
+    }
+    if(type=="confirm-password") {
+      setConfirmPassword(value)
+    }
+  };
+
+  const validateForm = () => {
+    if(email=="") {
+      alert("Please enter your email address!")
+    }
+    if(password=="") {
+      alert("Please enter your password!")
+    }
+    if(props.formName == "signup-request" && confirmPassword!=password) {
+      alert("Your input does not match your password!")
+    }
+  }
+
   return(
     <React.Fragment>
-      <form id = {props.formName} method = "post" className={classes.formStyle} novalidate>
+      <form id = {props.formName} method = "post" className={classes.formStyle} onSubmit={validateForm} novalidate>
           <Typography variant="h2" className={classes.titleStyle}>{title}</Typography>
 
           {accountCreateText}
 
           <div className={emailDivStyle}>
-            <InputField type="email" label="Email address" placeHolder="Enter email address"/>
+            <InputField type="email" forName="email" label="Email address" placeHolder="Enter email address" sendDataToForm={sendDataToForm}/>
           </div>
 
-          <InputField type="password" label="Password" placeHolder="Enter password" forgotPassword={props.forgotIsTrue}/>
+          <InputField type="password" forName="password" label="Password" placeHolder="Enter password" forgotPassword={props.forgotIsTrue} sendDataToForm={sendDataToForm}/>
 
-          {confirmPassword}
+          {(props.formName == "signup-request") && <InputField type="password" forName="confirm-password" label="Confirm password" placeHolder="Confirm password" sendDataToForm={sendDataToForm}/>}
 
           <FormControl className="form-group">
               <div className="custom-control custom-checkbox">
