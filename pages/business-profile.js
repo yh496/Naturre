@@ -1,13 +1,15 @@
-import styles from '../styles/Home.module.css';
 import ImageStepper from '../components/BusinessProfile/stepper';
-import BusinessDetail from '../components/BusinessProfile/BusinessDetail';
-import CommentSection from '../components/BusinessProfile/CommentSection';
+import ReviewSection from '../components/BusinessProfile/ReviewSection';
+import FAQSection from '../components/BusinessProfile/FAQSection';
 import ReviewStats from '../components/BusinessProfile/ReviewStats';
 import BusinessLocation from '../components/BusinessProfile/BusinessLocation';
 import ServiceList from '../components/BusinessProfile/ServiceList'
 import ManagerInfo from '../components/BusinessProfile/ManagerInfo'
+
+import { useRouter } from 'next/router';
 import SideInfo from '../components/BusinessProfile/SideInfo';
 import { useRouter } from 'next/router';
+
 import {
   Grid,
   Typography,
@@ -140,21 +142,11 @@ export default function BusinessProfile() {
           <SideInfo address={values.location.address} />
         </Grid>
       </Grid>
-      {/* <Grid container spacing={2} style={{ width: '80%', margin:'auto'}}>
-      <Grid item lg={7}> 
-        <ServiceList services={values.services}/>
-      </Grid>
-      
-    </Grid> */}
-
       <div style={{ width: '95%', margin: 'auto' }}>
-        <CommentSection type='questions' />
-
-        <CommentSection type='review' />
+        <FAQSection businessId={router.query.id} businessName={values.name} />
+        <ReviewSection businessId={router.query.id} businessName={values.name} />
       </div>
-
-
-    </React.Fragment>
+    </React.Fragment >
   )
 }
 
