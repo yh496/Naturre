@@ -163,12 +163,15 @@ export default function LoginForm (props) {
     event.preventDefault()
     if(email=="") {
       alert("Please enter your email address!")
+      return;
     }
     if(password=="") {
       alert("Please enter your password!")
+      return;
     }
     if(props.formName == "signup-request" && confirmPassword!=password) {
       alert("Your input does not match your password!")
+      return;
     }
     let status = await AuthService.set.credentials({email, password}, props.formName)
     if (status === 'error') return;
