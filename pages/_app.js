@@ -12,7 +12,6 @@ export default function MyApp(props) {
     // , serverCooki
     let cookies = serverCookie === '' ? AuthService.get.cookies() : serverCookie;
 
-    console.log('coookieeess', cookies)
     if (cookies) AuthService.initialize(cookies);
 
     React.useEffect(() => {
@@ -48,7 +47,6 @@ MyApp.propTypes = {
 MyApp.getInitialProps = async ({ Component, ctx }) => {
     // let serverCookie = (ctx.req && ctx.req.headers && ctx.req.headers.cookie) ? parseCookie(ctx.req.headers.cookie) : '';
     let jwt_token = AuthService.get.cookies(ctx)
-    console.log('jwt_tokeeen', jwt_token)
 
     let pageProps = {} // This is how pages will get their own getinitialprops
     if (Component.getInitialProps) {
