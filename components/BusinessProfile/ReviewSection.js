@@ -93,12 +93,12 @@ export default function ReviewSection(props) {
 
   async function handleSubmitReview() {
     const imageURLs = []
-    await imageFiles.forEach((imageFile) => {
-      uploadImage(imageFile)
+    for (const imageFile of imageFiles) {
+      await uploadImage(imageFile)
       const fileName = imageFile.name.split('.')[0];
       const imageURL = `https://naturre.s3.ap-northeast-2.amazonaws.com/business/${fileName}`
       imageURLs.push(imageURL)
-    })
+    }
     const data = { businessId: businessId, title: reviewTitle, content: reviewText, rating: parseInt(rating, 10), images: imageURLs };
     fetch('http://localhost:3000/api/business-profile/create-review', {
       method: 'POST',
