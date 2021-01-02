@@ -4,7 +4,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
@@ -194,17 +193,12 @@ export default function CommentSection(props) {
                   </div>
                   <Typography style={{ fontWeight: "400", fontSize: "24px" }}>{val.title}</Typography>
                   <Typography style={{ fontWeight: "370", fontSize: "18px", width: "550px" }}>{val.content}</Typography>
-                  {/* {val.images !== null ?
-                    <h1>hi1</h1> : <h1>hi2</h1>
-                  } */}
                   <div style={{ marginTop: "10px", display: "flex", justifyContent: "left" }}>
                     {val.images.map((image) => (
                       <img src={image} width="60px" height="60px" style={{ marginRight: "10px" }} />
                     ))}
                   </div>
                 </div>
-                {/* <Typography variant="h4" style={{ fontWeight: 700, fontSize: '15px' }}> {val.title} </Typography>
-                <Typography variant="p"> {val.content} </Typography> */}
               </div>
             </Paper>
 

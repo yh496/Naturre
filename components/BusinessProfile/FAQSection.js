@@ -1,8 +1,4 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react'
-import { useTheme } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Rating from '@material-ui/lab/Rating';
-import { useDropzone } from 'react-dropzone';
 
 import {
   Typography,
@@ -10,7 +6,7 @@ import {
   Paper
 } from '@material-ui/core'
 
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   reviewContainer: {
@@ -58,12 +54,6 @@ export default function CommentSection(props) {
     callApi(nextLimit, businessId)
     setLimit(nextLimit)
   }
-
-  const onDrop = useCallback(acceptedFiles => {
-    console.log(acceptedFiles)
-    setImageFiles(acceptedFiles)
-    console.log(imageFiles)
-  }, [])
 
   const classes = useStyles();
 
