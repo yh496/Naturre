@@ -1,13 +1,14 @@
-import styles from '../styles/Home.module.css';
 import ImageStepper from '../components/BusinessProfile/stepper';
-import BusinessDetail from '../components/BusinessProfile/BusinessDetail';
-import CommentSection from '../components/BusinessProfile/CommentSection';
+import ReviewSection from '../components/BusinessProfile/ReviewSection';
+import FAQSection from '../components/BusinessProfile/FAQSection';
 import ReviewStats from '../components/BusinessProfile/ReviewStats';
 import BusinessLocation from '../components/BusinessProfile/BusinessLocation';
 import ServiceList from '../components/BusinessProfile/ServiceList'
 import ManagerInfo from '../components/BusinessProfile/ManagerInfo'
+
+import { useRouter } from 'next/router';
 import SideInfo from '../components/BusinessProfile/SideInfo';
-import {useRouter} from 'next/router';
+
 import {
   Grid,
   Typography,
@@ -16,7 +17,7 @@ import {
 
 import { makeStyles } from '@material-ui/core/styles';
 
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 
 const useStyles = makeStyles((theme) => ({
   imageStepper: {
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   divider: {
     maxWidth: '730px',
     height: '2px',
-    transform:'translate(15%, 0%)',
+    transform: 'translate(15%, 0%)',
     background: '#e6e8eb'
   },
   header: {
@@ -36,11 +37,11 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
   },
   description: {
-    marginTop: theme.spacing(4), 
+    marginTop: theme.spacing(4),
     marginBottom: '30px',
     maxWidth: '650px',
     fontSize: '18px'
-}
+  }
 }));
 
 export default function BusinessProfile() {
@@ -57,22 +58,23 @@ export default function BusinessProfile() {
   })
 
   const [reviewStat, setReviewStat] = useState({
-    totalCount: 0 ,
-    average: 0, 
-    countPerRating:[]
-})
-  
-  useEffect( () => {
-   fetch('/api/business-profile/business-detail', {
+    totalCount: 0,
+    average: 0,
+    countPerRating: []
+  })
+
+  useEffect(() => {
+    fetch('/api/business-profile/business-detail', {
       method: 'POST',
       headers: { "Content-Type": "application/json; charset=utf-8" },
-      body: JSON.stringify({id: router.query.id})
-  
+      body: JSON.stringify({ id: router.query.id })
+
     }).then(e => e.json()).then(e =>
-      setValues({...values, 
-        name: e.data.name, 
-        description: e.data.description, 
-        location: e.data.location, 
+      setValues({
+        ...values,
+        name: e.data.name,
+        description: e.data.description,
+        location: e.data.location,
         images: e.data.images,
         services: e.data.services,
         manager: e.data.manager
@@ -80,16 +82,16 @@ export default function BusinessProfile() {
     )
   }, [])
 
-  useEffect( () => {
+  useEffect(() => {
     fetch('/api/business-profile/review-stats', {
       method: 'POST',
       headers: { "Content-Type": "application/json; charset=utf-8" },
-      body: JSON.stringify({id: router.query.id})
-  
+      body: JSON.stringify({ id: router.query.id })
+
     }).then(e => e.json()).then(e => {
 
       const tempList = []
-      for(let i = 1; i < 6; i ++) {
+      for (let i = 1; i < 6; i++) {
         let tempObj = {}
         tempObj[i] = e.ratings && e.ratings[i] || 0
         tempList.push(tempObj)
@@ -97,62 +99,53 @@ export default function BusinessProfile() {
 
       console.log(tempList)
       setReviewStat(
-        {...reviewStat, 
+        {
+          ...reviewStat,
           totalCount: e.ratings && e.ratings.count || 0,
-          average: e.ratings && parseFloat(e.ratings.average).toFixed(1) || 0, 
-          countPerRating: tempList 
+          average: e.ratings && parseFloat(e.ratings.average).toFixed(1) || 0,
+          countPerRating: tempList
         })
     }
     )
-   }, [])
- 
- 
+  }, [])
+
+
   return (
-  <React.Fragment>
-    <div style={{ width: '80%', margin:'auto', marginTop:'20px'}}> 
-      <Typography  style={{fontWeight:'650', fontSize:'48px', lineHeight: '52px'}}>  {values.name} </Typography>
-      <Typography style={{fontSize:'24px', lineHeight: '52px'}}> {reviewStat.average}* | {values.location.address}</Typography>
-    </div> 
-    <Grid container style={{ width: '80%', margin:'auto', marginTop:'20px', height: '550px'}}> 
-      <Grid item xs={6} lg={8} md={6} sm={5} > 
-        <ImageStepper images={values.images}/>
-      </Grid> 
+    <React.Fragment>
+      <div style={{ width: '80%', margin: 'auto', marginTop: '20px' }}>
+        <Typography style={{ fontWeight: '650', fontSize: '48px', lineHeight: '52px' }}>  {values.name} </Typography>
+        <Typography style={{ fontSize: '24px', lineHeight: '52px' }}> {reviewStat.average}* | {values.location.address}</Typography>
+      </div>
+      <Grid container style={{ width: '80%', margin: 'auto', marginTop: '20px', height: '550px' }}>
+        <Grid item xs={6} lg={8} md={6} sm={5} >
+          <ImageStepper images={values.images} />
+        </Grid>
 
-      <Grid item xs={6} lg={4} md={6} sm={5}>
-        <div style={{height:"50%"}}> 
-          <ReviewStats reviewStat={reviewStat}/>
-        </div>
-        <div style={{height:"50%"}}>
-          <BusinessLocation location={values.location}/>
-        </div>
+        <Grid item xs={6} lg={4} md={6} sm={5}>
+          <div style={{ height: "50%" }}>
+            <ReviewStats reviewStat={reviewStat} />
+          </div>
+          <div style={{ height: "50%" }}>
+            <BusinessLocation location={values.location} />
+          </div>
+        </Grid>
       </Grid>
-    </Grid> 
-    <Grid container style={{ width: '80%', margin:'auto', marginTop:'3.5rem'}}> 
-      <Grid item xs={6} lg={8} md={6} sm={5}>
-        <Typography style={{fontSize:'18px', fontWeight:500,marginBottom: '2.5rem'}}> {values.description} </Typography> 
-        <ServiceList services={values.services}/>
+      <Grid container style={{ width: '80%', margin: 'auto', marginTop: '3.5rem' }}>
+        <Grid item xs={6} lg={8} md={6} sm={5}>
+          <Typography style={{ fontSize: '18px', fontWeight: 500, marginBottom: '2.5rem' }}> {values.description} </Typography>
+          <ServiceList services={values.services} />
+        </Grid>
+        <Grid item xs={6} lg={4} md={6} sm={5}>
+          <ManagerInfo manager={values.manager} />
+          <Divider style={{ width: "90%", marginLeft: '1rem' }} />
+          <SideInfo address={values.location.address} />
+        </Grid>
       </Grid>
-      <Grid item xs={6} lg={4} md={6} sm={5}> 
-        <ManagerInfo manager={values.manager}/>
-        <Divider style={{width:"90%",marginLeft:'1rem'}} />
-        <SideInfo address={values.location.address}/>
-      </Grid>
-    </Grid> 
-    {/* <Grid container spacing={2} style={{ width: '80%', margin:'auto'}}>
-      <Grid item lg={7}> 
-        <ServiceList services={values.services}/>
-      </Grid>
-      
-    </Grid> */}
-
-    <div  style={{ width: '95%', margin:'auto'}}> 
-      <CommentSection type='questions'/> 
-
-      <CommentSection type='review'/> 
-    </div>
-
-
-  </React.Fragment> 
+      <div style={{ width: '95%', margin: 'auto' }}>
+        <FAQSection businessId={router.query.id} businessName={values.name} />
+        <ReviewSection businessId={router.query.id} businessName={values.name} />
+      </div>
+    </React.Fragment>
   )
 }
 
