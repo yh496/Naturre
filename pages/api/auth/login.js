@@ -26,8 +26,7 @@ handler.post(async (req, res) => {
     })
 
 
-    
-    if (!dbUser) {
+    if (dbUser.length == 0) {
         res.json({status: 'error', error: 'user does not exist'})
     } else if (!bcrypt.compareSync(password, dbUser[0].pw)) {
         res.json({status: 'error', error: 'Incorrect password!'})

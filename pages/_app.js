@@ -8,9 +8,10 @@ import Header from '../components/header';
 import AuthService from '../lib/AuthService';
 
 export default function MyApp(props) {
-    const { Component, pageProps,cookies } = props;
+    const { Component, pageProps,serverCookie } = props;
     // , serverCooki
-    //let cookie = serverCookie === '' ? cookies : serverCookie;
+    let cookies = serverCookie === '' ? AuthService.get.cookies() : serverCookie;
+
     if (cookies) AuthService.initialize(cookies);
 
     React.useEffect(() => {
@@ -30,7 +31,7 @@ export default function MyApp(props) {
             <ThemeProvider theme={theme}>
                    {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
                     <CssBaseline />
-                    <Header /> 
+                    <Header />
                       <Component {...pageProps} />
             </ThemeProvider>
         </React.Fragment>
@@ -54,7 +55,7 @@ MyApp.getInitialProps = async ({ Component, ctx }) => {
     if (!pageProps.namespacesRequired) {
         pageProps.namespacesRequired = ['common']
     }
-    return { pageProps, cookies : jwt_token }
+    return { pageProps, serverCookie : jwt_token }
     //  serverCookie : serverCookie}
 
 }

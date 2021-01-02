@@ -68,7 +68,7 @@ function Header() {
   const classes = useStyles();
 
   const user = AuthService.get.user_ctx();
-
+  console.log('useeerrrr', user)
 
   return (
     <div style={{ backgroundColor: '#FAFFFF', overflow: 'hidden' }}>
