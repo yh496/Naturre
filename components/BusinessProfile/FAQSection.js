@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function CommentSection(props) {
+export default function FAQSection(props) {
   const { businessId, businessName, ...rest } = props
   const title = 'FAQs'
   const [comments, setComments] = useState([])

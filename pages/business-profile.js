@@ -1,14 +1,10 @@
-import styles from '../styles/Home.module.css';
 import ImageStepper from '../components/BusinessProfile/stepper';
-import BusinessDetail from '../components/BusinessProfile/BusinessDetail';
-import CommentSection from '../components/BusinessProfile/CommentSection';
 import ReviewSection from '../components/BusinessProfile/ReviewSection';
 import FAQSection from '../components/BusinessProfile/FAQSection';
 import ReviewStats from '../components/BusinessProfile/ReviewStats';
 import BusinessLocation from '../components/BusinessProfile/BusinessLocation';
 import ServiceList from '../components/BusinessProfile/ServiceList'
 import ManagerInfo from '../components/BusinessProfile/ManagerInfo'
-import Button from '@material-ui/core/Button';
 
 import { useRouter } from 'next/router';
 import SideInfo from '../components/BusinessProfile/SideInfo';
@@ -66,12 +62,6 @@ export default function BusinessProfile() {
     average: 0,
     countPerRating: []
   })
-
-  // const [open, setOpen] = React.useState(false)
-
-  // const handlePopupOpen = () => {
-  //   setOpen(true)
-  // }
 
   useEffect(() => {
     fetch('/api/business-profile/business-detail', {
@@ -151,23 +141,10 @@ export default function BusinessProfile() {
           <SideInfo address={values.location.address} />
         </Grid>
       </Grid>
-      {/* <Grid container spacing={2} style={{ width: '80%', margin:'auto'}}>
-      <Grid item lg={7}> 
-        <ServiceList services={values.services}/>
-      </Grid>
-      
-    </Grid> */}
-
-      {/* <div style={{ width: '95%', margin: 'auto' }}>
-        <CommentSection type='questions' /> */}
-
       <div style={{ width: '95%', margin: 'auto' }}>
         <FAQSection businessId={router.query.id} businessName={values.name} />
         <ReviewSection businessId={router.query.id} businessName={values.name} />
       </div>
-      {/* </div> */}
-
-
     </React.Fragment>
   )
 }

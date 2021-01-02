@@ -58,7 +58,7 @@ const CustomTextField = withStyles({
   }
 })(TextField);
 
-export default function CommentSection(props) {
+export default function ReviewSection(props) {
   const { businessId, businessName, ...rest } = props
   const theme = useTheme();
   const title = 'Customer Reviews'
