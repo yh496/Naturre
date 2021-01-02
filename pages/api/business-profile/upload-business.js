@@ -1,6 +1,6 @@
 import { FormatAlignLeftSharp } from '@material-ui/icons';
 import nextConnect from 'next-connect';
-import middleware from '../../middleware/database';
+import middleware from '../../../middleware/database';
 
 const handler = nextConnect();
 

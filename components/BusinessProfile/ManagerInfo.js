@@ -13,8 +13,8 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   managerContent: {
-    marginLeft: '10px',
-    width: '400px',
+    marginLeft: '20px',
+    marginBottom: '2rem'
   }
 }))
 export default function ManagerInfo(props) {
@@ -32,7 +32,7 @@ export default function ManagerInfo(props) {
           <h3 style={{ margin: '0px', marginTop: '5px', marginLeft: '15px' }}>{manager.role}</h3>
         </Grid>
       </Grid>
-      <p style={{ margin: '0px', marginTop: '10px', marginLeft: '55px' }}>{manager.description}</p>
+      <Typography style={{fontSize: '18px', marginTop: '10px' }}>{manager.description}</Typography>
     </div>
   )
 }

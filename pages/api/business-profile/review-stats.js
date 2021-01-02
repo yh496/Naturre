@@ -7,57 +7,45 @@ const handler = nextConnect();
 handler.use(middleware);
 
 handler.post(async (req, res) => {
-  
+    //TODO
     const businessId = req.body.id
-    //total count, average rating, number of rating for each stars
-    let countAndAverage = await req.db.collection('Reviews').aggregate([
-        {$match: {
-            'businessId' : businessId}},
-        {
-          $group:
-            {
-              _id: "null",
-              count: {$sum: 1},
-              average: { $avg: "$rating"}
-            }
-        }
-      ]
-    ).toArray()
+    //total count, average rating, number of rating for each star
+    const ratings = await req.db.collection('Reviews').aggregate([
+      {$match: {'businessId' : businessId}},
+      {$group:
+          {
+            _id: "$name",
+            "count" : {$sum : 1},
+            "average": {$avg: "$rating"},
+            "5" :{
+                "$sum": {
+                  "$cond": [ { "$eq": [ "$rating", 5 ] }, 1, 0 ]
+                    }
+                },
+            "4" :{
+                "$sum": {
+                  "$cond": [ { "$eq": [ "$rating", 4 ] }, 1, 0 ]
+                  }
+              },
+            "3" :{
+                "$sum": {
+                    "$cond": [ { "$eq": [ "$rating", 3 ] }, 1, 0 ]
+                  }
+              },
+            "2" :{
+                "$sum": {
+                    "$cond": [ { "$eq": [ "$rating", 2 ] }, 1, 0 ]
+                  }
+                },
+            "1" :{
+                "$sum": {
+                    "$cond": [ { "$eq": [ "$rating", 1 ] }, 1, 0 ]
+                  }
+               }
+      }}
+    ]).toArray()
 
-    let countPerRating = await req.db.collection('Reviews').aggregate([
-        {$match: {
-            'businessId' : businessId}},
-        {
-          $group:
-            {
-              _id: "$rating",
-              count: {$sum: 1},
-            }
-        }
-      ]
-        ).toArray();
-
-    let returnObj = [
-        {_id: 1, count: 0},
-        {_id: 2, count: 0},
-        {_id: 3, count: 0},
-        {_id: 4, count: 0},
-        {_id: 5, count: 0}
-    ]
-
-    const _idList = countPerRating.map(e => e._id)
-
-    for (let i = 0; i < returnObj.length; i++) {
-       if (_idList.indexOf(returnObj[i]._id) === -1) {
-           countPerRating.push(returnObj[i])
-       }
-    }
-
-    countPerRating.sort((a,b) => (a._id > b._id) ?  -1 : 1)
-
-    console.log("countPerRating", countPerRating)
-
-  return res.json({ success: true, totalCount: countAndAverage[0].count, average: countAndAverage[0].average, countPerRating})
+  return res.json({ success: true, ratings: ratings[0] })
 });
 
 export default handler;

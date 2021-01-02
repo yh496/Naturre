@@ -13,7 +13,6 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
   serviceContainer: {
     marginTop: theme.spacing(3),
-    marginLeft: '110px',
     marginBottom: '100px',
   },
   serviceContent: {
@@ -24,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
   },
   serviceTitle: {
-    marginLeft: '110px'
+    fontWeight: 'bold'
   }
 }))
 
@@ -32,13 +31,13 @@ const useStyles = makeStyles((theme) => ({
 export default function ServiceList(props) {
 
   const { services, ...rest } = props
-  const title = 'Services'
+  const title = 'Menu'
   const classes = useStyles();
   return (
     <React.Fragment>
-      <Typography className={classes.serviceTitle} variant="h2" style={{}}> {title} </Typography>
+      <Typography className={classes.serviceTitle} style={{fontSize:'36px', fontWeight:500}}> {title} </Typography>
       <div className={classes.serviceContainer}>
-        <div style={{ width: '90%' }}>
+        <div style={{ width: '85%' }}>
           {services.map((val, i) => (
             <Paper style={{
               borderRadius: '14px',

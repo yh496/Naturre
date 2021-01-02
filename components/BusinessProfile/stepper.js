@@ -2,15 +2,18 @@ import React from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import MobileStepper from '@material-ui/core/MobileStepper';
 import Button from '@material-ui/core/Button';
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: '800px',
+    position: 'relative',
+    // maxWidth: '772px',
+    width:'100%',
+    height: '100%',
     flexGrow: 1,
     backgroundColor: 'black',
-
+    borderRadius: '24px',
   },
   header: {
     display: 'flex',
@@ -20,14 +23,31 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.default,
   },
   img: {
+    borderRadius: '24px',
     overflow: 'hidden',
     display: 'block',
     margin: 'auto',
-    maxWidth: '680px',
-    maxHeight: '480px',
-    width: 'auto',
-    height: 'auto',
+    width: '100%',
+    height: '100%',
   },
+  arrowIconLeft: {
+    position: 'absolute', 
+    top: 0,
+    left: 0, 
+    zIndex: 0,
+    color: 'black',
+    height: '100%',
+    borderRadius: '24px'
+  },
+  arrowIconRight: {
+    position: 'absolute', 
+    top: 0, 
+    right: 0, 
+    zIndex: 0,
+    color: 'black',
+    height: '100%',
+    borderRadius: '24px'
+  }
 }));
 
 export default function ImageStepper(props) {
@@ -46,6 +66,8 @@ export default function ImageStepper(props) {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
+  console.log('whaaat', activeStep)
+
   return (
     <div className={classes.root}>
 
@@ -53,7 +75,18 @@ export default function ImageStepper(props) {
         className={classes.img}
         src={images[activeStep]}
       />
-      <MobileStepper
+
+      {activeStep !== 0 &&
+        <Button onClick={handleBack} className={classes.arrowIconLeft}>   
+          <ArrowBackIcon fontSize="large" color="inherit" />
+        </Button>
+      }
+      {activeStep !== maxSteps -1 && 
+        <Button onClick={handleNext} className={classes.arrowIconRight} >
+          <ArrowForwardIcon fontSize="large" color="inherit" />
+        </Button>
+      }
+      {/* <MobileStepper
         steps={maxSteps}
         position="static"
         variant="text"
@@ -70,7 +103,7 @@ export default function ImageStepper(props) {
             Back
           </Button>
         }
-      />
+      /> */}
     </div>
   );
 }
