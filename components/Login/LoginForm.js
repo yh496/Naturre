@@ -6,6 +6,7 @@ import {
 } from "@material-ui/core"
 import InputField from './InputField'
 import React, { useState } from 'react';
+import AuthService from "../../lib/AuthService";
 
 // import { createMuiTheme } from "@material-ui/core/styles";
 //
@@ -158,7 +159,8 @@ export default function LoginForm (props) {
     }
   };
 
-  const validateForm = () => {
+  const validateForm = async (event) => {
+    event.preventDefault()
     if(email=="") {
       alert("Please enter your email address!")
     }
@@ -168,15 +170,18 @@ export default function LoginForm (props) {
     if(props.formName == "signup-request" && confirmPassword!=password) {
       alert("Your input does not match your password!")
     }
+    let status = await AuthService.set.credentials({email, password}, props.formName)
+    if (status === 'error') return;
+
+    AuthService.redirect()
+    // window.location.href = '/'
   }
 
   return(
     <React.Fragment>
       <form id = {props.formName} method = "post" className={classes.formStyle} onSubmit={validateForm} novalidate>
           <Typography variant="h2" className={classes.titleStyle}>{title}</Typography>
-
           {accountCreateText}
-
           <div className={emailDivStyle}>
             <InputField type="email" forName="email" label="Email address" placeHolder="Enter email address" sendDataToForm={sendDataToForm}/>
           </div>
