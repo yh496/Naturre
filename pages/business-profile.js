@@ -8,7 +8,6 @@ import ManagerInfo from '../components/BusinessProfile/ManagerInfo'
 
 import { useRouter } from 'next/router';
 import SideInfo from '../components/BusinessProfile/SideInfo';
-import { useRouter } from 'next/router';
 
 import {
   Grid,
