@@ -10,6 +10,9 @@ import Rating from '@material-ui/lab/Rating';
 import StarIcon from '@material-ui/icons/Star';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
+import ReviewContext from "../Contexts/ReviewContext";
+
+
 const PrettoSlider = withStyles({
     root: {
         color: '#64B6AC',
@@ -54,22 +57,12 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function ReviewStat(props) {
-    const { reviewStat, ...rest } = props
-
+    // const { reviewStat, ...rest } = props
+    const reviewStat = ReviewContext.getReviewContext().reviewStats
 
     const classes = useStyles();
     return (
         <div className={classes.reviewContainer}>
-            <div style={{display: 'flex', justifyContent: 'space-between', marginBottom:'1.1rem'}}> 
-                <div style={{display:'flex'}}> 
-                    <Typography variant="h1" style={{height: '25px', marginBottom: '10px', fontSize:'48px', marginBottom: '1rem' }}> {reviewStat.average} </Typography>
-                    <StarIcon color="inherit" fontSize="large" style={{color:'#7FD4BB', transform:'scale(1.3)', marginLeft:'1rem'}}/>
-                </div>
-                <div>  
-                    <Typography variant="h5" style={{ fontWeight: 'bold', height: '15px', marginTop: '10px', textAlign:'right' }}> {reviewStat.totalCount} reviews </Typography>
-                </div> 
-            </div>
-
                 {reviewStat.countPerRating.map((val, i) => (
                     <div style={{margin: 'auto', width:'100%', display:'flex', justifyContent: 'space-evenly', marginBottom:'8px'}}>  
                         <div style={{display:'flex', width: '20%', marginLeft:'1rem'}}> 

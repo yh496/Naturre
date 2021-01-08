@@ -7,11 +7,13 @@ const handler = nextConnect();
 handler.use(middleware);
 
 handler.post(async (req, res) => {
-    //TODO
+
     const businessId = req.body.id
+    console.log('review businessId', businessId)
+
     //total count, average rating, number of rating for each star
     const ratings = await req.db.collection('Reviews').aggregate([
-      {$match: {'businessId' : businessId}},
+      {$match: {businessId : businessId}},
       {$group:
           {
             _id: "$name",
@@ -44,6 +46,8 @@ handler.post(async (req, res) => {
                }
       }}
     ]).toArray()
+
+    console.log(ratings)
 
   return res.json({ success: true, ratings: ratings[0] })
 });
