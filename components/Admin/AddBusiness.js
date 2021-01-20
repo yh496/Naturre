@@ -14,6 +14,7 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 // import { browserHistory } from 'react-router';
 import { useDropzone } from 'react-dropzone'
+import Dropzone from 'react-dropzone'
 
 
 const useStyles = makeStyles({
@@ -35,6 +36,9 @@ export default function AddBusiness(props) {
   const [serviceName, setServiceName] = useState('')
   const [serviceDesc, setServiceDesc] = useState('')
   const [servicePrice, setServicePrice] = useState('')
+  const [imagePreviewURLs, setImagePreviewURLs] = useState([])
+  const [serviceList, setServiceList] = useState([{ "name": "", "description": "", "price": "" }])
+  const [selectedImageIndex, setSelectedImageIndex] = useState('')
 
   const handleNameChange = (val) => {
     setName(val)
@@ -59,11 +63,59 @@ export default function AddBusiness(props) {
   }
   let history = useHistory();
 
-  const onDrop = useCallback(acceptedFiles => {
-    console.log(acceptedFiles)
-    setImageFiles(acceptedFiles)
-    console.log(imageFiles)
-  }, [])
+  // const onDrop = useCallback(acceptedFiles => {
+  //   console.log(acceptedFiles)
+  //   setImageFiles(acceptedFiles)
+  //   console.log(imageFiles)
+  //   console.log(acceptedFiles[0].preview)
+
+  // }, [])
+
+  const appendFileUrl = (file, callback) => {
+    const myFileItemReader = new FileReader()
+    myFileItemReader.addEventListener("load", () => {
+      callback(myFileItemReader.result)
+    })
+    myFileItemReader.readAsDataURL(file)
+
+  }
+  const onDrop = (files) => {
+    setImageFiles(files)
+    const myFileItemReader = new FileReader()
+    // myFileItemReader.addEventListener("load", () => {
+    //   imageURLs.push(myFileItemReader.result)
+    // })
+    // myFileItemReader.readAsDataURL(files[0])
+
+
+    const imageURLs = []
+
+    files.forEach((file) => {
+      appendFileUrl(file, function (result) {
+        imageURLs.push(result)
+        if (files.length === imageURLs.length) {
+          setImagePreviewURLs(imageURLs)
+        }
+      })
+    })
+
+  }
+
+  const handleImageSelect = (index) => {
+    setMainFile(imageFiles[index])
+    setSelectedImageIndex(index)
+  }
+
+  const addNewService = () => {
+    setServiceList(serviceList.concat({ "name": "", "description": "", "price": "" }))
+  }
+
+  const handleServiceListChange = (index, type, val) => {
+    const tempServiceList = serviceList
+    serviceList[index][type] = val
+    setServiceList(tempServiceList)
+    console.log(tempServiceList)
+  }
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
 
@@ -87,6 +139,11 @@ export default function AddBusiness(props) {
 
   async function handleSubmit(event) {
     event.preventDefault();
+    const res = await axios.get("http://localhost:3000/api/map/geocode", { params: { loc: location } })
+    const lat = res.data.geocode.lat
+    const lng = res.data.geocode.lng
+    const locationObject = { "type": "Point", "coordinates": [lng, lat], "lat": lat, "lng": lng, "address": location }
+    console.log(locationObject)
     await uploadImage(mainFile)
     const mainFileName = mainFile.name.split('.')[0];
     const mainImageURL = `https://naturre.s3.ap-northeast-2.amazonaws.com/business/${mainFileName}`
@@ -97,11 +154,14 @@ export default function AddBusiness(props) {
       const imageURL = `https://naturre.s3.ap-northeast-2.amazonaws.com/business/${fileName}`
       imageURLs.push(imageURL)
     })
-    const services = [];
-    services.push({ "name": serviceName, "description": serviceDesc, "price": servicePrice })
+    const manager = {
+      name: "Peter Huh",
+      role: "Head Chef",
+      description: "I have 8+ years of experience as a head chef. Super pan introduces Asian menus with a Western twist."
+    }
     const data = {
-      name: name, description: description, location: location, category: category,
-      mainImage: mainImageURL, images: imageURLs, services: services
+      name: name, description: description, location: locationObject, category: category,
+      mainImage: mainImageURL, images: imageURLs, services: serviceList, manager: manager
     };
     let businessId = "";
     // let mainImgData = { id: '', img: '' }
@@ -120,69 +180,44 @@ export default function AddBusiness(props) {
       .catch((error) => {
         console.error('Error:', error);
       });
-
+    console.log(businessId)
     window.location.href = `/business-profile?id=${businessId}`;
   }
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
-      <Card style={{ width: '95%', height: '600px', marginTop: "20px" }} >
-        <h2>Add a New Business</h2>
-
-        <CardContent style={{ width: "300px" }}>
+      <Card style={{ width: '90%', marginTop: "20px", marginBottom: "20px" }} >
+        <CardContent style={{ marginLeft: "15px", paddingTop: "20px", paddingBottom: "60px" }}>
+          <h1 style={{ fontSize: "30px", marginBottom: "30px" }}>Add a New Business</h1>
+          <h1>1. Business Metadata</h1>
           <form onSubmit={handleSubmit}>
-            <div style={{ width: "200px" }}>
-              <label style={{ fontSize: "14px", fontWeight: "bold", display: "block", margin: "auto" }} for="name">Business Name:</label>
-              <TextField onChange={e => handleNameChange(e.target.value)} style={{ width: "200px", left: 0, top: "10%" }} size="small" id="name" label="Enter business name" variant="outlined" />
+            <div style={{ display: "flex", justifyContent: "start", marginBottom: "10px" }}>
+              <div style={{ marginRight: "100px" }}>
+                <label style={{ fontSize: "14px", fontWeight: "bold", display: "block", margin: "auto", marginBottom: "10px" }} for="name">Business Name:</label>
+                <TextField onChange={e => handleNameChange(e.target.value)} style={{ width: "300px" }} size="small" id="name" label="Enter business name" variant="outlined" />
+              </div>
+              <div>
+                <label style={{ fontSize: "14px", fontWeight: "bold", display: "block", margin: "auto", marginBottom: "10px" }} for="location">Location:</label>
+                <TextField
+                  onChange={e => handleLocationChange(e.target.value)}
+                  multiline rows={1}
+                  style={{ width: "400px" }} size="small" id="location" label="Enter business location" variant="outlined" />
+              </div>
             </div>
-            <br />
-            <div>
-              <label style={{ fontSize: "14px", fontWeight: "bold", display: "block", margin: "auto" }} for="description">Decription:</label>
-              <TextField
-                onChange={e => handleDescriptionChange(e.target.value)}
-                multiline rows={2}
-                style={{ width: "300px" }} id="description" label="Enter business description" variant="outlined" />
-            </div>
-            <div>
-              <label style={{ fontSize: "14px", fontWeight: "bold", display: "block", margin: "auto" }} for="location">Location:</label>
-              <TextField
-                onChange={e => handleLocationChange(e.target.value)}
-                multiline rows={1}
-                style={{ width: "300px" }} size="small" id="location" label="Enter business location" variant="outlined" />
-            </div>
-            <br />
-            <div>
-              <label style={{ fontSize: "14px", fontWeight: "bold", display: "block", margin: "auto" }} for="location">Main Image:</label>
-              <input type="file" onChange={handleImageChange} />
-            </div>
-            <div {...getRootProps()}>
-              <label style={{ fontSize: "14px", fontWeight: "bold", display: "block", margin: "auto" }} for="location">Images:</label>
-              <input {...getInputProps()} />
-              {
-                isDragActive ?
-                  <p>Drop the files here ...</p> :
-                  <p>Drop image files here...</p>
-              }
-            </div>
-            <div>
-              <label style={{ fontSize: "14px", fontWeight: "bold", display: "block", margin: "auto" }} for="location">Services:</label>
-              <TextField onChange={e => handleServiceNameAdd(e.target.value)} style={{ width: "140px", left: 0, top: "10%" }} size="small" id="name1" label="Name" variant="outlined" />
-              <TextField onChange={e => handleServicePriceAdd(e.target.value)} style={{ width: "80px", left: 0, top: "10%" }} size="small" id="price1" label="Price" variant="outlined" />
-              <TextField onChange={e => handleServiceDescAdd(e.target.value)} style={{ width: "220px", left: 0, top: "10%" }} size="small" id="desc1" label="Description" variant="outlined" />
+            <div style={{ display: "flex", justifyContent: "start" }}>
+              <div style={{ marginRight: "100px" }}>
+                <label style={{ fontSize: "14px", fontWeight: "bold", display: "block", margin: "auto", marginBottom: "10px" }} for="description">Decription:</label>
+                <TextField
+                  onChange={e => handleDescriptionChange(e.target.value)}
+                  multiline rows={3}
+                  style={{ width: "500px" }} id="description" label="Enter business description" variant="outlined" />
+              </div>
+              {/* <div> */}
+              <FormControl variant="outlined" style={{ width: "150px" }} >
 
-            </div>
-            <div>
-              <FormControl style={{ width: "100px" }} className={classes.formControl}>
-                <InputLabel style={{ fontSize: "14px", fontWeight: "bold" }} shrink id="demo-simple-select-placeholder-label-label">
-                  Category
-                </InputLabel>
-
+                <label style={{ fontSize: "14px", fontWeight: "bold", display: "block", marginBottom: "10px" }} for="category">Category:</label>
                 <Select
-                  labelId="demo-simple-select-placeholder-label-label"
-                  id="demo-simple-select-placeholder-label"
-                  // value={age}
-                  // onChange={handleChange}
-                  displayEmpty
-                  className={classes.selectEmpty}
+                  labelId="demo-simple-select-outlined-label"
+                  id="demo-simple-select-outlined"
                   onChange={e => handleCategoryChange(e.target.value)}
                 >
                   <MenuItem value={"Beauty"}>Beauty</MenuItem>
@@ -191,6 +226,38 @@ export default function AddBusiness(props) {
                   <MenuItem value={"Shopping"}>Shopping</MenuItem>
                 </Select>
               </FormControl>
+              {/* </div> */}
+            </div>
+            <br />
+            <h1>2. Images</h1>
+
+
+            <Dropzone onDrop={onDrop}>
+              {({ getRootProps, getInputProps }) => (
+                <div {...getRootProps()}>
+                  <input {...getInputProps()} />
+              Click me to upload a file!
+                </div>
+              )}
+            </Dropzone>
+            {imagePreviewURLs.map((val, i) => (
+              (i === selectedImageIndex) ?
+                <img src={val} width="60px" height="60px" style={{ marginRight: "10px", border: "2px", borderStyle: "solid", borderColor: "#44F8DF" }} onClick={() => handleImageSelect(i)} />
+                :
+                <img src={val} width="60px" height="60px" style={{ marginRight: "10px", }} onClick={() => handleImageSelect(i)} />
+
+            ))}
+            <h1>3. Services</h1>
+            <div>
+              <label style={{ fontSize: "14px", fontWeight: "bold", display: "block", margin: "auto" }} for="location">Services:</label>
+              {serviceList.map((val, i) => (
+                <div>
+                  <TextField onChange={e => handleServiceListChange(i, "name", e.target.value)} style={{ width: "140px", left: 0, top: "10%" }} size="small" id="name1" label="Name" variant="outlined" />
+                  <TextField onChange={e => handleServiceListChange(i, "price", e.target.value)} style={{ width: "80px", left: 0, top: "10%" }} size="small" id="price1" label="Price" variant="outlined" />
+                  <TextField onChange={e => handleServiceListChange(i, "description", e.target.value)} style={{ width: "220px", left: 0, top: "10%" }} size="small" id="desc1" label="Description" variant="outlined" />
+                </div>
+              ))}
+              <button type="button" onClick={() => addNewService()}>Add</button>
             </div>
             <input style={{ position: "absolute", left: "40%" }} type="submit" value="Submit" />
           </form>

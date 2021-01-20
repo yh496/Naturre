@@ -17,9 +17,10 @@ handler.post(async (req, res) => {
   const location = req.body.location;
   const services = req.body.services;
   const images = req.body.images;
+  const manager = req.body.manager;
 
   const insertObject = {
-    category, name, mainImage, images, contactInfo, description, location, services
+    category, name, mainImage, images, contactInfo, description, location, services, manager
   }
   let business = await req.db.collection('Business').insertOne({ ...insertObject }).catch(err => {
     console.log("Err", err);
