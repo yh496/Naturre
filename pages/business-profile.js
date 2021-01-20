@@ -155,7 +155,7 @@ export default function BusinessProfile() {
         <FAQSection businessId={router.query.id} businessName={values.name} />
         <ReviewSection businessId={router.query.id} businessName={values.name} />
       </div>
-    </React.Fragment>
+    </React.Fragment >
   )
 }
 
