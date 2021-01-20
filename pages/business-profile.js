@@ -64,6 +64,16 @@ export default function BusinessProfile() {
   })
 
   useEffect(() => {
+    fetch('/api/business-profile/inc-viewcount', {
+      method:'POST',
+      headers: { "Content-Type": "application/json; charset=utf-8" },
+      body: JSON.stringify({ id: router.query.id })
+    }).then(e=>e.json()).then(e=> {
+      console.log(e)
+    })
+  },[])
+
+  useEffect(() => {
     fetch('/api/business-profile/business-detail', {
       method: 'POST',
       headers: { "Content-Type": "application/json; charset=utf-8" },

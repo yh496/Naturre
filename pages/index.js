@@ -104,22 +104,22 @@ export function Home({data}) {
   const [locationOption, setLocationOption] = useState("Seoul")
   return (
     <React.Fragment> 
-      <div className={classes.header}>  
-        <div className={classes.subHeader}> 
-          <div style={{width:'100%', margin: 'auto', position: 'relative', maxWidth: '770px'}}> 
+      <div className={classes.header}>
+        <div className={classes.subHeader}>
+          <div style={{width:'100%', margin: 'auto', position: 'relative', maxWidth: '770px'}}>
             <Typography className={classes.headerText}> Start your wellness journey in Korea with a single click </Typography>
-          </div> 
-        </div> 
+          </div>
+        </div>
 
         <div className={classes.searchBox}>
-          <div style={{width:'100%', margin: 'auto', position: 'relative', maxWidth: '800px', height: '60px'}}> 
-            <input 
-              className={classes.inputBox} 
-              type="text" 
-              placeholder="Start your search today" 
-              value={searchText} 
+          <div style={{width:'100%', margin: 'auto', position: 'relative', maxWidth: '800px', height: '60px'}}>
+            <input
+              className={classes.inputBox}
+              type="text"
+              placeholder="Start your search today"
+              value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
-              onKeyPress={(e) => { 
+              onKeyPress={(e) => {
                 if (e.key === 'Enter') {
                   location.href=`/business-profile-list?find_by=${searchText}&find_loc=${locationOption}`
                 }
@@ -146,23 +146,23 @@ export function Home({data}) {
 
 
 
-      <div style={{marginTop: '69px', marginBottom: '69px'}}> 
-        <Typography className={classes.bodyText}> 
+      <div style={{marginTop: '69px', marginBottom: '69px'}}>
+        <Typography className={classes.bodyText}>
           Categories
         </Typography>
-      </div> 
-      <Grid container spacing={2} style={{width:'80%', margin:'auto'}}> 
+      </div>
+      <Grid container spacing={2} style={{width:'80%', margin:'auto'}}>
           {data.categories.map( (item, i) => (
             <Grid item xl={3} lg={3} xs={12} md={6} style={{width:'250px', margin:'auto' }}>
               <Link
                href= {{
                  pathname: '/business-profile-list',
                  query: {find_by : item.category}
-                 }}> 
-                <ButtonBase 
-                focusRipple 
+                 }}>
+                <ButtonBase
+                focusRipple
                 style={{textAlign:'left'}}
-                >  
+                >
                   <Card  style={{height: '100%', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
                     <img src={item.image} style={{width: '100%', height: '220px'}}/>
 
@@ -171,42 +171,42 @@ export function Home({data}) {
                       <Typography style={{fontWeight: '400', fontSize: '18px'}}> {item.description} </Typography>
                     </CardContent>
                   </Card>
-                </ButtonBase> 
+                </ButtonBase>
               </Link>
             </Grid>
 
-          ))} 
+          ))}
       </Grid>
-      <div style={{marginTop: '69px', marginBottom: '69px'}}> 
-        <Typography className={classes.bodyText}> 
+      <div style={{marginTop: '69px', marginBottom: '69px'}}>
+        <Typography className={classes.bodyText}>
           Popular Picks / Top Places
         </Typography>
-      </div> 
-      <Grid container spacing={2} style={{width:'80%', margin:'auto'}}> 
-          {data.categories.map( (item, i) => (
+      </div>
+      <Grid container spacing={2} style={{width:'80%', margin:'auto'}}>
+          {data.topView.map( (item, i) => (
           <Grid item xl={3} lg={3} xs={12} md={6} style={{width: '250px', margin: 'auto' }}>
-          <ButtonBase focusRipple style={{textAlign:'left'}}>  
+          <ButtonBase focusRipple style={{textAlign:'left'}}>
             <Card  style={{height: '100%', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
-              <img src={item.image} style={{width: '100%', height: '220px'}}/>
+              <img src={item.mainImage} style={{width: '100%', height: '220px'}}/>
               <CardContent style={{height: '120px'}}>
-                <Typography style={{fontWeight: '600', fontSize: '24px', marginBottom: '20px'}}> {item.category} </Typography>
-                <Typography style={{fontWeight: '400', fontSize: '18px'}}> {item.description} </Typography>
+                <Typography style={{fontWeight: '600', fontSize: '24px', marginBottom: '20px'}}> {item.name} </Typography>
+                <Typography style={{fontWeight: '400', fontSize: '18px'}}> {item.category} </Typography>
               </CardContent>
             </Card>
-          </ButtonBase> 
+          </ButtonBase>
         </Grid>
 
-          ))} 
+          ))}
       </Grid>
-      <div style={{marginTop: '69px', marginBottom: '69px'}}> 
-        <Typography className={classes.bodyText}> 
+      <div style={{marginTop: '69px', marginBottom: '69px'}}>
+        <Typography className={classes.bodyText}>
           Latest Blog Articles
         </Typography>
-      </div> 
-      <Grid container spacing={2} style={{width:'80%', margin:'auto'}}> 
+      </div>
+      <Grid container spacing={2} style={{width:'80%', margin:'auto'}}>
           {data.categories.map( (item, i) => (
             <Grid item xl={3} lg={3} xs={12} md={6} style={{width: '250px', margin: 'auto' }}>
-            <ButtonBase focusRipple style={{textAlign:'left'}}>  
+            <ButtonBase focusRipple style={{textAlign:'left'}}>
               <Card  style={{height: '100%', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
                 <img src={item.image} style={{width: '100%', height: '220px'}}/>
 
@@ -215,9 +215,9 @@ export function Home({data}) {
                   <Typography style={{fontWeight: '400', fontSize: '18px'}}> {item.description} </Typography>
                 </CardContent>
               </Card>
-            </ButtonBase> 
+            </ButtonBase>
           </Grid>
-          ))} 
+          ))}
       </Grid>
 
 
@@ -230,7 +230,14 @@ export function Home({data}) {
 
 export async function getServerSideProps() {
   const res = await fetch(`${server}/api/home-page/category-list`)
-  const data = await res.json()
+  const categoryJson = await res.json()
+  const res2 = await fetch(`${server}/api/home-page/top-view`)
+  const topViewJson = await res2.json()
+
+  const data = {
+    categories: categoryJson.categories,
+    topView : topViewJson.selected
+  }
   return { props: { data } }
 
 
