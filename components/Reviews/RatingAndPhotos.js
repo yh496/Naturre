@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import {Grid, Typography} from '@material-ui/core';
 import {makeStyles} from "@material-ui/core/styles";
 
-import ReviewContext from "../Contexts/ReviewContext";
+import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -15,41 +15,38 @@ const useStyles = makeStyles((theme) => ({
     text: {
         fontWeight: '600',
         fontSize: '22px',
-        margin: 'auto',
         height: '10%',
-        marginBottom: "1rem"
+        marginBottom: "1rem",
+        marginRight: "1rem"
     },
     photoGallery: {
-        marginLeft:'2rem',
+        marginLeft:'4rem',
         height: '100%'
     },
     gridItem: {
         marginRight: '3rem',
         height: '100%'
     },
-    component: {
+    text2: {
+        color: '#32A482',
+        fontSize: '18px',
+        lineHeight: '22px'
+    },
+    arrowRightContainer: {
+        width: '30px',
+        height: '100%',
+        margin: 'auto',
+
+    },
+    arrowRight: {
+        color: '#000000',
+        transform: 'scale(1.5)',
     }
+
 }))
 
 
 const RatingAndPhotos = () => {
-    const router = useRouter()
-
-    const [reviewData, setReviewData] = useState({
-        ...ReviewContext.getReviewContext
-    })
-
-    ReviewContext.render = () => {
-        setReviewData(ReviewContext.getReviewContext())
-    }
-
-    useEffect(() => {
-        (async function initializeReviews () {
-            await ReviewContext.initialize(router.query.id, 2)
-            ReviewContext.render()
-        })();
-    },[])
-
     const classes = useStyles()
 
     return (
@@ -59,10 +56,18 @@ const RatingAndPhotos = () => {
                     <ReviewStats className={classes.component} />
                 </Grid>
                 <Grid item lg={6} className={classes.photoGallery}>
-                    <Typography className={classes.text}> Photo Gallery </Typography>
-
-                    <ReviewPhotos className={classes.component}/>
+                    <div style={{display: 'flex', justifyContent: 'left', textAlign: 'left'}}>
+                        <Typography className={classes.text}> Photo Gallery </Typography>
+                        <Typography className={classes.text2}> View all </Typography>
+                    </div>
+                    <div style={{display: 'flex'}}>
+                        <ReviewPhotos/>
+                        <div className={classes.arrowRightContainer}>
+                            <ArrowRightAltIcon color="inherit" className={classes.arrowRight}/>
+                        </div>
+                    </div>
                 </Grid>
+
             </Grid>
     )
 }

@@ -55,12 +55,19 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ReviewStat(props) {
     // const { reviewStat, ...rest } = props
-    const reviewStat = ReviewContext.getReviewContext().reviewStats
+
+    const [reviewStats, setReviewStats] = useState({
+        ...ReviewContext.getReviewContext().reviewStats
+    })
+
+    ReviewContext.renderReviewStat = () =>{
+        setReviewStats(ReviewContext.getReviewContext().reviewStats)
+    }
 
     const classes = useStyles();
     return (
         <div className={classes.reviewContainer}>
-                {reviewStat.countPerRating.map((val, i) => (
+                {reviewStats.countPerRating.map((val, i) => (
                     <div style={{margin: 'auto', width:'100%', display:'flex', justifyContent: 'space-evenly', marginBottom:'8px'}}>  
                         <div style={{display:'flex', width: '20%'}}> 
                             <Typography style={{ fontSize: '24px' }}>{i+1}</Typography>
@@ -69,7 +76,7 @@ export default function ReviewStat(props) {
                         <div style={{display:'flex', position: 'relative', width:'80%'}}> 
                             <PrettoSlider
                                 style={{transform:'translate(0%,-30%)'}}
-                                max={reviewStat.totalCount}
+                                max={reviewStats.totalCount}
                                 valueLabelDisplay="auto"
                                 aria-label="pretto slider"
                                 value={val[i+1]} />
@@ -80,7 +87,7 @@ export default function ReviewStat(props) {
                     </div> 
                 ))}
                 {/* <Grid container style={{margin: 'auto', width: '90%'}}> 
-                    {reviewStat.countPerRating.map((val, i) => (
+                    {reviewStats.countPerRating.map((val, i) => (
                         <React.Fragment>   
                                 <Grid item xs={6} lg={2} md={1} sm={5} style={{marginBottom:'15px'}}>
                                     <Typography style={{ display: 'inline', fontSize: '18px' }}>{i+1}</Typography>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React , {useState}from 'react'
 
 import ReviewContext from '../Contexts/ReviewContext';
 import {makeStyles} from "@material-ui/core/styles";
@@ -28,9 +28,15 @@ const useStyles = makeStyles((theme) => ({
 const ReviewPhotos = () => {
     const classes=useStyles();
 
+    const [reviewImages, setReviewImages] = useState([])
+
+    ReviewContext.renderReviewImages = () => {
+        setReviewImages(ReviewContext.getReviewContext().reviewImages)
+    }
+
     return (
         <div className={classes.root}>
-            {ReviewContext.getReviewContext().reviewImageList.map(url => (
+            {reviewImages.map(url => (
                 <div className={classes.imageContainer}> 
                     <img className={classes.image} src={url}/>
                 </div>

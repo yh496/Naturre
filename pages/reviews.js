@@ -5,10 +5,12 @@ import {useRouter} from 'next/router';
 import {makeStyles} from "@material-ui/core/styles";
 import {
     Typography,
-    Divider
+    Divider,
+    Button
 } from "@material-ui/core"
 
 import ReviewCard from "../components/Reviews/ReviewCard"
+import SearchIcon from "@material-ui/icons/Search";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -18,28 +20,80 @@ const useStyles = makeStyles((theme) => ({
         width: '80%',
         height: '210px',
     },
+    review_title: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        width: '93%'
+    },
+    review_head: {
+        marginBottom: '2rem'
+    },
     text: {
         fontSize: '36px', 
         marginBottom: '3rem',
         fontWeight: '520'
     },
+    button: {
+        padding: '20px',
+        height: '40px',
+        background: '#64B6AC',
+        borderRadius: '22px',
+        color: '#FFFFFF',
+        fontWeight: '600'
+    },
     divider: {
         marginTop: '2rem',
-    }
+    },
+    searchBox: {
+        position: 'relative',
+        width: '100%',
+        height: '60px',
+        borderRadius: "24px",
+        padding: '1rem',
+        boxSizing: 'border-box',
+        border: '1px solid #8692A6',
+        outline: 'none',
+        '&::placeholder': {
+            color: '#8692A6',
+            fontSize: '18px'
+        }
+
+
+}
 
 }))
 
 
 const Reviews = () => {
+    const router = useRouter()
+
+    useEffect(() => {
+        (async function initializeReviews () {
+            await ReviewContext.initialize(router.query.id, 2)
+            ReviewContext.renderReviewStat();
+            ReviewContext.renderReviewImages();
+            ReviewContext.renderReviewContents();
+        })();
+    },[])
 
     const classes= useStyles();
     return (
         <div className={classes.root}>
-            <Typography className={classes.text}> Customer Reviews </Typography>
-            <RatingAndPhotos/>
-            <Divider className={classes.divider}/>
-
-            <ReviewCard/>
+            <div className={classes.review_head}>
+                <div className={classes.review_title}>
+                    <Typography className={classes.text}> Customer Reviews </Typography>
+                    <Button className={classes.button}> Write a review </Button>
+                </div>
+                <RatingAndPhotos/>
+                <Divider className={classes.divider}/>
+            </div>
+            <div style={{position: 'relative', marginBottom: '10rem', width: '93%'}}>
+                <input placeholder="Search reviews" className={classes.searchBox}/>
+                <SearchIcon style={{transform:'scale(1.5)', position:'absolute', right: '25px', top: '20px', color: '#DADADA'}}/>
+            </div>
+            <div style={{width: '93%'}}>
+                <ReviewCard />
+            </div>
         </div>
     )
 

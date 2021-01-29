@@ -1,7 +1,7 @@
 import {createQueryParams} from '../../lib/utils';
 
 const ReviewContext = {
-    reviewImageList: [],
+    reviewImages: [],
     reviewStats: {
         totalCount: 0,
         average: 0,
@@ -39,7 +39,7 @@ const fetchReviewContents = async ({businessId, limit}) => {
     ReviewContext.reviewContents = resJson.data
 }
 
-const fetchReviewImageList = async (businessId) => {
+const fetchReviewImages = async (businessId) => {
     const params = {businessId}
     const query = createQueryParams(params);
 
@@ -48,14 +48,14 @@ const fetchReviewImageList = async (businessId) => {
         headers: { "Content-Type": "application/json; charset=utf-8" },
     })
     let resJson = await res.json();
-    ReviewContext.reviewImageList = resJson.reviewImages
+    ReviewContext.reviewImages = resJson.reviewImages
 }   
 
 
 const initialize = async (businessId, limit) => {
     await fetchReviewContents({businessId,limit})
     await fetchReviewStats(businessId)
-    await fetchReviewImageList(businessId)
+    await fetchReviewImages(businessId)
 }
 
 const getReviewContext = () => {
@@ -66,7 +66,17 @@ const setReviewContext = (field, val) => {
     ReviewContext[field] = val
 }
 
-const render = () => {}
+const renderReviewStat = () => {}
+const renderReviewContents = () => {}
+const renderReviewImages = () => {}
 
 
-export default {initialize, getReviewContext, setReviewContext, render}
+
+export default {
+    initialize,
+    getReviewContext,
+    setReviewContext,
+    renderReviewStat,
+    renderReviewContents,
+    renderReviewImages
+}
