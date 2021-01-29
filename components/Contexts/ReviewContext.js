@@ -1,3 +1,4 @@
+import {createQueryParams} from '../../lib/utils';
 
 const ReviewContext = {
     reviewImageList: [],
@@ -38,14 +39,23 @@ const fetchReviewContents = async ({businessId, limit}) => {
     ReviewContext.reviewContents = resJson.data
 }
 
-const fetchReviewImageList = () => {
+const fetchReviewImageList = async (businessId) => {
+    const params = {businessId}
+    const query = createQueryParams(params);
 
-}
+    let res = await fetch(`/api/business-profile/review-images?` + query, {
+        method: 'GET',
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+    })
+    let resJson = await res.json();
+    ReviewContext.reviewImageList = resJson.reviewImages
+}   
 
 
 const initialize = async (businessId, limit) => {
     await fetchReviewContents({businessId,limit})
     await fetchReviewStats(businessId)
+    await fetchReviewImageList(businessId)
 }
 
 const getReviewContext = () => {

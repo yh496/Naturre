@@ -115,7 +115,7 @@ export default function BusinessProfile() {
         <Typography style={{ fontSize: '24px', lineHeight: '52px' }}> {reviewContext.reviewStats.average}* | {values.location.address}</Typography>
       </div>
       <Grid container style={{ width: '80%', margin: 'auto', marginTop: '20px', height: '550px' }}>
-        <Grid item xs={6} lg={8} md={6} sm={5} >
+        <Grid item xs={6} lg={8} md={6} sm={5} style={{height: '100%'}}>
           <ImageStepper images={values.images} />
         </Grid>
 

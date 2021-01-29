@@ -27,7 +27,8 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
     display: 'block',
     margin: 'auto',
-    width: '100%',
+    width: 'auto',
+    maxWidth: '100%',
     height: '100%',
   },
   arrowIconLeft: {

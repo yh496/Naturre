@@ -42,9 +42,6 @@ const PrettoSlider = withStyles({
 
 const useStyles = makeStyles((theme) => ({
     reviewContainer: {
-        margin: 'auto',
-        width: '90%',
-        height: '100%'
     },
     ratingIcon: {
         color: '#49AD82',
@@ -65,11 +62,11 @@ export default function ReviewStat(props) {
         <div className={classes.reviewContainer}>
                 {reviewStat.countPerRating.map((val, i) => (
                     <div style={{margin: 'auto', width:'100%', display:'flex', justifyContent: 'space-evenly', marginBottom:'8px'}}>  
-                        <div style={{display:'flex', width: '20%', marginLeft:'1rem'}}> 
+                        <div style={{display:'flex', width: '20%'}}> 
                             <Typography style={{ fontSize: '24px' }}>{i+1}</Typography>
                             <StarBorderIcon color="inherit" style={{marginLeft:'0.5rem', color:'black', transform:'translate(0%,-10%'}} />
                         </div>
-                        <div style={{display:'flex', position: 'relative', width:'60%'}}> 
+                        <div style={{display:'flex', position: 'relative', width:'80%'}}> 
                             <PrettoSlider
                                 style={{transform:'translate(0%,-30%)'}}
                                 max={reviewStat.totalCount}
@@ -77,7 +74,7 @@ export default function ReviewStat(props) {
                                 aria-label="pretto slider"
                                 value={val[i+1]} />
                         </div>
-                        <div style={{width:'20%'}}>
+                        <div style={{width:'15%'}}>
                             <Typography style={{textAlign: 'right'}}> ({val[i+1]}) </Typography>
                         </div>
                     </div> 
