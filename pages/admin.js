@@ -9,6 +9,7 @@ import PersonPinIcon from '@material-ui/icons/PersonPin';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import EditIcon from '@material-ui/icons/Edit';
 import AddBusiness from '../components/Admin/AddBusiness';
+import EditFAQ from '../components/Admin/EditFAQ';
 
 const useStyles = makeStyles({
   root: {
@@ -50,6 +51,9 @@ export default function Admin2(props) {
       }}>
         {/* {tabValue === 0 ? <p>hi</p> : null} */}
         {tabValue === 0 ? <AddBusiness /> : null}
+      </div>
+      <div>
+      {tabValue === 3 ? <EditFAQ /> : null}
       </div>
     </div>
   )
