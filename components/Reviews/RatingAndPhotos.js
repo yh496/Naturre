@@ -2,10 +2,11 @@ import React, {useEffect, useState} from 'react'
 import ReviewStats from '../BusinessProfile/ReviewStats'
 import ReviewPhotos from '../Reviews/ReviewPhotos';
 import { useRouter } from 'next/router';
-import {Grid, Typography} from '@material-ui/core';
+import {Grid, Typography,Button} from '@material-ui/core';
 import {makeStyles} from "@material-ui/core/styles";
 
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
+import ReviewContext from "../Contexts/ReviewContext";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -21,7 +22,8 @@ const useStyles = makeStyles((theme) => ({
     },
     photoGallery: {
         marginLeft:'4rem',
-        height: '100%'
+        height: '100%',
+        width: '100%'
     },
     gridItem: {
         marginRight: '3rem',
@@ -30,12 +32,15 @@ const useStyles = makeStyles((theme) => ({
     text2: {
         color: '#32A482',
         fontSize: '18px',
-        lineHeight: '22px'
+        lineHeight: '22px',
+        textTransform: 'none',
+        transform: 'translate(0%,-15%)'
     },
     arrowRightContainer: {
-        width: '30px',
+        width: '10px',
         height: '100%',
         margin: 'auto',
+        transform: 'translate(-40%, 0%)'
 
     },
     arrowRight: {
@@ -49,6 +54,10 @@ const useStyles = makeStyles((theme) => ({
 const RatingAndPhotos = () => {
     const classes = useStyles()
 
+    const router = useRouter()
+
+    const [skipCount, setSkipCount] = useState(1)
+
     return (
             <Grid container className={classes.root} spacing={2}>
                 <Grid item lg={4} className={classes.gridItem}>
@@ -58,15 +67,24 @@ const RatingAndPhotos = () => {
                 <Grid item lg={6} className={classes.photoGallery}>
                     <div style={{display: 'flex', justifyContent: 'left', textAlign: 'left'}}>
                         <Typography className={classes.text}> Photo Gallery </Typography>
-                        <Typography className={classes.text2}> View all </Typography>
+                        <Button className={classes.text2}> View all </Button>
                     </div>
                     <div style={{display: 'flex'}}>
-                        <ReviewPhotos/>
-                        <div className={classes.arrowRightContainer}>
-                            <ArrowRightAltIcon color="inherit" className={classes.arrowRight}/>
-                        </div>
+                        <ReviewPhotos style={{width: '100%'}}/>
                     </div>
                 </Grid>
+                <Button
+                    className={classes.arrowRightContainer}
+                    onClick={async () => {
+                        await ReviewContext.fetchReviewImages(router.query.id)
+                        ReviewContext.renderReviewImages()
+                        const newSkipCount= ReviewContext.getReviewContext().imageSkipCount +=1
+                        ReviewContext.setReviewContext('imageSkipCount', newSkipCount)
+                    }
+                    }
+                >
+                    <ArrowRightAltIcon color="inherit" className={classes.arrowRight}/>
+                </Button>
 
             </Grid>
     )

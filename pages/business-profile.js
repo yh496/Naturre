@@ -8,6 +8,7 @@ import ManagerInfo from '../components/BusinessProfile/ManagerInfo'
 
 import { useRouter } from 'next/router';
 import SideInfo from '../components/BusinessProfile/SideInfo';
+import BusinessProfileContext from "../components/Contexts/BusinessProfileContext";
 
 import {
   Grid,
@@ -51,12 +52,7 @@ export default function BusinessProfile() {
 
   const classes = useStyles();
   const [values, setValues] = useState({
-    name: "",
-    description: "",
-    location: "",
-    images: [],
-    services: [],
-    manager: ""
+    ...BusinessProfileContext.getBusinessProfileContext()
   })
 
 
@@ -87,26 +83,13 @@ export default function BusinessProfile() {
     })
   },[])
 
-  useEffect(() => {
-    fetch('/api/business-profile/business-detail', {
-      method: 'POST',
-      headers: { "Content-Type": "application/json; charset=utf-8" },
-      body: JSON.stringify({ id: router.query.id })
+  useEffect( () => {
+    (async function initializeBusinessProfileContext() {
+      let context = await BusinessProfileContext.initializeBusinessProfile(router.query.id);
+      setValues({...context})
 
-    }).then(e => e.json()).then(e =>
-      setValues({
-        ...values,
-        name: e.data.name,
-        description: e.data.description,
-        location: e.data.location,
-        images: e.data.images,
-        services: e.data.services,
-        manager: e.data.manager
-      })
-    )
+    })()
   }, [])
-
-  console.log('review context', ReviewContext.getReviewContext())
 
   return (
     <React.Fragment>

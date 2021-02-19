@@ -11,7 +11,8 @@ import {
 
 import ReviewCard from "../components/Reviews/ReviewCard"
 import SearchIcon from "@material-ui/icons/Search";
-
+import ReviewUploadForm from "../components/Reviews/ReviewUploadForm";
+import BusinessProfileContext from "../components/Contexts/BusinessProfileContext";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -57,8 +58,6 @@ const useStyles = makeStyles((theme) => ({
             color: '#8692A6',
             fontSize: '18px'
         }
-
-
 }
 
 }))
@@ -66,6 +65,8 @@ const useStyles = makeStyles((theme) => ({
 
 const Reviews = () => {
     const router = useRouter()
+
+    const [businessName, setBusinessName] = useState("")
 
     useEffect(() => {
         (async function initializeReviews () {
@@ -76,13 +77,30 @@ const Reviews = () => {
         })();
     },[])
 
+    useEffect( () => {
+        (async function initializeBusinessProfileContext() {
+            let context = await BusinessProfileContext.initializeBusinessProfile(router.query.id);
+            setBusinessName(context.name);
+        })()
+    }, [])
+
+    const [open, setOpen] = useState(false)
+
+    const handlePopupClose = () => {
+        setOpen(false)
+    }
+
     const classes= useStyles();
     return (
         <div className={classes.root}>
             <div className={classes.review_head}>
                 <div className={classes.review_title}>
                     <Typography className={classes.text}> Customer Reviews </Typography>
-                    <Button className={classes.button}> Write a review </Button>
+                    <Button
+                        className={classes.button}
+                        onClick={() => setOpen(true)}>
+                        Write a review
+                    </Button>
                 </div>
                 <RatingAndPhotos/>
                 <Divider className={classes.divider}/>
@@ -94,6 +112,12 @@ const Reviews = () => {
             <div style={{width: '93%'}}>
                 <ReviewCard />
             </div>
+            <ReviewUploadForm
+                open={open}
+                handlePopupClose ={handlePopupClose}
+                businessName = {businessName}
+            />
+
         </div>
     )
 

@@ -8,20 +8,15 @@ handler.use(middleware);
 
 handler.get(async (req, res) => {
 
-  let businessId = req.query.businessId 
-  
-  let reviewImagesDB = await req.db.collection('Reviews').find({businessId}).toArray().catch(err => {
+  let businessId = req.query.businessId
+  let skipCount = parseInt(req.query.skipCount) || 0
+
+  let reviewImages = await req.db.collection('ReviewImages').find({businessId}).skip(skipCount).limit(3).toArray().catch(err => {
     console.log("Err", err);
     return res.json({ succeed: false });
   })
 
-  let reviewImagesFinal = []
-  reviewImagesDB.map(item => {
-      reviewImagesFinal = reviewImagesFinal.concat(item.images)
-  })
-
-
-  res.json({ success:true, reviewImages: reviewImagesFinal })
+  res.json({ success:true, reviewImages: reviewImages })
 });
 
 export default handler;

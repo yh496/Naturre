@@ -7,7 +7,8 @@ const ReviewContext = {
         average: 0,
         countPerRating: []
     },
-    reviewContents: []
+    reviewContents: [],
+    imageSkipCount: 0
 }
 
 const fetchReviewStats = async (businessId) => {
@@ -40,7 +41,7 @@ const fetchReviewContents = async ({businessId, limit}) => {
 }
 
 const fetchReviewImages = async (businessId) => {
-    const params = {businessId}
+    const params = {businessId, skipCount: ReviewContext.imageSkipCount}
     const query = createQueryParams(params);
 
     let res = await fetch(`/api/business-profile/review-images?` + query, {
@@ -78,5 +79,6 @@ export default {
     setReviewContext,
     renderReviewStat,
     renderReviewContents,
-    renderReviewImages
+    renderReviewImages,
+    fetchReviewImages,
 }

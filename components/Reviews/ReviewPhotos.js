@@ -36,9 +36,9 @@ const ReviewPhotos = () => {
 
     return (
         <div className={classes.root}>
-            {reviewImages.map(url => (
+            {reviewImages.map(obj => (
                 <div className={classes.imageContainer}> 
-                    <img className={classes.image} src={url}/>
+                    <img className={classes.image} src={obj.s3_source}/>
                 </div>
             ))}
 

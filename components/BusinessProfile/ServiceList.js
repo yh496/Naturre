@@ -38,7 +38,7 @@ export default function ServiceList(props) {
       <Typography className={classes.serviceTitle} style={{fontSize:'36px', fontWeight:500}}> {title} </Typography>
       <div className={classes.serviceContainer}>
         <div style={{ width: '85%' }}>
-          {services.map((val, i) => (
+          {services && services.map((val, i) => (
             <Paper style={{
               borderRadius: '14px',
             }}>
