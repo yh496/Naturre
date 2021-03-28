@@ -11,6 +11,7 @@ import Rating from '@material-ui/lab/Rating';
 import { useDropzone } from 'react-dropzone';
 import axios from "axios";
 import ReactCountryFlag from "react-country-flag";
+import ReviewUploadForm from "../Reviews/ReviewUploadForm";
 
 import {
   Typography,
@@ -60,14 +61,11 @@ const CustomTextField = withStyles({
 
 export default function ReviewSection(props) {
   const { businessId, businessName, ...rest } = props
-  const theme = useTheme();
   const title = 'Customer Reviews'
   const [rating, setRating] = React.useState("3.0");
   const [comments, setComments] = useState([])
   const [limit, setLimit] = useState(2)
-  const [reviewText, setReviewText] = useState('')
-  const [reviewTitle, setReviewTitle] = useState('')
-  const [imageFiles, setImageFiles] = useState([])
+
 
   const [open, setOpen] = React.useState(false)
 
@@ -78,44 +76,6 @@ export default function ReviewSection(props) {
     setOpen(false);
   }
 
-  async function uploadImage(file) {
-    let fileParts = file.name.split('.');
-    const fileName = fileParts[0];
-    const fileType = fileParts[1];
-    const res = await axios.post("http://localhost:3000/api/business-profile/upload-image", {
-      fileName: fileName,
-      fileType: fileType
-    })
-    const returnData = res.data.data.returnData;
-    const signedRequest = returnData.signedRequest;
-    await fetch(signedRequest, { method: "PUT", body: file })
-  }
-
-  async function handleSubmitReview() {
-    const imageURLs = []
-    for (const imageFile of imageFiles) {
-      await uploadImage(imageFile)
-      const fileName = imageFile.name.split('.')[0];
-      const imageURL = `https://naturre.s3.ap-northeast-2.amazonaws.com/business/${fileName}`
-      imageURLs.push(imageURL)
-    }
-    const data = { businessId: businessId, title: reviewTitle, content: reviewText, rating: parseInt(rating, 10), images: imageURLs };
-    fetch('http://localhost:3000/api/business-profile/create-review', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Success:', data);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-    window.location.reload()
-  }
 
   const callApi = (limit, businessId) => {
     fetch(`/api/business-profile/business-reviews`, {
@@ -138,44 +98,12 @@ export default function ReviewSection(props) {
     callApi(nextLimit, businessId)
     setLimit(nextLimit)
   }
-
-  const changeRating = (val) => {
-    console.log(val)
-    setRating(val)
-    console.log(rating)
-  }
-
-  const onDrop = useCallback(acceptedFiles => {
-    console.log(acceptedFiles)
-    setImageFiles(acceptedFiles)
-    console.log(imageFiles)
-  }, [])
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
-
-  const dropzoneStyle = {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: '20px',
-    borderWidth: 2,
-    borderRadius: 2,
-    borderColor: '#eeeeee',
-    borderStyle: 'dashed',
-    backgroundColor: '#fafafa',
-    color: '#bdbdbd',
-    outline: 'none',
-    transition: 'border .24s ease-in-out'
-  };
-
   const classes = useStyles();
 
 
   return (
     <React.Fragment>
       <Typography variant="h2" style={{ textAlign: 'center', fontWeight: '650' }}> {title} </Typography>
-
       <div className={classes.reviewContainer}>
         <div style={{ width: '50%' }}>
           {comments.map((val, i) => (
@@ -194,7 +122,7 @@ export default function ReviewSection(props) {
                   <Typography style={{ fontWeight: "400", fontSize: "24px" }}>{val.title}</Typography>
                   <Typography style={{ fontWeight: "370", fontSize: "18px", width: "550px" }}>{val.content}</Typography>
                   <div style={{ marginTop: "10px", display: "flex", justifyContent: "left" }}>
-                    {val.images.map((image) => (
+                    {val.images && val.images.map((image) => (
                       <img src={image} width="60px" height="60px" style={{ marginRight: "10px" }} />
                     ))}
                   </div>
@@ -215,51 +143,13 @@ export default function ReviewSection(props) {
           <div>
             <Button style={{ float: "right" }} variant="outlined" color="primary" onClick={handlePopupOpen}>
               Write Review
-                            </Button>
-            <Dialog
-              classes={{ paper: classes.dialogPaper }}
-              open={open}
-              onClose={handlePopupClose}
-              aria-labelledby="responsive-dialog-title"
-            >
-              <DialogTitle style={{ padding: "46px 46px 0px 46px" }} id="responsive - dialog - title">
-                <Typography style={{ color: "black", fontSize: "26px", fontWeight: "bold" }}>Your review of {businessName}</Typography>
-              </DialogTitle>
-              <DialogContent style={{ padding: "36px 46px 36px 46px" }}>
-                <DialogContentText style={{ color: "black", fontWeight: "500", fontSize: "18px" }}>Overall Rating</DialogContentText>
-                <StyledRating
-                  name="customized-color"
-                  size="large"
-                  defaultValue={3.0}
-                  onChange={(event, val) => {
-                    changeRating(val)
-                  }}
-                  precision={0.5}
-                  emptyIcon={<StarBorderIcon fontSize="inherit" />}
-                  style={{ marginBottom: "30px" }}
-                />
-                <br />
-                <DialogContentText style={{ color: "black", fontWeight: "500", fontSize: "18px" }}>Title of Review</DialogContentText>
-                <CustomTextField onChange={e => setReviewTitle(e.target.value)} multiline rows={1} style={{ marginBottom: "20px", width: "500px" }} label="Summary of your visit" variant="outlined" />
-                <DialogContentText style={{ color: "black", fontWeight: "500", fontSize: "18px" }}>Review Description</DialogContentText>
-                <CustomTextField onChange={e => setReviewText(e.target.value)} multiline rows={5} style={{ marginBottom: "20px", width: "500px" }} label="Describe your experience at the venue" variant="outlined" />
-                <DialogContentText style={{ color: "black", fontWeight: "500", fontSize: "18px" }}>Upload Images</DialogContentText>
-                <div {...getRootProps()} style={dropzoneStyle}>
-                  <input {...getInputProps()} />
-                  {
-                    isDragActive ?
-                      <h2>Drop the files here...</h2> :
-                      <h2>Drop image files here...</h2>
-                  }
-                </div>
-                <br />
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleSubmitReview} color="primary" autoFocus>
-                  Submit
-                                    </Button>
-              </DialogActions>
-            </Dialog>
+            </Button>
+            <ReviewUploadForm
+                open={open}
+                handlePopupClose ={handlePopupClose}
+                businessName = {businessName}
+            />
+
           </div>
         </div>
       </div>

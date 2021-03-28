@@ -11,6 +11,7 @@ handler.post(async (req, res) => {
   const rating = req.body.rating;
   const businessId = req.body.businessId;
   const images = req.body.images;
+
   const insertObject = {
     title, content, rating, businessId, images
   }
